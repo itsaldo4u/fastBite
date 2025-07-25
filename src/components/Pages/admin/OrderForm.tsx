@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type { Order, Status } from "./Orders";
+import type { Order } from "./Orders";
 
 type OrderFormProps = {
   order: Order | null;

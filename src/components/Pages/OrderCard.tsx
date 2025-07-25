@@ -29,12 +29,6 @@ const steps = [
   { id: 4, label: "Dorëzuar", icon: "📬", desc: "Dorëzuar me sukses" },
 ];
 
-const statusToStep: Record<OrderStatus, number> = {
-  pending: 1,
-  preparing: 2,
-  delivering: 3,
-  delivered: 4,
-};
 
 export default function OrderCard({
   order,
