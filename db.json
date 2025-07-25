@@ -1,0 +1,1001 @@
+{
+  "users": [
+    {
+      "id": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "password": "aldo123",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "role": "admin"
+    },
+    {
+      "id": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "password": "a123",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "role": "user"
+    }
+  ],
+  "orders": [
+    {
+      "id": "3e0c",
+      "userId": null,
+      "name": "itsAldo",
+      "email": "Aldo Msc",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "12112312313",
+      "expiryDate": "1223",
+      "cvv": "212",
+      "items": [
+        {
+          "id": 3,
+          "title": "Kola",
+          "price": 1.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 1.99,
+      "createdAt": "2025-07-09T14:15:21.830Z",
+      "status": "delivered",
+      "startTime": null,
+      "preparingDuration": 600,
+      "review": "kola rating"
+    },
+    {
+      "id": "ff44",
+      "userId": null,
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "1234342342342",
+      "expiryDate": "1242",
+      "cvv": "124",
+      "items": [
+        {
+          "id": 4,
+          "title": "Combo Pizza + Kola",
+          "price": 9.49,
+          "quantity": 1
+        },
+        {
+          "id": 5,
+          "title": "Pizza Quattro Stagioni",
+          "price": 12.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 22.48,
+      "createdAt": "2025-07-10T14:12:35.395Z",
+      "status": "delivered",
+      "startTime": "2025-07-10T15:07:34.675Z",
+      "preparingDuration": 600,
+      "review": "dy porosi"
+    },
+    {
+      "id": "ee8a",
+      "userId": null,
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "xghgn",
+      "expiryDate": "vxcx",
+      "cvv": "xvv",
+      "items": [
+        {
+          "id": 5,
+          "title": "Pizza Quattro Stagioni",
+          "price": 12.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 12.99,
+      "createdAt": "2025-07-10T14:48:51.615Z",
+      "status": "delivered",
+      "startTime": "2025-07-10T14:49:44.306Z",
+      "prepTime": 5,
+      "review": "jjjjjjjjjjjjj"
+    },
+    {
+      "id": "74ca",
+      "userId": null,
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "q2131234124",
+      "expiryDate": "2334",
+      "cvv": "234",
+      "items": [
+        {
+          "id": 7,
+          "title": "Ujë Mineral",
+          "price": 0.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 0.99,
+      "createdAt": "2025-07-10T15:06:23.591Z",
+      "status": "delivered",
+      "startTime": "2025-07-10T15:06:44.618Z",
+      "review": "prap uj"
+    },
+    {
+      "id": "0a39",
+      "userId": null,
+      "name": "aldo",
+      "email": "aldo@mail.com",
+      "phone": "0696969696",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "12312123123123",
+      "expiryDate": "1232",
+      "cvv": "12",
+      "items": [
+        {
+          "id": 5,
+          "title": "Pizza Quattro Stagioni",
+          "price": 12.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 12.99,
+      "createdAt": "2025-07-10T15:08:51.698Z",
+      "status": "delivered",
+      "startTime": "2025-07-10T15:09:00.814Z",
+      "review": "iiiiiiiiiiiiiiii"
+    },
+    {
+      "id": "f597",
+      "userId": null,
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "12323213123",
+      "expiryDate": "1232",
+      "cvv": "123",
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 4.5,
+      "createdAt": "2025-07-11T14:05:43.864Z",
+      "status": "delivered",
+      "startTime": "2025-07-18T14:42:46.108Z",
+      "review": "shume e mireeee"
+    },
+    {
+      "id": "643b",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "123213231321",
+      "expiryDate": "123",
+      "cvv": "212",
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 4.5,
+      "createdAt": "2025-07-18T15:00:18.768Z",
+      "status": "delivered",
+      "startTime": "2025-07-18T15:10:32.098Z",
+      "review": "margarita mire"
+    },
+    {
+      "id": "1b7d",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        },
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 13.79,
+      "createdAt": "2025-07-18T16:31:41.596Z",
+      "status": "delivered"
+    },
+    {
+      "id": "a1c3",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "12341341422",
+      "expiryDate": "123124",
+      "cvv": "12312",
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        },
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 1
+        },
+        {
+          "id": "pz03",
+          "title": "Pizza Vegjetariane",
+          "price": 5.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 19.29,
+      "createdAt": "2025-07-18T16:49:43.142Z",
+      "status": "delivered",
+      "startTime": "2025-07-18T16:50:43.820Z",
+      "review": "vegjetarjanja mire , pepeorini mire , burger mire , vlersimi fantes"
+    },
+    {
+      "id": "e238",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 4.5,
+      "createdAt": "2025-07-18T16:54:09.574Z",
+      "status": "delivered",
+      "startTime": "2025-07-19T14:40:48.098Z",
+      "review": "mire"
+    },
+    {
+      "id": "ef87",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 5.99,
+      "createdAt": "2025-07-18T16:54:16.273Z",
+      "status": "delivered",
+      "startTime": "2025-07-18T16:55:00.108Z",
+      "review": "dhghsdghd"
+    },
+    {
+      "id": "1247",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 1.3,
+      "createdAt": "2025-07-18T16:54:23.303Z",
+      "status": "delivered",
+      "startTime": "2025-07-18T16:55:00.618Z",
+      "review": "dhshdg"
+    },
+    {
+      "id": "b34e",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 2
+        }
+      ],
+      "totalPrice": 13,
+      "createdAt": "2025-07-18T16:54:34.062Z",
+      "status": "delivered",
+      "startTime": "2025-07-18T16:55:01.235Z",
+      "review": "super"
+    },
+    {
+      "id": "63d7",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 5.99,
+      "createdAt": "2025-07-19T13:57:24.580Z",
+      "status": "delivered",
+      "startTime": "2025-07-19T14:40:26.332Z",
+      "review": "gggggdhdg"
+    },
+    {
+      "id": "ef7f",
+      "userId": null,
+      "name": "beni",
+      "email": "beni",
+      "phone": "beni",
+      "address": "beni",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 7.29,
+      "createdAt": "2025-07-19T14:22:21.286Z",
+      "status": "delivered",
+      "startTime": "2025-07-19T14:40:26.822Z",
+      "review": "dghdfghdhd"
+    },
+    {
+      "id": "ae98",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 1
+        },
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 11.790000000000001,
+      "createdAt": "2025-07-19T14:45:51.552Z",
+      "status": "delivered",
+      "startTime": "2025-07-19T14:47:56.087Z",
+      "review": "dfhddf"
+    },
+    {
+      "id": "8b30",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "o69515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 5.99,
+      "createdAt": "2025-07-19T14:59:07.758Z",
+      "status": "delivered",
+      "startTime": "2025-07-19T16:42:05.651Z",
+      "review": "yummy\n"
+    },
+    {
+      "id": "339b",
+      "userId": null,
+      "name": "qyli",
+      "email": "qyli@qyli.com",
+      "phone": "0934024911",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 5.99,
+      "createdAt": "2025-07-24T21:35:41.508Z",
+      "status": "delivering",
+      "startTime": "2025-07-24T21:36:17.867Z"
+    },
+    {
+      "id": "281b",
+      "userId": null,
+      "name": "",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "paymentMethod": "card",
+      "cardNumber": "",
+      "expiryDate": "",
+      "cvv": "",
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 5.99,
+      "createdAt": "2025-07-24T21:48:23.304Z",
+      "status": "pending"
+    },
+    {
+      "id": "2c72",
+      "userId": null,
+      "name": "bubu",
+      "email": "bubu",
+      "phone": "bubu",
+      "address": "bubu",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 1
+        },
+        {
+          "id": "pz03",
+          "title": "Pizza Vegjetariane",
+          "price": 5.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 12,
+      "createdAt": "2025-07-24T21:51:50.821Z",
+      "status": "pending"
+    }
+  ],
+  "ratings": [
+    {
+      "id": "3ce5",
+      "productId": "4",
+      "userId": "6bd7",
+      "rating": 5
+    },
+    {
+      "id": "f364",
+      "productId": "4",
+      "userId": "6bd7",
+      "rating": 3
+    },
+    {
+      "id": "f2b0",
+      "productId": "4",
+      "userId": "6bd7",
+      "rating": 5
+    },
+    {
+      "id": "0d78",
+      "productId": "fe01",
+      "userId": "964d",
+      "rating": 2
+    },
+    {
+      "id": "dd58",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "i mire\n",
+      "rating": 5,
+      "createdAt": "2025-07-18T15:13:57.203Z"
+    },
+    {
+      "id": "ece6",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "E MIRE",
+      "productTitle": "Pizza Quattro Stagioni",
+      "rating": 1,
+      "createdAt": "2025-07-18T16:27:31.146Z"
+    },
+    {
+      "id": "103f",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "E MIRE",
+      "productTitle": "Combo Pizza + Kola",
+      "rating": 3,
+      "createdAt": "2025-07-18T16:27:31.147Z"
+    },
+    {
+      "id": "7657",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "shume e mireeee",
+      "productTitle": "Pizza Margherita",
+      "rating": 4,
+      "createdAt": "2025-07-18T16:33:00.564Z"
+    },
+    {
+      "id": "742e",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "yummy",
+      "productTitle": "Pizza Quattro Stagioni",
+      "rating": 4,
+      "createdAt": "2025-07-18T16:33:08.266Z"
+    },
+    {
+      "id": "9ff8",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "a i behet ujit rating",
+      "productTitle": "Ujë Mineral",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:33:20.942Z"
+    },
+    {
+      "id": "764d",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "mmmmmmmm",
+      "productTitle": "Pizza Quattro Stagioni",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:33:29.320Z"
+    },
+    {
+      "id": "c740",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dy porosi",
+      "productTitle": "Combo Pizza + Kola",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:33:41.613Z"
+    },
+    {
+      "id": "7112",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dy porosi",
+      "productTitle": "Pizza Quattro Stagioni",
+      "rating": 4,
+      "createdAt": "2025-07-18T16:33:41.614Z"
+    },
+    {
+      "id": "8673",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "jjjjjjjjjjjjj",
+      "productTitle": "Pizza Quattro Stagioni",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:33:52.369Z"
+    },
+    {
+      "id": "ca18",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "kola rating",
+      "productTitle": "Kola",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:34:02.149Z"
+    },
+    {
+      "id": "976d",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "iiiiiiiiiiiiiiii",
+      "productTitle": "Pizza Quattro Stagioni",
+      "rating": 1,
+      "createdAt": "2025-07-18T16:34:24.288Z"
+    },
+    {
+      "id": "d156",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "prap uj",
+      "productTitle": "Ujë Mineral",
+      "rating": 3,
+      "createdAt": "2025-07-18T16:34:32.269Z"
+    },
+    {
+      "id": "edae",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "margarita mire",
+      "productTitle": "Pizza Margherita",
+      "rating": 4,
+      "createdAt": "2025-07-18T16:51:34.768Z"
+    },
+    {
+      "id": "2665",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "vegjetarjanja mire , pepeorini mire , burger mire , vlersimi fantes",
+      "productTitle": "Pizza Pepperoni",
+      "rating": 4,
+      "createdAt": "2025-07-18T16:52:09.817Z"
+    },
+    {
+      "id": "39a2",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "vegjetarjanja mire , pepeorini mire , burger mire , vlersimi fantes",
+      "productTitle": "Fanta Portokall",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:52:09.816Z"
+    },
+    {
+      "id": "da28",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "vegjetarjanja mire , pepeorini mire , burger mire , vlersimi fantes",
+      "productTitle": "Burger Classic",
+      "rating": 4,
+      "createdAt": "2025-07-18T16:52:09.817Z"
+    },
+    {
+      "id": "846d",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "vegjetarjanja mire , pepeorini mire , burger mire , vlersimi fantes",
+      "productTitle": "Pizza Vegjetariane",
+      "rating": 5,
+      "createdAt": "2025-07-18T16:52:09.818Z"
+    },
+    {
+      "id": "7725",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "super",
+      "productTitle": "Pizza Pepperoni",
+      "rating": 3,
+      "createdAt": "2025-07-19T13:58:16.885Z"
+    },
+    {
+      "id": "7215",
+      "userId": "964d",
+      "name": "aprov",
+      "productTitle": "Burger Classic",
+      "rating": 3,
+      "createdAt": "2025-07-19T14:44:43.358Z"
+    },
+    {
+      "id": "4446",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "mire",
+      "productTitle": "Pizza Margherita",
+      "rating": 2,
+      "createdAt": "2025-07-19T14:48:45.026Z"
+    },
+    {
+      "id": "105b",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dhghsdghd",
+      "productTitle": "Burger Classic",
+      "rating": 3,
+      "createdAt": "2025-07-19T14:49:01.382Z"
+    },
+    {
+      "id": "778e",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dhshdg",
+      "productTitle": "Fanta Portokall",
+      "rating": 4,
+      "createdAt": "2025-07-19T14:49:07.967Z"
+    },
+    {
+      "id": "7620",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "gggggdhdg",
+      "productTitle": "Burger Classic",
+      "rating": 5,
+      "createdAt": "2025-07-19T14:49:14.923Z"
+    },
+    {
+      "id": "a56b",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dghdfghdhd",
+      "productTitle": "Burger Classic",
+      "rating": 4,
+      "createdAt": "2025-07-19T14:49:26.839Z"
+    },
+    {
+      "id": "c77f",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dghdfghdhd",
+      "productTitle": "Fanta Portokall",
+      "rating": 2,
+      "createdAt": "2025-07-19T14:49:26.841Z"
+    },
+    {
+      "id": "c7b8",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dfhddf",
+      "productTitle": "Pizza Margherita",
+      "rating": 5,
+      "createdAt": "2025-07-19T14:49:38.037Z"
+    },
+    {
+      "id": "e9e6",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dfhddf",
+      "productTitle": "Burger Classic",
+      "rating": 2,
+      "createdAt": "2025-07-19T14:49:38.037Z"
+    },
+    {
+      "id": "ac96",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "dfhddf",
+      "productTitle": "Fanta Portokall",
+      "rating": 3,
+      "createdAt": "2025-07-19T14:49:38.039Z"
+    },
+    {
+      "id": "d212",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "yummy\n",
+      "productTitle": "Burger Classic",
+      "rating": 5,
+      "createdAt": "2025-07-24T21:47:23.635Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "fe01",
+      "title": "Pizza Margherita",
+      "description": "Pizza margherita e pjekur në furrë druri",
+      "price": 4.5,
+      "image": "https://as1.ftcdn.net/jpg/04/44/86/70/1000_F_444867086_79U7yvSiS6LaEWo8nN0ZYX8CJ7NhvhJh.jpg",
+      "category": "Pizza",
+      "discount": 20,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 4.8
+    },
+    {
+      "id": "bu11",
+      "title": "Burger Classic",
+      "description": "Burger me mish lope, domate dhe djathë",
+      "price": 5.99,
+      "image": "https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg",
+      "category": "Burger",
+      "discount": 10,
+      "isNew": false,
+      "isCombo": true,
+      "rating": 4.5
+    },
+    {
+      "id": "pi01",
+      "title": "Coca Cola 0.5L",
+      "description": "Pije freskuese klasike",
+      "price": 1.2,
+      "image": "https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg",
+      "category": "Pije",
+      "discount": 0,
+      "isNew": false,
+      "isCombo": false,
+      "rating": 4.2
+    },
+    {
+      "id": "pi02",
+      "title": "Fanta Portokall",
+      "description": "Pije freskuese me shije portokalli",
+      "price": 1.3,
+      "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw8PEhMPEBAQEBISExAQEA8PDxAPDxAQFRcWFxUVFRUYHiggGBolGxMVITEhJSkrLjouFx8zODMsOCgtLisBCgoKDg0OGxAQGy4lHSYtMC0uKy0vLS8tKy0tLS0tLS0tLSstLS0tLSstLS0tLS0tLS0tKy0uLS0tLSstLS0tK//AABEIAOEA4QMBEQACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABAUCAwYHAf/EAEMQAAIBAgQBBwkECAUFAAAAAAABAgMRBBIhMQUGMkFRcXKxEyI0YXOBkbLRQpKhwRQjM1JTYoKiB0PC0uFjg6Pw8f/EABoBAQACAwEAAAAAAAAAAAAAAAADBAECBgX/xAA4EQEAAgECAggCCQQDAAMAAAAAAQIDBBExcQUSITIzQVGxYZETIkJSgaHB0fAUFSPhYnLxNJLC/9oADAMBAAIRAxEAPwD3EAAAAAAAAAA01sXTg8spxT3ytq9uwD7HERe132Rl9AEq8Vvf4Mbs7I9TilGO8n8GN2Gp8bw6+0/usD6uN4d/af3JfQxuM48VovaT+5L6Dcbo42D2b+7L6DcZ/pEfX92X0G5sLEQbtmV3sm7NmRtAAAAAAAAAAAAAAAAAAAAAA4jljVyYiLhJxk6N52s9pWjo165Hk9I6vJhmK0ny3epodLjy0m1437dnzAY+bWtWXxS8Cri1uW0fWt7LN9Jirwr7vmOxqS/ay+/L6mcustEd4x6Wkz21crjOJ1b+bVnbvMoRr9Rv35Xq6LBt20hDlxKt/FqfeZv/AF2o+9Lb+i0/3IfFxKv/ABqn3mZ/rtR96T+i0/3IbafE6/8AGn73fxNf67UfeP6HT/ch0nB8ZKS86q2/WyfBrstu9b2VM2kxRPZVbvESS0qS+Kfii5OqybcfZWjS4/u+7Rw/iFSeIo06k80ZVLaqK1UZSjql1xQ02tyWyxW09ktdRo8dcU2rHbH7u3PZeQAAAAAAAAAAAAAAAAAAAB8bsB5hiazxVWVZuzq81fu00/NS+FzktTlnNlmfX2dPixxhpFI8vdY4bhcEudI3x6esRxaXzTvwROIcMhq80virEOXT1jt3S48tnNVqaTsirWVvdolFG8SzuxSM7sslExuLvglGMnq5LstY2wxE37VfNMxDo1hI25zPQ6kbcVLrz6K7G4VxacZ2knGUZfuzTun8SGYmlt4lLExaNpjsd9wnF+Xo061rZ4xk11PpXxudPhyfSY4v6w53Nj+jyTT0lLJEYAAAAAAAAAAAAAAAAAAMamz7GYkeWcNWlPuRONjvxydXk4zzdBT2LkKsoPE+ayHP3U2Pi5SpuUa8F1HqIkqzD4kNyWxI1YXXA9yXB3pQZnSxZfU5QscQ3SVdZyV9Eo91+LOi0fgV5PD1nj25rUsqwAAAAAAAAAAAAAAAAAAMamz7GYkh5dw3aHdicZHfjk6vJ5r+D0LteCrKDxPmvsIM/dlLi4uVq7lGq6i1dyWvBtD6jDDYjAuuB7kmDvIMzo4svbqaHjuj3Ed+Lerq+S3olDuLxZ0Oi/8Aj05PE1nj35rUtKwAAAAAAAAAAAAAAAAAAMamz7GYkeW8O2p92Jxn245OsycZ5r+m9C7HBVlB4o/NZX1HdS4uLlau7KVeC6jzJIZZLYSwyRgXPBNzfBxlBmdFEvqkomNe3aiK7arreS/olD2aOj0fgU5Q8TWePfmtCyrAAAAAAAAAAAAAAAAAAAxq7PsZiR5bw7an3InGfbjk6zJxnmvYPQuRwVpQOKvzWVtR3U2Li5epuVY4LbRU3JKsw+oxLDJGBc8FN8PGUGZ0MC9CrKJi912ojtxb1dfyX9EoezidHo/Apyh4Or8e/NaFlXAAAAAAAAAAAAAAAAAABhV2fYzE8B5bw7aHcicX9uOTrL8Z5ruL0LkSrq/ij81lbUT9VNj4ubqblaFtHqbklWYZIww+xMC54M9zfDxlBldBTZdhVlGxfR2o0txbQ6/kx6JQ9nHwOj0ngU5Q8HV+PfnK0LKuAAAAAAAAAAAAAAAAAADCrs+xmJ4EcXlnDtodyJxf245Otvxnmu47FqOCuruJvRlbPwTY+LnKm5DC2j1NzeOAyuYH1AXPBuk2w96UGVf0y5CrKPi+jtRpbizHB2HJj0TD+yh4HS6TwKcoeDq/HvzlaFhXAAAAAAAAAAAAAAAAAABhW5r7H4GJ4MxxeV8P2h3InFT4kcnWX4zzXUdi1CvKDxGDs99N1GMqkl2qKdvfYsx0VqM0b7RWPW07f7Q26QwYuM78lA8Tg1LLOWIzvaM6f6Nd9UfKc59hNfoecVetMTePWu37zP5NcXSf0s7Vmtee8/tH5laphv4dZf8Adhf8YlGJ033bfOP2X4rqfvV+U/u+UlhJK2evB/vSjCcV25dTfq6Weze0fhEx+TEzqq+VZ5TMe7LE8PlTj5RONSm9FUg7q/VJbxZDm0tsdevE719Y/nY2xaqt7dSYmtvSf09U3g2/uK2LvN8vBf02XIVJaMXF6Oztda2dviYtWeO3YVtG+2/a7Hkx6Jh/ZQ8DpNJ4FOUPC1fj35ysywrgAAAAAAAAAAAAAAAAAAwrc19j8DE8GY4vK+H7Q7kTiZ8SOTrb+fN0eAjGWj6tlpdet779G2x02j6mPBGTHWOtwmZ7Zifh6bud198n0k1mezyYY+ccuVWVtErZUvUkaZpvbtt2vNtwctiqcZ5oSSlF7xkrxfaitjy3xW61J2lXUOKg8PKMG26U3lpSk7unK37OT6Vp5rfrXQT6vDXV451FI2vHeiPP/lH6uh6I18xP0OSezy+Hw5ezOB4MumTcDjJUpXjZp6ThLWE49TRJhz2w23jh5x5Sr58Fc1dp4+U+cT8F/hcPBpVqN/JvSUHrKlLqfq9ZPkwUn/Ni7s8Y+7P7KVct4n6LL3vKfvR+62wFPPJJ7bsk0+Pr32ngh1eX6LHvHHhCTxCirN+c7dStH4vwPUviiay5+LzW8X84nde8mfRMP7Kn4Is6TwKcoWtX49+crMsK4AAAAAAAAAAAAAAAAAAMK3NfY/AxPBmOLybB14xdKLfnSgssVGcm0l6kzl9L0dm1NuvTbaOyd52dJqtXjw2mLb7y6fzlCLjTqxUFe8qWVOT5zd3t0diOl0uiti2pNq9XbaY9Z9fw8ng6jUUyRMzWd/KfSPT90PH4mnUi05KEuqTSv2X53iR6jRZcfbWN4+CjM7w5eo5wbvUgl/PLT4u3iUPoL2nuW+UodkPiLpYmEqMalOc2rxyTi7TWsWrN2V0l7yzpsebS5IyXpMV4Tv6S2rvWd0Pk3hcXjs+SVGl5LLGU505ym5O/2W7X0123LuTorRYp3mszv8ez8nrf3TVWjbrbcohZUeT+OVapSjVoVVCNN5qqlSXn3d1GCfSmt+g1z6DR5aV+rNf+u35zJi6R1GOZnfff1dXyf4NiaWs6mHWZOMlCnWkmv6pJEeHRaXDv1Int7J3nj+TGbW5s23WmOzh2cF3Twyotede6vpBRtltfpd91uaZMGHHWJx127fWZ90GXPkyd+d3zHqNtnN6rS8revqX/AMMW6vP+fJBaOxccmvRMP7Gn8qN9L4FOULeq8a3OVkWEAAAAAAAAAAAAAAAAAAAMK/NfY/AxPBmOLz3kfK00uugn91x/3nl9ET/jvHxj2ep0t4kfj7uhxuOo5Z03NZsso5Um3ez6lY9zFivMxbbsePa0cFbU4Fh61KPlItuUE2881ZyW9k7dJvbU5K2mIliKRs8fwnDFLFxwtR5G6vkZSSV1JNrRdq/E9G+T/HN49EUR27OyxPICnGOajXrKtHzqcqnk3TzLZNKKdn2/EoTqpt2XiNvNL9HDLkVLLiMVTlF06jVGpVpNNZKt5xm0+lPzZJ/zEWSJile3eI7In1jy/HyKdnFu5ScdXDsR5R0nUVahBWUlC0qU5vez6Kn4G+HF9LXbfhLMztLtOHVM8YS2zKMvikytMbTs2hnRhOtkqOUIRTlaKUpSkr211S3ib5a0is0Y7ZV3FsY+bmS1StH8zxNTqLUjbhus6bS5Mton7Pr+jo+THomG9jS+VHoabwaco9mdX49+c+6zJ1cAAAAAAAAAAAAAAAAAAGuvzX2PwMW4Mxxh51yTf62n7CS+Lpv/AEnj9DT4kf8AX/8AT2Ol47az8Z/RdY/ha/W1s/RKeXL1Lrv6uo6TFn4V2eDanml4ipGmqcG7OVqcfW1Fu3wgyvMTaZlJweWcssL+j8Sp19o1JYevf+aE0pr+1P8AqPQ09uthmvpuitH1no0zzUqP+jQ8p5bL+syOnmW7g2pWfXZrTtfWN522HE/4rUvNw8/XVh8cj/Jl3RT3oaX8necmqmbDYeXXRov+yJUyxtaYb14LLANqlGyb1mrK38Savq9jOSN7kcHPcahlqyXW4yXY0vzTPC6Xr9bHb4bfKf8Ab2OjZ+paPj+jsOTXomH9jS+VHpabwaco9lDV+PfnPusidXAAAAAAAAAAAAAAAAAABrr82XY/AxbhLMcYebcmZWq0fXHL/wCOb/0nh9Dz/kyR/wAY93t9LR9WJ/5T7LbjGKqKq6Sm1GWVZVbaSSfr6zq8GOs060x2udvad9k/jUsPG067hFQnnhKpPIozV7Naq7sVcfXneKJZ283Hf4l4DyuF8tHnUZZrrfJPzX+OR+4n0l9r7erS8di6xv67DTt/mUJNf1w08SCPq3/Ft5KDkVyo/SkqFZ/r4q6k/wDOgvtd5dK9/XafU6fqT1o4ezWtt2r/ABRp3wtOX7teC90oyX0Gjn68x8Gb8HT8ip5sFhn/ANKC+75v5EOeNslubNeCxniXSw7nG2ZTqKN9rurJeDN4p18m0+n6MTO0KbjWJhWqKdNu2WmpaNWkpSeXXfSSPH6XiMdaRaN53n89u16vRm89aY4dn6uy5N+iYb2FH5UWdL4NOUeyrqvHv/2n3WROrgAAAAAAAAAAAAAAAAAA14jmy7svAxbhLNeMPL+C14050ZzkoxioXlJqMVeLirt+uR4HQ+86q1Y86/rD3ulY/wAW/wDy/da8TxFOWIhJTjKF6OaUZKUUlLXb1HZYa2jFMTHb2uYvMdaJVX+ImOp1IRhCSnbyjlbVJuyWv3jOixWpvNuwy2idtlbhOV2DlhFh8VKed0pUakVTlK6s4qWba7VnvuaX0uSMnWpw3bReNtmPCeWlGnh6NJ0cTVnClTpz8nTi4uUYpOzzbadRrk009eZ3iIZizhoYHFU35WFOtTdO84zyuDhl1um+wtTnwztWbRvPlujhO5Rcr8RjKMaFSFKMc1KUpQUs0pRa13slvpYxTTVxz1obdaZXfJbieIVLySqzjCC82MZZbJtt6rXdskvipM7zHa060uow6c0tetuT1t1t/H8SvqM9MFJvfhH82SYsVst4rVniLLRbKxwWq1NtRlnJb/z4OqwYq4qRSru+TfomG9hR+RHR6bwaco9nharx78591kToAAAAAAAAAAAAAAAAAAAa8TzZd2Xga24SzXjDyjB6xj0p043TV0/ccX9JbHl69J2mI4usy1rbeto3jddYDhtJrPbMua4Ny8yXQ007tNdfUdbi6Xy5dPEx3o7Jn+fzi5fWaSuG/Zwngk8S4Thcrbpwsk3rCnNy0W1yTJqc22/0kx8u32VJrWFeuHYeClOMIJNzScYwUYqztlSXXZX11vsRWtO03m87dvn2fz5sbRxaKrwsb3zW1WvlGt9Hfrs/wIYphtPnP/2lr9X0UXGeK4WUpt1qSzKzXlIOWsbPzU2+s2rpc9s8ZK4523jy29PVie227zOq+b3oeJ1tiHccjaMqt4R3cXvoopbyk+hEebJXHXrW4M1pNp2ji7ehFRjli7pby2zPr7Opf8nB9I9IW1eTs7scI/V0+k0sYKbec8Wqv+aPOW3e8nPRMP7Cj8iOr03g05R7Od1XjX5z7rEnQAAAAAAAAAAAAAAAAAAA1YnmS7svA1twlmvGHlOC5sfZx8DiMnf/AAdbbjPNbYTEum07XT0lHrX5Ms6fPOGettvHnH88/RVz4K5q9WfwY8Vo1KkHKlOU4dMYtwqw7cuvvR6EZM1J+mwTF6+kxEzHOP1hTjDgn/Hmr1Z9Y4Tyn9JcBjeH4l3dPE1ZrXzKlaal7nfK/fY9zRdO6W/ZlrFJ5dirqOiMtO3HPWj83NY2lKMrVItS389PNbr13XrOjpkreu9J3j4PItWaztbslHlq8qV23pFK7fYukzaYiN5Yha4Pknja2Scqaw9O8W6mJfklb1QfnN+qxTz63DijeZ/nNNiw3yTtWN5egcGp0sPT/R6F3F/ta0ladaXZ9mHVH/m/GdJ9LW1NupTu+/8Ar3dDpOj4wR17972/2s8PseTTgu24tdfb3m8cWHfcnfRcP7Cj8kTq9N4NOUezndT41+c+6xJ0AAAAAAAAAAAAAAAAAAANWJ5ku7LwNbcJZrxh5TgdodyPgcRfv/g62/Gead0DyaeaLXrShaUW4tbNaMxTLfHaL0naW00reOraN4aJ8Ycv2tGjVf7zjll8UelHSHW8XHW0+vCUH9DFfDvavw37EXEY6jJZXhKEle+WpmnG/XlehNi6SjFO+KnVnnLW/R85ezJeZ/CGtcWqQVqUaVBdVGlCBjJ0rqL+e38+O7bH0Xp6+W/Of22QqlWU5JzlKT65Nyf4lHJktfttO69SlaRtWNoWvC9ytHeaZOC4oEtVeWGI295JHkxDv+T3ouH9hR+SJ1Wm8GnKPZzup8a/OfdYE6EAAAAAAAAAAAAAAAAAAGrFcyXdl4GtuEs14w8owD0h3I+BxF/EdbfjPNOW3xHk080HFvQilLVUyJUjTM3hmGBsy+U90J4Erbhr1RD9qEV+C6pdJNCvLXieg39GIegcn/RcP7Cj8kTqtN4NOUezndT41+c+6wJ0IAAAAAAAAAAAAAAAAAANWK5ku7LwZrbhLNeMPJ8DtDuQ8Dib+JDrb+fNOX1DRAxfSQTxS1VciZI0TN4GDNmXynujM8GZWuB3RXniivwXUOknjigYYnoN/OGIeg8n/RcP7Ch8kTq9N4NOUeznNR41+c+6wJkIAAAAAAAAAAAAAAAAAANWL5ku7LwZrbhLaveh5Ngn5sH/ACQ8Di5rNssVjz2dXknbeU7Mr66XatdNXvsW/wChyR1piYmIiZ4+Ubfv2K/09eyJ39EHGdJ5lo+st1VUiWEjRMkhmGNzIxpbmbcCVrg+grW4tLLqL8CzCvLDFG3nDEPQ+Aei4f2FD5InV6fwq8o9nN6jxbc5908mRAAAAAAAAAAAAAAAAAAA04vmT7svBmtuEtq96HlfBtZUen9lp0bo5DDETqaRPrHu6jUztS883SYp3hJT8rtJ2qRbtJJ6qXRs/ius6rX0i2nvv5Ru5zR2mM1dvVy2N6Tir951NOCqkSQlaZm8MsEbBS3FuBKzwZXtxR2XMHt2E8IJYYp/+/E384Yh6LwD0XD+wofJE6zB4VeUezm9R4tuc+6eSoQAAAAAAAAAAAAAAAAAAacXzJ92XgzW3dltXvQ8k4dPKqb6owtrbXtOQxxb6eLVjeY7fk6rPFZi1befZ80/NGFlCTXmZJRyRTqRUcqzyvrZtu9tXbax0fSGu30969Se3s33jaN3i6XRzGWLdbh2/FAxkjkbd579FXUZLCVomzeGWCZkZ09zEsLHA7kM8WllxR2RNVXlrxb/AD8Gb/agq9I4D6Nh/YUfkidZg8OvKPZzOfxbc5908lRAAAAAAAAAAAAAAAAAAA04zmT7svBmtu7Laveh5FgtY07/ALsTjJvNMkTDrslYnrRKZVW2r+OpZnVxH2I3/n/qv9FM+coGKelurQo3vOS82txlax1isbQrahJCVHmSQy+RZmRtgaSwsMDuQ24tLLej+ZNWUFmrE9PYzMd4h6ZwL0bD+wo/JE67D4deUezl8/i25z7pxKiAAAAAAAAAAAAAAAAAABrrwzRlHrjJfFGJjeNmYnad3k7wk6KjGcWst46p20fWcdqcGTFaJtDqseox5d5rPF9qTvb3leZidksRsgYtsxEdqWqunImiEmzRORJED5GQmBthI1mDZPwktSG7W0LSnWWhtW0boJq+5JVG8sW9HsibFS2S/wBWN0WTJTHG9p2eocKounRpQe8KdOD7YxSfgddjr1aRE+kOYy2617WjzmUo3RgAAAAAAAAAAAAAAAAAAAVvFcDmTnBWmt0vtr6gUFo7Sp0pPpUoK/1IL6bDbvUj5Ja58leFp+aNiOH4efOw6XrjKcfBle3R2mn7P5ynr0hqK/a9kCpyewr+zNf1v8zWejMHlv8ANLHSupjzj5NEuS+GfTV+9H/aa/2vF6z+X7N/7vqPh8p/cXJbDLpq/ej/ALR/bMXrP5fsf3fUfD5f7bIcm8Kuio/63+SNo6NwfH+fg1npXUfD5JuH4VhYbUHLvTqP8zMdG6bzr+co7dI6m32vyhKVKmtqNKHryRb+LJq6PT14Uj5ILanNbjeV3wnAZv1lRafYi9F22LMRERtCCZ37V0ZAAAAAAAAAAAAAAAAAAAAAADXVoQnzoxl2pMCPLhdF/Za7spL8wNMuDU39qovfF+KAwfA4fxKn9n0GwLgcP4lT+z6AZx4LTX2qj98foY2G2PCqK6G+2cvqZG6lg6UdYwin15Vf4gbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//2Q==",
+      "category": "Pije",
+      "discount": 5,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 4
+    },
+    {
+      "id": "pi03",
+      "title": "Pepsi",
+      "description": "Pije freskuese klasike",
+      "price": 1.1,
+      "image": "https://superalko.de/5340-superlarge_default/pepsi-cola-24x033cl.jpg",
+      "category": "Pije",
+      "discount": 0,
+      "isNew": false,
+      "isCombo": false,
+      "rating": 3.9
+    },
+    {
+      "id": "pz02",
+      "title": "Pizza Pepperoni",
+      "description": "Pizza me salcë domate dhe pepperoni pikant",
+      "price": 6.5,
+      "image": "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg",
+      "category": "Pizza",
+      "discount": 15,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 4.7
+    },
+    {
+      "id": "pz03",
+      "title": "Pizza Vegjetariane",
+      "description": "Pizza me perime të freskëta dhe djathë vegan",
+      "price": 5.5,
+      "image": "https://kristineskitchenblog.com/wp-content/uploads/2024/12/veggie-pizza-recipe-09-2.jpg",
+      "category": "Pizza",
+      "discount": 0,
+      "isNew": false,
+      "isCombo": false,
+      "rating": 4.3
+    },
+    {
+      "id": "4d84",
+      "title": "capricosa",
+      "description": "caprico shefit",
+      "price": 0.01,
+      "image": "https://t4.ftcdn.net/jpg/05/54/72/81/240_F_554728137_tqcQzqOKwYBI1viqU5IKQznC4Kws2gV9.jpg",
+      "category": "Pizza",
+      "discount": 16,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 2.5
+    }
+  ],
+  "offers": [
+    {
+      "id": "1",
+      "title": "2 Pica + 1 Coca Cola",
+      "discount": "30% ZBRITJE",
+      "price": "€15.99",
+      "originalPrice": "€22.99",
+      "image": "DeliciousCombo.jpeg",
+      "gradient": "from-orange-500 to-red-600"
+    },
+    {
+      "id": "2",
+      "title": "Burger Menu Familjar",
+      "discount": "FALAS PATATE",
+      "price": "€18.50",
+      "originalPrice": "€23.50",
+      "image": "margherita.jpg",
+      "gradient": "from-yellow-500 to-orange-600"
+    },
+    {
+      "id": "3",
+      "title": "Pica Speciale XXL",
+      "discount": "25% ZBRITJE",
+      "price": "€12.99",
+      "originalPrice": "€16.99",
+      "image": "oferta2.jpg",
+      "gradient": "from-red-500 to-pink-600"
+    }
+  ]
+}
