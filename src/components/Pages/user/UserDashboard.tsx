@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import UserProfile from "./UserProfile";
 import UserInvoices from "./UserInvoices";
 
@@ -52,7 +52,7 @@ const isDrink = (title: string) =>
 
 function Stepper({ currentStep }: { currentStep: number }) {
   return (
-    <div className="relative flex justify-between items-center w-full max-w-md mx-auto my-4">
+    <div className="relative flex justify-between items-center w-full max-w-sm mx-auto my-3">
       {steps.map((step, index) => {
         const isActive = step.id === currentStep;
         const isCompleted = step.id < currentStep;
@@ -64,7 +64,7 @@ function Stepper({ currentStep }: { currentStep: number }) {
           >
             {index !== 0 && (
               <div
-                className={`absolute top-5 -left-1/2 h-1 w-full z-0 transition-all duration-500 ${
+                className={`absolute top-4 -left-1/2 h-1 w-full z-0 transition-all duration-500 ${
                   isCompleted
                     ? "bg-gradient-to-r from-green-400 to-green-600"
                     : "bg-gray-300"
@@ -72,35 +72,24 @@ function Stepper({ currentStep }: { currentStep: number }) {
               />
             )}
             <div
-              className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center text-xl transition-all duration-300 transform ${
+              className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-lg transition-all duration-300 transform ${
                 isCompleted
-                  ? "bg-gradient-to-r from-green-500 to-green-600 text-white scale-110 shadow-lg"
+                  ? "bg-gradient-to-r from-green-500 to-green-600 text-white scale-105 shadow"
                   : isActive
-                  ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white scale-110 shadow-lg animate-pulse"
+                  ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white scale-105 shadow animate-pulse"
                   : "bg-gray-300 text-gray-600"
               }`}
             >
               {isCompleted ? "✓" : step.icon}
             </div>
             <div
-              className={`mt-2 text-xs font-semibold text-center transition-all duration-300 ${
+              className={`mt-1 text-[11px] font-semibold text-center ${
                 isCompleted || isActive
                   ? "text-gray-900 dark:text-white"
                   : "text-gray-400"
               }`}
             >
               {step.label}
-            </div>
-            <div
-              className={`text-xs text-center mt-1 transition-all duration-300 ${
-                isActive
-                  ? "text-orange-600 dark:text-orange-400 font-medium"
-                  : isCompleted
-                  ? "text-green-600 dark:text-green-400"
-                  : "text-gray-400"
-              }`}
-            >
-              {isActive ? step.desc : isCompleted ? "Përfunduar" : ""}
             </div>
           </div>
         );

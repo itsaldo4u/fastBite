@@ -3,10 +3,10 @@ import ProductCard from "../ProductCard";
 import ShoppingCartDropdown from "../ShoppingCartDropdown";
 import { ShoppingCart, Utensils } from "lucide-react";
 import CheckoutStepper from "./CheckoutStepper";
-import { useAuth } from "../context/AuthContext";
+import { useProduct } from "../context/ProductContext";
 
 export default function MenuPage() {
-  const { products } = useAuth();
+  const { products } = useProduct();
 
   const [cartItems, setCartItems] = useState<
     { id: string; title: string; price: number; quantity: number }[]
@@ -15,7 +15,6 @@ export default function MenuPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
-  // Kontroll për ndaljen e scroll-it gjatë hover
   const [isPaused, setIsPaused] = useState(false);
 
   const handleAddToCart = (id: string) => {
@@ -69,7 +68,6 @@ export default function MenuPage() {
 
   const offerSliderRef = useRef<HTMLDivElement>(null);
 
-  // Scroll automatik me ndalim gjatë hover dhe vazhdim kur largohet maus
   useEffect(() => {
     const slider = offerSliderRef.current;
     if (!slider) return;
@@ -81,7 +79,6 @@ export default function MenuPage() {
     function scroll() {
       if (!isPaused && slider) {
         slider.scrollLeft += scrollStep;
-        // Kur arrin gjysmën e scrollWidth kthe në 0 për scroll pafund
         if (slider.scrollLeft >= slider.scrollWidth / 2) {
           slider.scrollLeft = 0;
         }
@@ -130,7 +127,7 @@ export default function MenuPage() {
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
             <span className="mr-2">🎉</span>
-            Oferta Speciale
+            Zgjidhe te Preferuaren !
           </h2>
 
           <div

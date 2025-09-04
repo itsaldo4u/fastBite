@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-
-type Offer = {
-  id: number;
-  title: string;
-  description: string;
-  oldPrice: number;
-  newPrice: number;
-  image: string;
-};
+import type { Offer } from "../../context/OffersContext";
 
 type OfferFormProps = {
   offer: Offer | null;
@@ -32,7 +24,7 @@ export default function OfferForm({
     if (offer) {
       setFormData({
         title: offer.title,
-        description: offer.description,
+        description: offer.description || "",
         oldPrice: offer.oldPrice,
         newPrice: offer.newPrice,
         image: offer.image,
@@ -57,11 +49,15 @@ export default function OfferForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 max-h-[80vh] overflow-y-auto p-4 w-full max-w-lg mx-auto bg-white dark:bg-gray-900 rounded shadow"
+    >
       <h2 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
         {offer ? "✏️ Përditëso Ofertën" : "➕ Shto Ofertë"}
       </h2>
 
+      {/* Titulli */}
       <div>
         <label className="block mb-1 text-sm font-medium">Titulli</label>
         <input
@@ -73,6 +69,7 @@ export default function OfferForm({
         />
       </div>
 
+      {/* Përshkrimi */}
       <div>
         <label className="block mb-1 text-sm font-medium">Përshkrimi</label>
         <textarea
@@ -84,8 +81,9 @@ export default function OfferForm({
         />
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
+      {/* Çmimet */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block mb-1 text-sm font-medium">
             Çmimi i Vjetër
           </label>
@@ -99,7 +97,7 @@ export default function OfferForm({
             required
           />
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block mb-1 text-sm font-medium">Çmimi i Ri</label>
           <input
             name="newPrice"
@@ -113,6 +111,7 @@ export default function OfferForm({
         </div>
       </div>
 
+      {/* Imazhi */}
       <div>
         <label className="block mb-1 text-sm font-medium">URL e Imazhit</label>
         <input
@@ -135,6 +134,7 @@ export default function OfferForm({
         )}
       </div>
 
+      {/* Butonat */}
       <div className="flex justify-end gap-4 pt-4">
         <button
           type="button"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Order } from "./Orders";
 
 type OrderFormProps = {
@@ -17,7 +17,6 @@ export default function OrderForm({
     email: "",
     totalPrice: 0,
     status: "pending",
-    items: [],
   });
 
   useEffect(() => {
@@ -27,15 +26,6 @@ export default function OrderForm({
         email: order.email,
         totalPrice: order.totalPrice,
         status: order.status,
-        items: order.items || [],
-      });
-    } else {
-      setFormData({
-        name: "",
-        email: "",
-        totalPrice: 0,
-        status: "pending",
-        items: [],
       });
     }
   }, [order]);
@@ -44,80 +34,66 @@ export default function OrderForm({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((f) => ({
-      ...f,
+    setFormData((prev) => ({
+      ...prev,
       [name]: name === "totalPrice" ? Number(value) : value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) {
-      alert("Ju lutem plotësoni emrin dhe emailin.");
-      return;
-    }
     onSubmit(formData, order?.id);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-        {order ? "Edito Porosin" : "Porosi e Re"}
+      <h2 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
+        {order ? "✏️ Përditëso Porosinë" : "➕ Shto Porosi"}
       </h2>
 
       <div>
-        <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
-          Emri
-        </label>
+        <label className="block mb-1 text-sm font-medium">Emri</label>
         <input
-          type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
+          className="w-full p-2 border rounded"
           required
-          className="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
       <div>
-        <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
-          Email
-        </label>
+        <label className="block mb-1 text-sm font-medium">Email</label>
         <input
-          type="email"
           name="email"
+          type="email"
           value={formData.email}
           onChange={handleChange}
+          className="w-full p-2 border rounded"
           required
-          className="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
       <div>
-        <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
-          Totali ($)
-        </label>
+        <label className="block mb-1 text-sm font-medium">Totali (€)</label>
         <input
-          type="number"
           name="totalPrice"
+          type="number"
+          min="0"
           value={formData.totalPrice}
           onChange={handleChange}
-          min={0}
-          step={0.01}
+          className="w-full p-2 border rounded"
           required
-          className="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
       <div>
-        <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
-          Statusi
-        </label>
+        <label className="block mb-1 text-sm font-medium">Statusi</label>
         <select
           name="status"
           value={formData.status}
           onChange={handleChange}
-          className="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          className="w-full p-2 border rounded"
         >
           <option value="pending">Në Pritje</option>
           <option value="preparing">Po përgatitet</option>
@@ -126,21 +102,19 @@ export default function OrderForm({
         </select>
       </div>
 
-      {/* Mund të shtosh këtu input për items, por për thjeshtësi e lamë jashtë */}
-
-      <div className="flex justify-end space-x-2 pt-4">
+      <div className="flex justify-end gap-4 pt-4">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
         >
           Anulo
         </button>
         <button
           type="submit"
-          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded"
         >
-          Ruaj
+          {order ? "Përditëso" : "Shto"}
         </button>
       </div>
     </form>

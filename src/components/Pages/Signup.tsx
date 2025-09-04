@@ -108,7 +108,6 @@ export default function Signup() {
   );
 }
 
-// Komponent ndihmës për input-at
 type InputProps = {
   label: string;
   name: string;

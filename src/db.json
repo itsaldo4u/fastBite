@@ -5,7 +5,7 @@
       "name": "aldo",
       "email": "a@gmail.com",
       "password": "aldo123",
-      "phone": "o69515253",
+      "phone": "069515253",
       "address": "rruga bardhyl , oslo bar",
       "role": "admin"
     },
@@ -14,38 +14,30 @@
       "name": "aprov",
       "email": "aldoprov@gmail.com",
       "password": "a123",
-      "phone": "o69515253",
+      "phone": "069515253",
       "address": "rruga bardhyl , oslo bar",
       "role": "user"
+    },
+    {
+      "id": "735e",
+      "name": "beje vet",
+      "email": "bejevet@mail.com",
+      "phone": "0696969699",
+      "address": "tirane",
+      "role": "user",
+      "password": "temp123"
+    },
+    {
+      "id": "603e",
+      "name": "aldo",
+      "email": "saasca@mail.com",
+      "phone": "0123123123",
+      "address": "rruga bardhyl , oslo bar",
+      "role": "user",
+      "password": "temp123"
     }
   ],
   "orders": [
-    {
-      "id": "3e0c",
-      "userId": null,
-      "name": "itsAldo",
-      "email": "Aldo Msc",
-      "phone": "o69515253",
-      "address": "rruga bardhyl , oslo bar",
-      "paymentMethod": "card",
-      "cardNumber": "12112312313",
-      "expiryDate": "1223",
-      "cvv": "212",
-      "items": [
-        {
-          "id": 3,
-          "title": "Kola",
-          "price": 1.99,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 1.99,
-      "createdAt": "2025-07-09T14:15:21.830Z",
-      "status": "delivered",
-      "startTime": null,
-      "preparingDuration": 600,
-      "review": "kola rating"
-    },
     {
       "id": "ff44",
       "userId": null,
@@ -240,49 +232,6 @@
       "status": "delivered"
     },
     {
-      "id": "a1c3",
-      "userId": "964d",
-      "name": "aprov",
-      "email": "aldoprov@gmail.com",
-      "phone": "o69515253",
-      "address": "rruga bardhyl , oslo bar",
-      "paymentMethod": "card",
-      "cardNumber": "12341341422",
-      "expiryDate": "123124",
-      "cvv": "12312",
-      "items": [
-        {
-          "id": "bu11",
-          "title": "Burger Classic",
-          "price": 5.99,
-          "quantity": 1
-        },
-        {
-          "id": "pi02",
-          "title": "Fanta Portokall",
-          "price": 1.3,
-          "quantity": 1
-        },
-        {
-          "id": "pz02",
-          "title": "Pizza Pepperoni",
-          "price": 6.5,
-          "quantity": 1
-        },
-        {
-          "id": "pz03",
-          "title": "Pizza Vegjetariane",
-          "price": 5.5,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 19.29,
-      "createdAt": "2025-07-18T16:49:43.142Z",
-      "status": "delivered",
-      "startTime": "2025-07-18T16:50:43.820Z",
-      "review": "vegjetarjanja mire , pepeorini mire , burger mire , vlersimi fantes"
-    },
-    {
       "id": "e238",
       "userId": "964d",
       "name": "aprov",
@@ -306,81 +255,6 @@
       "status": "delivered",
       "startTime": "2025-07-19T14:40:48.098Z",
       "review": "mire"
-    },
-    {
-      "id": "ef87",
-      "userId": "964d",
-      "name": "aprov",
-      "email": "aldoprov@gmail.com",
-      "phone": "o69515253",
-      "address": "rruga bardhyl , oslo bar",
-      "paymentMethod": "card",
-      "cardNumber": "",
-      "expiryDate": "",
-      "cvv": "",
-      "items": [
-        {
-          "id": "bu11",
-          "title": "Burger Classic",
-          "price": 5.99,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 5.99,
-      "createdAt": "2025-07-18T16:54:16.273Z",
-      "status": "delivered",
-      "startTime": "2025-07-18T16:55:00.108Z",
-      "review": "dhghsdghd"
-    },
-    {
-      "id": "1247",
-      "userId": "964d",
-      "name": "aprov",
-      "email": "aldoprov@gmail.com",
-      "phone": "o69515253",
-      "address": "rruga bardhyl , oslo bar",
-      "paymentMethod": "card",
-      "cardNumber": "",
-      "expiryDate": "",
-      "cvv": "",
-      "items": [
-        {
-          "id": "pi02",
-          "title": "Fanta Portokall",
-          "price": 1.3,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 1.3,
-      "createdAt": "2025-07-18T16:54:23.303Z",
-      "status": "delivered",
-      "startTime": "2025-07-18T16:55:00.618Z",
-      "review": "dhshdg"
-    },
-    {
-      "id": "b34e",
-      "userId": "964d",
-      "name": "aprov",
-      "email": "aldoprov@gmail.com",
-      "phone": "o69515253",
-      "address": "rruga bardhyl , oslo bar",
-      "paymentMethod": "card",
-      "cardNumber": "",
-      "expiryDate": "",
-      "cvv": "",
-      "items": [
-        {
-          "id": "pz02",
-          "title": "Pizza Pepperoni",
-          "price": 6.5,
-          "quantity": 2
-        }
-      ],
-      "totalPrice": 13,
-      "createdAt": "2025-07-18T16:54:34.062Z",
-      "status": "delivered",
-      "startTime": "2025-07-18T16:55:01.235Z",
-      "review": "super"
     },
     {
       "id": "63d7",
@@ -521,20 +395,271 @@
       ],
       "totalPrice": 5.99,
       "createdAt": "2025-07-24T21:35:41.508Z",
-      "status": "delivering",
-      "startTime": "2025-07-24T21:36:17.867Z"
+      "status": "delivered",
+      "startTime": "2025-07-24T21:36:17.867Z",
+      "review": "porosia erdhi sic duhej"
     },
     {
-      "id": "281b",
-      "userId": null,
-      "name": "",
-      "email": "",
-      "phone": "",
-      "address": "",
-      "paymentMethod": "card",
-      "cardNumber": "",
-      "expiryDate": "",
-      "cvv": "",
+      "id": "b444",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 7.29,
+      "createdAt": "2025-08-04T19:41:24.645Z",
+      "status": "delivered",
+      "startTime": "2025-08-04T19:42:05.808Z",
+      "review": "te mbrekullueshme."
+    },
+    {
+      "id": "c609",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "0696969696",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 4.5,
+      "createdAt": "2025-08-09T14:53:05.743Z",
+      "status": "delivered",
+      "startTime": "2025-08-09T14:53:51.015Z"
+    },
+    {
+      "id": "5ef9",
+      "userId": "735e",
+      "name": "beje vet",
+      "email": "bejevet@mail.com",
+      "phone": "0696969699",
+      "address": "tirane",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "0",
+          "title": "Speca",
+          "price": 1.1,
+          "quantity": 1
+        },
+        {
+          "id": "1",
+          "title": "Proshutë",
+          "price": 2.2,
+          "quantity": 1
+        },
+        {
+          "id": "2",
+          "title": "Domate",
+          "price": 0.8,
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "title": "Ullinj",
+          "price": 1,
+          "quantity": 1
+        },
+        {
+          "id": "4",
+          "title": "Salsiçe",
+          "price": 2,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 7.1000000000000005,
+      "createdAt": "2025-08-23T22:03:12.372Z",
+      "status": "delivered",
+      "startTime": "2025-08-23T22:04:10.961Z"
+    },
+    {
+      "id": "5954",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "0",
+          "title": "Ullinj",
+          "price": 1,
+          "quantity": 1
+        },
+        {
+          "id": "1",
+          "title": "Domate",
+          "price": 0.8,
+          "quantity": 1
+        },
+        {
+          "id": "2",
+          "title": "Kerpudha",
+          "price": 1.2,
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "title": "Ananas",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 4.3,
+      "createdAt": "2025-08-23T22:05:55.508Z",
+      "status": "delivered"
+    },
+    {
+      "id": "b8a0",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "0",
+          "title": "Pepperoni",
+          "price": 1.5,
+          "quantity": 1
+        },
+        {
+          "id": "1",
+          "title": "Ananas",
+          "price": 1.3,
+          "quantity": 1
+        },
+        {
+          "id": "2",
+          "title": "Salsiçe",
+          "price": 2,
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "title": "Kerpudha",
+          "price": 1.2,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 6,
+      "createdAt": "2025-08-23T22:08:15.707Z",
+      "status": "delivered"
+    },
+    {
+      "id": "3e66",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 2
+        },
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 1
+        },
+        {
+          "id": "pz03",
+          "title": "Pizza Vegjetariane",
+          "price": 5.5,
+          "quantity": 1
+        },
+        {
+          "id": "4d84",
+          "title": "capricosa",
+          "price": 0.01,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 21.01,
+      "createdAt": "2025-08-25T10:27:39.386Z",
+      "status": "delivered"
+    },
+    {
+      "id": "0a3b",
+      "userId": "603e",
+      "name": "aldo",
+      "email": "saasca@mail.com",
+      "phone": "0123123123",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "1",
+          "title": "2 Pica + 1 Coca Cola",
+          "price": 17,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 17,
+      "createdAt": "2025-08-25T10:53:53.437Z",
+      "status": "delivered",
+      "startTime": "2025-08-27T12:59:34.324Z"
+    },
+    {
+      "id": "22c2",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
       "items": [
         {
           "id": "bu11",
@@ -544,16 +669,143 @@
         }
       ],
       "totalPrice": 5.99,
-      "createdAt": "2025-07-24T21:48:23.304Z",
-      "status": "pending"
+      "createdAt": "2025-08-27T12:58:35.308Z",
+      "status": "delivered",
+      "startTime": "2025-08-27T12:59:35.556Z",
+      "review": "pak me e pjekur sic duhej po prap e mire"
     },
     {
-      "id": "2c72",
-      "userId": null,
-      "name": "bubu",
-      "email": "bubu",
-      "phone": "bubu",
-      "address": "bubu",
+      "id": "df2a",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1756886602023",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 15.27,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Speca",
+            "Domate"
+          ]
+        }
+      ],
+      "totalPrice": 15.27,
+      "createdAt": "2025-09-03T08:03:23.770Z",
+      "status": "delivered",
+      "startTime": "2025-09-03T08:04:45.001Z"
+    },
+    {
+      "id": "c035",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1756887496839",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 22.11,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Pepperoni",
+            "Djathë Extra",
+            "Domate",
+            "Proshutë",
+            "Ananas"
+          ]
+        }
+      ],
+      "totalPrice": 22.11,
+      "createdAt": "2025-09-03T08:18:20.471Z",
+      "status": "delivered",
+      "startTime": "2025-09-03T08:18:30.070Z"
+    },
+    {
+      "id": "c100",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1756903400976",
+          "title": "Pizza Large (35cm) - E Trashë",
+          "price": 25.689999999999998,
+          "quantity": 1,
+          "size": "large",
+          "crust": "thick",
+          "toppings": [
+            "Domate",
+            "Qepë",
+            "Speca",
+            "Proshutë"
+          ]
+        }
+      ],
+      "totalPrice": 25.689999999999998,
+      "createdAt": "2025-09-03T12:43:22.548Z",
+      "status": "delivered"
+    },
+    {
+      "id": "ae7d",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1756903424977",
+          "title": "Pizza Medium (30cm) - E Hollë",
+          "price": 20.59,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "thin",
+          "toppings": [
+            "Ullinj",
+            "Pepperoni",
+            "Kerpudha",
+            "Djathë Extra"
+          ]
+        }
+      ],
+      "totalPrice": 20.59,
+      "createdAt": "2025-09-03T12:43:48.765Z",
+      "status": "delivered"
+    },
+    {
+      "id": "6c1a",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
       "paymentMethod": "cash",
       "cardNumber": null,
       "expiryDate": null,
@@ -566,15 +818,167 @@
           "quantity": 1
         },
         {
-          "id": "pz03",
-          "title": "Pizza Vegjetariane",
-          "price": 5.5,
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 7.8,
+      "createdAt": "2025-09-03T14:06:49.399Z",
+      "status": "delivered"
+    },
+    {
+      "id": "e42a",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "2",
+          "title": "Margharita Menu Familjar",
+          "price": 12,
           "quantity": 1
         }
       ],
       "totalPrice": 12,
-      "createdAt": "2025-07-24T21:51:50.821Z",
-      "status": "pending"
+      "createdAt": "2025-09-03T14:59:28.726Z",
+      "status": "delivered",
+      "startTime": "2025-09-04T08:38:56.567Z"
+    },
+    {
+      "id": "ed61",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1756912821373",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 17.43,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Proshutë",
+            "Domate",
+            "Qepë"
+          ]
+        }
+      ],
+      "totalPrice": 17.43,
+      "createdAt": "2025-09-03T15:20:25.216Z",
+      "status": "delivered",
+      "startTime": "2025-09-04T08:38:57.131Z"
+    },
+    {
+      "id": "7195",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        },
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 2
+        },
+        {
+          "id": "pz03",
+          "title": "Pizza Vegjetariane",
+          "price": 5.5,
+          "quantity": 1
+        },
+        {
+          "id": "4d84",
+          "title": "capricosa",
+          "price": 0.01,
+          "quantity": 1
+        },
+        {
+          "id": "a199",
+          "title": "Hot Dog",
+          "price": 10,
+          "quantity": 1
+        },
+        {
+          "id": "pi01",
+          "title": "Coca Cola 0.5L",
+          "price": 1.2,
+          "quantity": 1
+        },
+        {
+          "id": "pi03",
+          "title": "Pepsi",
+          "price": 1.1,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 38.1,
+      "createdAt": "2025-09-03T20:04:05.316Z",
+      "status": "delivered",
+      "startTime": "2025-09-04T08:38:57.499Z",
+      "review": "hasgdkafjlha"
+    },
+    {
+      "id": "20e0",
+      "userId": "964d",
+      "name": "aldo",
+      "email": "aldoprov@gmail.com",
+      "phone": "0696969696",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1756974861828",
+          "title": "Pizza Large (35cm) - E Hollë",
+          "price": 22.939999999999998,
+          "quantity": 1,
+          "size": "large",
+          "crust": "thin",
+          "toppings": [
+            "Pepperoni",
+            "Djathë Extra"
+          ]
+        }
+      ],
+      "totalPrice": 22.939999999999998,
+      "createdAt": "2025-09-04T08:34:25.515Z",
+      "status": "delivered",
+      "startTime": "2025-09-04T08:38:57.891Z"
     }
   ],
   "ratings": [
@@ -869,6 +1273,114 @@
       "productTitle": "Burger Classic",
       "rating": 5,
       "createdAt": "2025-07-24T21:47:23.635Z"
+    },
+    {
+      "id": "f7e6",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "te mbrekullueshme.",
+      "productTitle": "Burger Classic",
+      "rating": 5,
+      "createdAt": "2025-08-09T14:55:46.310Z"
+    },
+    {
+      "id": "96be",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "te mbrekullueshme.",
+      "productTitle": "Fanta Portokall",
+      "rating": 5,
+      "createdAt": "2025-08-09T14:55:46.312Z"
+    },
+    {
+      "id": "b087",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "porosia erdhi sic duhej",
+      "productTitle": "Burger Classic",
+      "rating": 5,
+      "createdAt": "2025-09-03T19:42:54.048Z"
+    },
+    {
+      "id": "5344",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "pak me e pjekur sic duhej po prap e mire",
+      "productTitle": "Burger Classic",
+      "rating": 4,
+      "createdAt": "2025-09-03T19:43:16.700Z"
+    },
+    {
+      "id": "0ed5",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Burger Classic",
+      "rating": 4,
+      "createdAt": "2025-09-04T08:40:54.070Z"
+    },
+    {
+      "id": "326a",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Hot Dog",
+      "rating": 4,
+      "createdAt": "2025-09-04T08:40:54.073Z"
+    },
+    {
+      "id": "9033",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "capricosa",
+      "rating": 4,
+      "createdAt": "2025-09-04T08:40:54.074Z"
+    },
+    {
+      "id": "f52c",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Coca Cola 0.5L",
+      "rating": 3,
+      "createdAt": "2025-09-04T08:40:54.075Z"
+    },
+    {
+      "id": "b1e9",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Pepsi",
+      "rating": 3,
+      "createdAt": "2025-09-04T08:40:54.075Z"
+    },
+    {
+      "id": "c130",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Fanta Portokall",
+      "rating": 5,
+      "createdAt": "2025-09-04T08:40:54.071Z"
+    },
+    {
+      "id": "fb54",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Pizza Pepperoni",
+      "rating": 4,
+      "createdAt": "2025-09-04T08:40:54.071Z"
+    },
+    {
+      "id": "8e79",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "hasgdkafjlha",
+      "productTitle": "Pizza Vegjetariane",
+      "rating": 4,
+      "createdAt": "2025-09-04T08:40:54.072Z"
     }
   ],
   "products": [
@@ -967,35 +1479,54 @@
       "isNew": true,
       "isCombo": false,
       "rating": 2.5
+    },
+    {
+      "id": "a199",
+      "title": "Hot Dog",
+      "description": "best hot dog in town\n",
+      "price": 10,
+      "image": "https://www.pngall.com/wp-content/uploads/2016/04/Hot-Dog.png",
+      "category": "Burger",
+      "discount": 0,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 0
+    },
+    {
+      "id": "f185",
+      "title": "pizzaa",
+      "description": "capricosa",
+      "price": 20,
+      "image": "https://as1.ftcdn.net/jpg/04/44/86/70/1000_F_444867086_79U7yvSiS6LaEWo8nN0ZYX8CJ7NhvhJh.jpg",
+      "category": "Pizza",
+      "discount": 20,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 2.3
     }
   ],
   "offers": [
     {
-      "id": "1",
       "title": "2 Pica + 1 Coca Cola",
-      "discount": "30% ZBRITJE",
-      "price": "€15.99",
-      "originalPrice": "€22.99",
+      "oldPrice": 24,
+      "newPrice": 17,
       "image": "DeliciousCombo.jpeg",
-      "gradient": "from-orange-500 to-red-600"
+      "id": "1"
     },
     {
-      "id": "2",
-      "title": "Burger Menu Familjar",
-      "discount": "FALAS PATATE",
-      "price": "€18.50",
-      "originalPrice": "€23.50",
+      "title": "Margharita Menu Familjar",
+      "description": "Margarita familjare + Pepsi 1.5l",
+      "oldPrice": 20,
+      "newPrice": 12,
       "image": "margherita.jpg",
-      "gradient": "from-yellow-500 to-orange-600"
+      "id": "2"
     },
     {
-      "id": "3",
       "title": "Pica Speciale XXL",
-      "discount": "25% ZBRITJE",
-      "price": "€12.99",
-      "originalPrice": "€16.99",
+      "oldPrice": 14,
+      "newPrice": 13,
       "image": "oferta2.jpg",
-      "gradient": "from-red-500 to-pink-600"
+      "id": "3"
     }
   ]
 }

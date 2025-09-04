@@ -1,70 +1,49 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Pencil, Trash2, Plus } from "lucide-react";
+import { useOffers, type Offer } from "../../context/OffersContext";
 import OfferForm from "./OfferTableForm";
 
-type Offer = {
-  id: number;
-  title: string;
-  description: string;
-  oldPrice: number;
-  newPrice: number;
-  image: string;
-};
-
 export default function OfferTable() {
-  const [offers, setOffers] = useState<Offer[]>([]);
+  const { offers, fetchOffers, deleteOffer } = useOffers();
   const [showForm, setShowForm] = useState(false);
   const [editingOffer, setEditingOffer] = useState<Offer | null>(null);
 
-  const fetchOffers = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/offers");
-      setOffers(res.data);
-    } catch (err) {
-      console.error("Gabim në marrjen e ofertave", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchOffers();
-  }, []);
-
   const handleDelete = async (id: number) => {
-    if (confirm("A jeni i sigurt që doni ta fshini këtë ofertë?")) {
-      await axios.delete(`http://localhost:3000/offers/${id}`);
-      fetchOffers();
+    if (!confirm("A jeni i sigurt që doni ta fshini këtë ofertë?")) return;
+    try {
+      await deleteOffer(id);
+      fetchOffers(); // rifreskon listën pas fshirjes
+    } catch (error) {
+      console.error("Gabim gjatë fshirjes:", error);
     }
   };
 
-  const handleSubmit = async (data: Omit<Offer, "id">, id?: number) => {
-    if (id) {
-      await axios.put(`http://localhost:3000/offers/${id}`, data);
-    } else {
-      await axios.post("http://localhost:3000/offers", data);
-    }
-    setShowForm(false);
+  const handleEdit = (offer: Offer) => {
+    setEditingOffer(offer);
+    setShowForm(true);
+  };
+
+  const handleAdd = () => {
     setEditingOffer(null);
-    fetchOffers();
+    setShowForm(true);
   };
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg max-w-5xl mx-auto">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
           📋 Menaxhimi i Ofertave
         </h2>
         <button
-          onClick={() => {
-            setEditingOffer(null);
-            setShowForm(true);
-          }}
+          onClick={handleAdd}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
         >
           <Plus size={18} /> Shto Ofertë
         </button>
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full border border-gray-300 dark:border-gray-700">
           <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
@@ -93,18 +72,15 @@ export default function OfferTable() {
                 <td className="p-3 text-sm">{offer.description}</td>
                 <td className="p-3">
                   <span className="line-through text-gray-400">
-                    ${offer.oldPrice}
+                    ${offer.oldPrice.toFixed(2)}
                   </span>{" "}
                   <span className="text-green-600 font-bold">
-                    ${offer.newPrice}
+                    ${offer.newPrice.toFixed(2)}
                   </span>
                 </td>
                 <td className="p-3 space-x-2">
                   <button
-                    onClick={() => {
-                      setEditingOffer(offer);
-                      setShowForm(true);
-                    }}
+                    onClick={() => handleEdit(offer)}
                     className="text-yellow-500 hover:text-yellow-700"
                   >
                     <Pencil />
@@ -122,6 +98,7 @@ export default function OfferTable() {
         </table>
       </div>
 
+      {/* Modal Form */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-xl shadow-lg relative">
@@ -131,7 +108,11 @@ export default function OfferTable() {
                 setShowForm(false);
                 setEditingOffer(null);
               }}
-              onSubmit={handleSubmit}
+              onSubmit={() => {
+                setShowForm(false);
+                setEditingOffer(null);
+                fetchOffers(); // rifreskon listën pas CRUD
+              }}
             />
           </div>
         </div>

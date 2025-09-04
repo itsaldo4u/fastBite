@@ -1,8 +1,8 @@
 // src/components/UserOrders.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
-import type { Order } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
+import type { Order } from "../admin/Orders";
 
 export default function UserOrders() {
   const { currentUser } = useAuth();

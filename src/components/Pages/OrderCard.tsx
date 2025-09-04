@@ -19,7 +19,7 @@ interface OrderCardProps {
   order: Order;
   timeLeft: number;
   currentStep: number;
-  showReview?: boolean; // default true
+  showReview?: boolean;
 }
 
 const steps = [
@@ -28,7 +28,6 @@ const steps = [
   { id: 3, label: "Për Shpërndarje", icon: "🛵", desc: "Në rrugë për dorëzim" },
   { id: 4, label: "Dorëzuar", icon: "📬", desc: "Dorëzuar me sukses" },
 ];
-
 
 export default function OrderCard({
   order,

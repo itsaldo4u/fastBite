@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { type Product } from "../../context/AuthContext";
+import { type Product } from "../../context/ProductContext";
 
 type ProductFormProps = {
   product: Product | null;

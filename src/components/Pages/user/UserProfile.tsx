@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import type { User } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
+import type { User } from "../../context/AuthContext";
 
 import axios from "axios";
 

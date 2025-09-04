@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import type { Product } from "../../context/AuthContext";
+import { useProduct, type Product } from "../../context/ProductContext";
 import ProductForm from "./ProductForm";
 
 export default function ProductPage() {
   const { products, fetchProducts, addProduct, updateProduct, deleteProduct } =
-    useAuth();
+    useProduct();
 
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
