@@ -5,7 +5,7 @@ export type Status = "pending" | "preparing" | "delivering" | "delivered";
 
 export type Order = {
   id: string;
-  userId?: number | null;
+  userId?: number | string | null;
   name: string;
   email: string;
   phone: string;

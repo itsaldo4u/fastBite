@@ -143,6 +143,10 @@ export default function OffersPage() {
           onRemove={handleRemoveFromCart}
           onClear={handleClearCart}
           onClose={() => setShowCart(false)}
+          onCheckout={() => {
+            setShowCart(false);
+            setShowCheckout(true);
+          }}
         />
       )}
 

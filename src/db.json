@@ -35,6 +35,24 @@
       "address": "rruga bardhyl , oslo bar",
       "role": "user",
       "password": "temp123"
+    },
+    {
+      "id": "610b",
+      "name": "Hgfhgf",
+      "email": "fhfggf@jh.com",
+      "phone": "069636363",
+      "address": "Tirane",
+      "role": "user",
+      "password": "temp123"
+    },
+    {
+      "id": "c7f9",
+      "name": "Kimi",
+      "email": "kimi@gmail.com",
+      "password": "123456",
+      "phone": "068686565",
+      "address": "Kine",
+      "role": "user"
     }
   ],
   "orders": [
@@ -978,34 +996,180 @@
       "totalPrice": 22.939999999999998,
       "createdAt": "2025-09-04T08:34:25.515Z",
       "status": "delivered",
-      "startTime": "2025-09-04T08:38:57.891Z"
+      "startTime": "2025-09-04T08:38:57.891Z",
+      "review": "ishte nice"
+    },
+    {
+      "id": "7552",
+      "userId": "610b",
+      "name": "Hgfhgf",
+      "email": "fhfggf@jh.com",
+      "phone": "069636363",
+      "address": "Tirane",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 2
+        }
+      ],
+      "totalPrice": 13,
+      "createdAt": "2025-09-06T11:08:06.735Z",
+      "status": "delivered"
+    },
+    {
+      "id": "6ada",
+      "userId": null,
+      "name": "Kimi",
+      "email": "kimi@gmail.com",
+      "phone": "068686565",
+      "address": "Kine",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "1",
+          "title": "2 Pica + 1 Coca Cola",
+          "price": 17,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 17,
+      "createdAt": "2025-09-06T11:12:06.270Z",
+      "status": "delivered",
+      "review": "super cilsi"
+    },
+    {
+      "id": "25d1",
+      "userId": "964d",
+      "name": "Eraldo",
+      "email": "aldoprov@gmail.com",
+      "phone": "0696969696",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "3",
+          "title": "Pica Speciale XXL",
+          "price": 13,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 13,
+      "createdAt": "2025-09-07T12:29:35.374Z",
+      "status": "delivered",
+      "review": "u vonua pak"
+    },
+    {
+      "id": "19f2",
+      "userId": "c7f9",
+      "name": "Kimi",
+      "email": "kimi@gmail.com",
+      "phone": "068686565",
+      "address": "Kine",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1757276347745",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 20.55,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Speca",
+            "Proshutë",
+            "Salsiçe",
+            "Ullinj"
+          ]
+        }
+      ],
+      "totalPrice": 20.55,
+      "createdAt": "2025-09-07T20:19:15.666Z",
+      "status": "delivered",
+      "review": "jhhjh"
+    },
+    {
+      "id": "2e5d",
+      "userId": "6bd7",
+      "name": "aldo",
+      "email": "a@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1757277020167",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 14.31,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Speca"
+          ]
+        },
+        {
+          "id": "pizza-1757277025268",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 14.79,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Domate",
+            "Qepë"
+          ]
+        },
+        {
+          "id": "pizza-1757277028321",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 17.43,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Domate",
+            "Qepë",
+            "Proshutë"
+          ]
+        },
+        {
+          "id": "pizza-1757277030996",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 17.43,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Domate",
+            "Qepë",
+            "Proshutë"
+          ]
+        }
+      ],
+      "totalPrice": 63.96,
+      "createdAt": "2025-09-07T20:30:39.610Z",
+      "status": "pending"
     }
   ],
   "ratings": [
-    {
-      "id": "3ce5",
-      "productId": "4",
-      "userId": "6bd7",
-      "rating": 5
-    },
-    {
-      "id": "f364",
-      "productId": "4",
-      "userId": "6bd7",
-      "rating": 3
-    },
-    {
-      "id": "f2b0",
-      "productId": "4",
-      "userId": "6bd7",
-      "rating": 5
-    },
-    {
-      "id": "0d78",
-      "productId": "fe01",
-      "userId": "964d",
-      "rating": 2
-    },
     {
       "id": "dd58",
       "userId": "964d",
@@ -1051,15 +1215,6 @@
       "createdAt": "2025-07-18T16:33:08.266Z"
     },
     {
-      "id": "9ff8",
-      "userId": "964d",
-      "name": "aprov",
-      "comment": "a i behet ujit rating",
-      "productTitle": "Ujë Mineral",
-      "rating": 5,
-      "createdAt": "2025-07-18T16:33:20.942Z"
-    },
-    {
       "id": "764d",
       "userId": "964d",
       "name": "aprov",
@@ -1069,15 +1224,6 @@
       "createdAt": "2025-07-18T16:33:29.320Z"
     },
     {
-      "id": "c740",
-      "userId": "964d",
-      "name": "aprov",
-      "comment": "dy porosi",
-      "productTitle": "Combo Pizza + Kola",
-      "rating": 5,
-      "createdAt": "2025-07-18T16:33:41.613Z"
-    },
-    {
       "id": "7112",
       "userId": "964d",
       "name": "aprov",
@@ -1085,15 +1231,6 @@
       "productTitle": "Pizza Quattro Stagioni",
       "rating": 4,
       "createdAt": "2025-07-18T16:33:41.614Z"
-    },
-    {
-      "id": "8673",
-      "userId": "964d",
-      "name": "aprov",
-      "comment": "jjjjjjjjjjjjj",
-      "productTitle": "Pizza Quattro Stagioni",
-      "rating": 5,
-      "createdAt": "2025-07-18T16:33:52.369Z"
     },
     {
       "id": "ca18",
@@ -1381,6 +1518,33 @@
       "productTitle": "Pizza Vegjetariane",
       "rating": 4,
       "createdAt": "2025-09-04T08:40:54.072Z"
+    },
+    {
+      "id": "6907",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "ishte nice",
+      "productTitle": "Pizza Large (35cm) - E Hollë",
+      "rating": 4,
+      "createdAt": "2025-09-07T12:35:43.223Z"
+    },
+    {
+      "id": "7074",
+      "userId": "c7f9",
+      "name": "Kimi",
+      "comment": "super cilsi",
+      "productTitle": "2 Pica + 1 Coca Cola",
+      "rating": 5,
+      "createdAt": "2025-09-07T20:18:45.258Z"
+    },
+    {
+      "id": "da1a",
+      "userId": "964d",
+      "name": "aprov",
+      "comment": "u vonua pak",
+      "productTitle": "Pica Speciale XXL",
+      "rating": 4,
+      "createdAt": "2025-09-07T20:20:55.220Z"
     }
   ],
   "products": [
@@ -1503,6 +1667,18 @@
       "isNew": true,
       "isCombo": false,
       "rating": 2.3
+    },
+    {
+      "id": "03c8",
+      "title": "trdx",
+      "description": "burgerrrrrrr",
+      "price": 440,
+      "image": "https://assets.bonappetit.com/photos/57acae2d1b33404414975121/master/pass/ultimate-veggie-burger.jpg",
+      "category": "Burger",
+      "discount": 90,
+      "isNew": true,
+      "isCombo": false,
+      "rating": 4.2
     }
   ],
   "offers": [

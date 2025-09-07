@@ -180,6 +180,10 @@ export default function MenuPage() {
           onRemove={handleRemoveFromCart}
           onClear={handleClearCart}
           onClose={() => setCartOpen(false)}
+          onCheckout={() => {
+            setCartOpen(false);
+            setShowCheckout(true);
+          }}
         />
       )}
 

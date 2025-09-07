@@ -13,6 +13,7 @@ type ShoppingCartDropdownProps = {
   onRemove: (id: string) => void;
   onClear: () => void;
   onClose: () => void;
+  onCheckout: () => void;
 };
 
 export default function ShoppingCartDropdown({
@@ -21,6 +22,7 @@ export default function ShoppingCartDropdown({
   onRemove,
   onClear,
   onClose,
+  onCheckout,
 }: ShoppingCartDropdownProps) {
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -94,9 +96,7 @@ export default function ShoppingCartDropdown({
             <button
               onClick={() => {
                 onClose();
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("openCheckout"));
-                }
+                onCheckout();
               }}
               className="px-4 py-1 bg-gradient-to-r from-yellow-400 to-red-500 hover:from-yellow-300 hover:to-red-600 text-black font-semibold rounded-full transition-all shadow-lg"
             >

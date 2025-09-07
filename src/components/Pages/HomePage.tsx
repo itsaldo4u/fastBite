@@ -7,11 +7,14 @@ import {
   ChefHat,
   Heart,
   ArrowRight,
+  ShoppingCart,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CheckoutStepper from "./CheckoutStepper";
 import PizzaBuilderGame from "./PizzaBuilderGame";
 import { useOffers } from "../context/OffersContext";
+import ShoppingCartDropdown from "../ShoppingCartDropdown";
+
 type CartItem = {
   id: string;
   title: string;
@@ -22,8 +25,10 @@ type CartItem = {
 export default function HomePage() {
   const [currentOfferIndex, setCurrentOfferIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+
   const { offers, fetchOffers } = useOffers();
   const navigate = useNavigate();
 
@@ -50,6 +55,39 @@ export default function HomePage() {
     },
   ];
 
+  // ===== Cart Handlers =====
+  const handleAddToCart = (id: string, title: string, price: number) => {
+    setCartItems((prev) => {
+      const exist = prev.find((item) => item.id === id);
+      if (exist) {
+        return prev.map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { id, title, price, quantity: 1 }];
+    });
+    setCartOpen(true);
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    setCartItems((prev) => {
+      const exist = prev.find((item) => item.id === id);
+      if (!exist) return prev;
+      if (exist.quantity === 1) {
+        return prev.filter((item) => item.id !== id);
+      }
+      return prev.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      );
+    });
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+    setCartOpen(false);
+  };
+
+  // ===== Offers Rotation =====
   useEffect(() => {
     fetchOffers();
     setIsVisible(true);
@@ -74,22 +112,20 @@ export default function HomePage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-green-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Animated Food Emojis */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {["🍕", "🍔", "🍟", "🌮", "🥤", "🍰"].map((emoji, i) => (
-          <div
-            key={i}
-            className="absolute text-4xl opacity-20 animate-bounce"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${i * 0.5}s`,
-              animationDuration: `${3 + Math.random() * 2}s`,
-            }}
-          >
-            {emoji}
-          </div>
-        ))}
+      {/* Header Cart Button */}
+      <div className="absolute top-6 right-6 z-20">
+        <button
+          onClick={() => setCartOpen(!cartOpen)}
+          className="relative p-3 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-lg transition-all duration-200 hover:scale-105"
+          aria-label="Toggle shopping cart"
+        >
+          <ShoppingCart size={24} />
+          {cartItems.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-yellow-400 text-black rounded-full text-xs w-6 h-6 flex items-center justify-center font-bold animate-pulse">
+              {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+            </span>
+          )}
+        </button>
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
@@ -164,20 +200,16 @@ export default function HomePage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => {
-                          setCartItems([
-                            {
-                              id: currentOffer.id.toString(),
-                              title: currentOffer.title,
-                              price: currentOffer.newPrice,
-                              quantity: 1,
-                            },
-                          ]);
-                          setShowCheckout(true);
-                        }}
+                        onClick={() =>
+                          handleAddToCart(
+                            currentOffer.id.toString(),
+                            currentOffer.title,
+                            currentOffer.newPrice
+                          )
+                        }
                         className="mt-4 bg-white text-red-600 font-bold py-3 px-6 rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105"
                       >
-                        Porosit Tani
+                        Shto në Shportë
                       </button>
                     </div>
                   </div>
@@ -231,20 +263,35 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {/* Checkout Modal */}
-        {showCheckout && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl">
-              <CheckoutStepper
-                cartItems={cartItems}
-                onClose={() => setShowCheckout(false)}
-                clearCart={() => setCartItems([])}
-              />
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Shopping Cart */}
+      {cartOpen && (
+        <ShoppingCartDropdown
+          cartItems={cartItems}
+          onAdd={(id) => {
+            const product = cartItems.find((p) => p.id === id);
+            if (product)
+              handleAddToCart(product.id, product.title, product.price);
+          }}
+          onRemove={handleRemoveFromCart}
+          onClear={handleClearCart}
+          onClose={() => setCartOpen(false)}
+          onCheckout={() => {
+            setShowCheckout(true);
+            setCartOpen(false);
+          }}
+        />
+      )}
+
+      {/* Checkout Stepper */}
+      {showCheckout && (
+        <CheckoutStepper
+          cartItems={cartItems}
+          onClose={() => setShowCheckout(false)}
+          clearCart={handleClearCart}
+        />
+      )}
 
       {/* Animations */}
       <style>{`

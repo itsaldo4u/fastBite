@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Heart, ShoppingCart, RotateCcw, Sparkles, X } from "lucide-react";
 import CheckoutStepper from "./CheckoutStepper";
+import ShoppingCartDropdown from "../ShoppingCartDropdown";
 
 const PizzaBuilderGame = () => {
   type Topping = {
@@ -23,6 +24,16 @@ const PizzaBuilderGame = () => {
     price: number;
   };
 
+  type CartItem = {
+    id: string;
+    title: string;
+    price: number;
+    quantity: number;
+    size?: string;
+    crust?: string;
+    toppings?: string[];
+  };
+
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
   const [selectedSize, setSelectedSize] = useState("medium");
   const [selectedCrust, setSelectedCrust] = useState("classic");
@@ -33,11 +44,13 @@ const PizzaBuilderGame = () => {
   const [pizzaAnimations, setPizzaAnimations] = useState<
     { id: number; x: number; y: number }[]
   >([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
   const pizzaRef = useRef<HTMLDivElement>(null);
 
-  const toppings = [
+  const toppings: Topping[] = [
     { id: 1, name: "Pepperoni", price: 1.5, emoji: "🍕", color: "#d2001f" },
     { id: 2, name: "Kerpudha", price: 1.2, emoji: "🍄", color: "#8b4513" },
     { id: 3, name: "Djathë Extra", price: 1.8, emoji: "🧀", color: "#ffd700" },
@@ -79,6 +92,7 @@ const PizzaBuilderGame = () => {
     }
   }, [selectedToppings, selectedSize, selectedCrust]);
 
+  // Drag & Drop
   const handleDragStart = (
     e: React.DragEvent<HTMLButtonElement>,
     topping: Topping
@@ -111,6 +125,7 @@ const PizzaBuilderGame = () => {
 
   const handleDragOver = (e: React.DragEvent) => e.preventDefault();
 
+  // Add / Remove toppings
   const addTopping = (topping: Topping) => {
     if (!selectedToppings.find((t) => t.id === topping.id)) {
       const x = 30 + Math.random() * 40;
@@ -121,11 +136,11 @@ const PizzaBuilderGame = () => {
       setTimeout(() => setPizzaAnimations((prev) => prev.slice(1)), 1000);
     }
   };
-
   const removeTopping = (toppingId: number) =>
     setSelectedToppings((prev) => prev.filter((t) => t.id !== toppingId));
   const clearPizza = () => setSelectedToppings([]);
 
+  // Favorites
   const saveAsFavorite = () => {
     const favorite: Favorite = {
       id: Date.now(),
@@ -139,11 +154,11 @@ const PizzaBuilderGame = () => {
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 1000);
   };
-
   const removeFavorite = (id: number) =>
     setSavedFavorites((prev) => prev.filter((fav) => fav.id !== id));
 
-  const createCartItems = () => {
+  // Cart
+  const createCartItems = (): CartItem[] => {
     const sizeData = sizes.find((s) => s.id === selectedSize);
     const crustData = crusts.find((c) => c.id === selectedCrust);
 
@@ -160,10 +175,17 @@ const PizzaBuilderGame = () => {
     ];
   };
 
+  const handleAddToCart = () => {
+    const items = createCartItems();
+    setCartItems((prev) => [...prev, ...items]);
+    setCartOpen(true);
+  };
+
   const handleClearCart = () => {
     clearPizza();
     setSelectedSize("medium");
     setSelectedCrust("classic");
+    setCartItems([]);
   };
 
   return (
@@ -182,7 +204,6 @@ const PizzaBuilderGame = () => {
           </p>
         </div>
 
-        {/* Panels Grid */}
         <div className="grid lg:grid-cols-3 gap-4">
           {/* Left Panel */}
           <div className="space-y-4">
@@ -328,7 +349,7 @@ const PizzaBuilderGame = () => {
               </div>
             </div>
 
-            {/* Price */}
+            {/* Price & Add to Cart */}
             <div className="bg-gradient-to-r from-yellow-400 to-red-500 rounded-xl p-4 text-white text-center">
               <div className="text-2xl font-bold mb-1">
                 {totalPrice.toFixed(2)}€
@@ -337,20 +358,19 @@ const PizzaBuilderGame = () => {
                 {selectedToppings.length} përbërës
               </div>
               <button
-                onClick={() => setShowCheckout(true)}
-                disabled={
-                  selectedToppings.length === 0 &&
-                  selectedSize === "medium" &&
-                  selectedCrust === "classic"
-                }
+                onClick={handleAddToCart}
+                disabled={selectedToppings.length === 0}
                 className="bg-white text-red-600 font-bold py-2 px-6 text-sm rounded-full hover:scale-105 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
               >
                 <ShoppingCart className="w-4 h-4" /> Shto në Shportë
               </button>
 
+              {/* Checkout */}
               {showCheckout && (
                 <CheckoutStepper
-                  cartItems={createCartItems()}
+                  cartItems={
+                    cartItems.length > 0 ? cartItems : createCartItems()
+                  }
                   onClose={() => setShowCheckout(false)}
                   clearCart={handleClearCart}
                 />
@@ -377,14 +397,44 @@ const PizzaBuilderGame = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Toast */}
-      {showSuccess && (
-        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full shadow">
-          ✅ Sukses!
-        </div>
-      )}
+        {/* Success Toast */}
+        {showSuccess && (
+          <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-fadeIn">
+            ✅ Veprimi u krye me sukses!
+          </div>
+        )}
+
+        {/* Shopping Cart Dropdown */}
+        {cartOpen && (
+          <ShoppingCartDropdown
+            cartItems={cartItems}
+            onAdd={(id) => {
+              setCartItems((prev) =>
+                prev.map((item) =>
+                  item.id === id
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+                )
+              );
+            }}
+            onRemove={(id) => {
+              setCartItems((prev) =>
+                prev
+                  .map((item) =>
+                    item.id === id
+                      ? { ...item, quantity: item.quantity - 1 }
+                      : item
+                  )
+                  .filter((item) => item.quantity > 0)
+              );
+            }}
+            onClear={handleClearCart}
+            onClose={() => setCartOpen(false)}
+            onCheckout={() => setShowCheckout(true)}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -47,57 +47,55 @@ export default function OrderTracking() {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-orange-100">
-        <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="max-w-3xl mx-auto px-4 py-6">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold text-gray-800 mb-1">
               Gjurmimi i Porosisë
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-base">
               Ndiqni statusin e porosisë tuaj në kohë reale
             </p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-3xl mx-auto p-4 space-y-6">
         {/* Search Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <div className="flex items-center gap-4 mb-6">
-            <Search className="text-orange-500 w-6 h-6" />
-            <h2 className="text-xl font-semibold text-gray-800">
+        <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Search className="text-orange-500 w-5 h-5" />
+            <h2 className="text-lg font-semibold text-gray-800">
               Kërko Porosinë
             </h2>
           </div>
 
-          <div className="flex gap-3">
-            <div className="flex-1 relative">
-              <input
-                type="text"
-                value={orderId}
-                onChange={(e) => setOrderId(e.target.value)}
-                placeholder="Vendos ID e porosisë..."
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-100 transition-all text-lg"
-                onKeyPress={(e) => e.key === "Enter" && handleTrack()}
-              />
-            </div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
+            <input
+              type="text"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+              placeholder="Vendos ID e porosisë..."
+              className="flex-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition text-base w-full"
+              onKeyDown={(e) => e.key === "Enter" && handleTrack()}
+            />
             <button
               onClick={handleTrack}
-              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all transform hover:scale-105 font-semibold text-lg shadow-lg"
+              className="px-5 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition font-medium text-base shadow-md w-full sm:w-auto"
             >
               Gjurmo
             </button>
           </div>
 
           {error && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-700 font-medium">{error}</p>
+            <div className="p-2 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+              {error}
             </div>
           )}
         </div>
 
         {/* Order Details */}
         {order && (
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 overflow-x-auto">
             <OrderCard
               order={order}
               timeLeft={timeLeft}
@@ -109,48 +107,47 @@ export default function OrderTracking() {
 
         {/* Empty State */}
         {!order && !error && (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-            <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Package className="w-12 h-12 text-orange-500" />
+          <div className="bg-white rounded-xl shadow-md p-6 text-center">
+            <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Package className="w-10 h-10 text-orange-500" />
             </div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
               Gjurmoni Porosinë Tuaj
             </h3>
-            <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
-              Shkruani numrin e porosisë për të parë statusin dhe detajet e
-              porosisë tuaj në kohë reale.
+            <p className="text-gray-600 text-base mb-6 max-w-full mx-auto">
+              Shkruani numrin e porosisë për të parë statusin dhe detajet.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-full mx-auto">
               <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle className="w-8 h-8 text-green-500" />
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <CheckCircle className="w-6 h-6 text-green-500" />
                 </div>
-                <h4 className="font-semibold text-gray-800">
+                <h4 className="font-semibold text-gray-800 text-sm">
                   Konfirmim i Shpejtë
                 </h4>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs text-gray-600">
                   Merrni konfirmimin menjëherë
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <ChefHat className="w-8 h-8 text-orange-500" />
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <ChefHat className="w-6 h-6 text-orange-500" />
                 </div>
-                <h4 className="font-semibold text-gray-800">Gatim i Freskët</h4>
-                <p className="text-sm text-gray-600">
-                  Ushqim i përgatitur porosi pas porosie
+                <h4 className="font-semibold text-gray-800 text-sm">
+                  Gatim i Freskët
+                </h4>
+                <p className="text-xs text-gray-600">
+                  Ushqim i përgatitur pas porosisë
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Truck className="w-8 h-8 text-blue-500" />
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Truck className="w-6 h-6 text-blue-500" />
                 </div>
-                <h4 className="font-semibold text-gray-800">
+                <h4 className="font-semibold text-gray-800 text-sm">
                   Dorëzim i Shpejtë
                 </h4>
-                <p className="text-sm text-gray-600">
-                  Dorëzojmë brenda 30 minutave
-                </p>
+                <p className="text-xs text-gray-600">Brenda 30 minutave</p>
               </div>
             </div>
           </div>

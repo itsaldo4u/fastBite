@@ -151,11 +151,12 @@ export default function UserInvoices() {
 
   const filteredInvoices = invoices.filter(
     (order) =>
-      order.id.toString().includes(searchTerm) ||
-      order.items?.some((item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
-      ) ||
-      order.name.toLowerCase().includes(searchTerm.toLowerCase())
+      order.userId?.toString() === currentUser?.id?.toString() &&
+      (order.id.toString().includes(searchTerm) ||
+        order.items?.some((item) =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase())
+        ) ||
+        order.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const totalAmount = filteredInvoices.reduce(
