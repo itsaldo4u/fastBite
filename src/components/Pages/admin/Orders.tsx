@@ -1,16 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Users,
-  Receipt,
-  DollarSign,
-  Clock,
-  Edit,
-  Trash2,
-  PlusCircle,
-  Eye,
-  X,
-} from "lucide-react";
+import { Edit, Trash2, Eye, X } from "lucide-react";
 import OrderForm from "./OrderForm";
 
 export type Status = "pending" | "preparing" | "delivering" | "delivered";
@@ -40,7 +30,7 @@ export type Order = {
 
 export default function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
+
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -52,12 +42,11 @@ export default function Orders() {
 
   const fetchData = async () => {
     try {
-      const [orderRes, userRes] = await Promise.all([
+      const [orderRes] = await Promise.all([
         axios.get("http://localhost:3000/orders"),
         axios.get("http://localhost:3000/users"),
       ]);
       setOrders(orderRes.data);
-      setUsers(userRes.data);
     } catch (error) {
       console.error("Gabim në marrjen e të dhënave:", error);
     }
@@ -98,11 +87,6 @@ export default function Orders() {
 
   const handleEdit = (order: Order) => {
     setEditingOrder(order);
-    setShowOrderForm(true);
-  };
-
-  const handleAddNew = () => {
-    setEditingOrder(null);
     setShowOrderForm(true);
   };
 
@@ -149,38 +133,8 @@ export default function Orders() {
     return `${totalItems} artikuj (${items.length} lloje)`;
   };
 
-  const totalRevenue = orders.reduce((sum, o) => sum + o.totalPrice, 0);
-  const pendingOrders = orders.filter((o) => o.status === "pending").length;
-
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Paneli i Administratorit</h1>
-        <button
-          onClick={handleAddNew}
-          className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-        >
-          <PlusCircle size={20} />
-          <span>Porosi e Re</span>
-        </button>
-      </div>
-
-      {/* Statistika */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          title="Totali Porosive"
-          value={orders.length}
-          icon={<Receipt />}
-        />
-        <StatCard title="Përdoruesit" value={users.length} icon={<Users />} />
-        <StatCard
-          title="Të Ardhura"
-          value={`$${totalRevenue.toFixed(2)}`}
-          icon={<DollarSign />}
-        />
-        <StatCard title="Në Pritje" value={pendingOrders} icon={<Clock />} />
-      </div>
-
       {/* Tabela e porosive */}
       <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-x-auto">
         <table className="min-w-full text-sm text-left">
@@ -406,30 +360,6 @@ export default function Orders() {
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function StatCard({
-  title,
-  value,
-  icon,
-}: {
-  title: string;
-  value: string | number;
-  icon: React.ReactNode;
-}) {
-  return (
-    <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex items-center space-x-4">
-      <div className="p-3 bg-red-100 dark:bg-red-900 rounded-full text-red-600 dark:text-red-300">
-        {icon}
-      </div>
-      <div>
-        <p className="text-sm text-gray-500 dark:text-gray-300">{title}</p>
-        <p className="text-lg font-bold text-gray-900 dark:text-white">
-          {value}
-        </p>
-      </div>
     </div>
   );
 }

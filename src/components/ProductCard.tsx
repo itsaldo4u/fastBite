@@ -18,7 +18,6 @@ export default function ProductCard({
   description,
   price,
   image,
-  category,
   discount,
   isNew,
   isCombo,
@@ -28,83 +27,74 @@ export default function ProductCard({
   const discountedPrice = discount ? price - price * (discount / 100) : price;
 
   return (
-    <div className="relative border border-white/10 bg-white/5 backdrop-blur-sm dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-yellow-500/20 transition-transform duration-300 hover:scale-105 cursor-pointer flex flex-col overflow-hidden">
-      {/* Badge për status */}
-      <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+    <div className="relative bg-gradient-to-br from-slate-800 via-purple-900 to-slate-900 rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between h-full">
+      {/* Badges */}
+      <div className="absolute top-3 left-3 flex space-x-2">
         {isCombo && (
-          <span className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded shadow">
+          <span className="px-2 py-1 bg-yellow-400 text-black text-xs rounded-full font-bold">
             Combo
           </span>
         )}
         {discount && (
-          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
+          <span className="px-2 py-1 bg-red-500 text-white text-xs rounded-full font-bold">
             -{discount}%
           </span>
         )}
         {isNew && (
-          <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
+          <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full font-bold">
             I Ri
           </span>
         )}
       </div>
 
-      {/* Imazhi */}
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-48 object-cover rounded-t-2xl"
-      />
+      {/* Image */}
+      <div className="w-full h-32 sm:h-40 md:h-44 lg:h-36 xl:h-40 rounded-xl overflow-hidden mb-3">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+      </div>
 
-      {/* Detajet */}
-      <div className="p-4 flex flex-col flex-grow text-white">
-        <h3 className="text-lg font-bold text-yellow-400">{title}</h3>
-        <p className="text-sm text-gray-300 mt-1 flex-grow">{description}</p>
+      {/* Title & Description */}
+      <div className="flex-1">
+        <h3 className="text-lg font-bold text-yellow-400 mb-1 line-clamp-1">
+          {title}
+        </h3>
+        <p className="text-gray-300 text-sm mb-2 line-clamp-2">{description}</p>
+      </div>
 
-        {/* Çmimi */}
-        <div className="mt-3">
+      {/* Price & Rating */}
+      <div className="flex justify-between items-center mt-2">
+        <div className="flex flex-col">
           {discount ? (
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-400 line-through text-sm">
+            <div className="flex items-baseline space-x-2">
+              <span className="line-through text-gray-400 text-sm">
                 ${price.toFixed(2)}
               </span>
-              <span className="text-red-400 font-bold text-lg">
+              <span className="text-white font-bold">
                 ${discountedPrice.toFixed(2)}
               </span>
             </div>
           ) : (
-            <p className="font-bold text-red-500 text-lg">
-              ${price.toFixed(2)}
-            </p>
+            <span className="text-white font-bold">${price.toFixed(2)}</span>
           )}
+          <div className="flex mt-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <svg
+                key={star}
+                className={`w-4 h-4 ${
+                  star <= rating ? "text-yellow-400" : "text-gray-600"
+                }`}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 .587l3.668 7.431 8.21 1.192-5.938 5.787 1.403 8.186L12 18.896l-7.343 3.865 1.403-8.186L.122 9.21l8.21-1.192z" />
+              </svg>
+            ))}
+          </div>
         </div>
 
-        <p className="mt-1 text-xs uppercase text-gray-400">{category}</p>
-
-        {/* Rating */}
-        <div className="flex items-center mt-2 space-x-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <svg
-              key={star}
-              xmlns="http://www.w3.org/2000/svg"
-              fill={rating >= star ? "gold" : "none"}
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              className="w-5 h-5 text-yellow-400"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M11.48 3.499a.75.75 0 011.04 0l2.517 2.513 3.495.51a.75.75 0 01.416 1.279l-2.53 2.465.597 3.482a.75.75 0 01-1.088.791L12 13.347l-3.127 1.643a.75.75 0 01-1.088-.79l.597-3.482-2.53-2.465a.75.75 0 01.416-1.28l3.495-.51 2.517-2.513z"
-              />
-            </svg>
-          ))}
-        </div>
-
-        {/* Butoni Bli */}
+        {/* Add to Cart Button */}
         <button
           onClick={() => onAddToCart(id)}
-          className="mt-4 bg-gradient-to-r from-yellow-400 to-red-500 hover:from-yellow-300 hover:to-red-600 text-black font-semibold py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-400/30"
+          className="ml-2 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-red-500 text-black font-semibold py-1 px-3 rounded-full transition-all duration-300 shadow-md hover:shadow-yellow-400/40"
           aria-label={`Shto ${title} në shportë`}
         >
           Bli

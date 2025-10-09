@@ -8,11 +8,15 @@ import {
   Heart,
   ArrowRight,
   ShoppingCart,
+  Gift,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CheckoutStepper from "./CheckoutStepper";
 import PizzaBuilderGame from "./PizzaBuilderGame";
+import WheelSpinner from "../WheelSpinner";
 import { useOffers } from "../context/OffersContext";
+import { useRewards } from "../context/RewardsContext";
+import { useAuth } from "../context/AuthContext";
 import ShoppingCartDropdown from "../ShoppingCartDropdown";
 
 type CartItem = {
@@ -28,8 +32,11 @@ export default function HomePage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showWheel, setShowWheel] = useState(false);
 
   const { offers, fetchOffers } = useOffers();
+  const { canSpinToday } = useRewards();
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   const features = [
@@ -102,6 +109,7 @@ export default function HomePage() {
   }, [offers]);
 
   const currentOffer = offers[currentOfferIndex] ?? null;
+  const canSpin = currentUser && canSpinToday();
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden">
@@ -133,11 +141,11 @@ export default function HomePage() {
         <main className="flex-1 flex items-center justify-center px-6">
           <div className="max-w-7xl w-full grid lg:grid-cols-2 gap-12 items-center">
             <div
-              className={`space-y-8 ${
+              className={`space-y-5 ${
                 isVisible ? "animate-fade-in-up" : "opacity-0"
               }`}
             >
-              <div className="space-y-6">
+              <div className="space-y-">
                 <div className="flex items-center space-x-2 text-yellow-400">
                   <Zap className="w-5 h-5" />
                   <span className="text-sm mt-5 font-semibold tracking-wide">
@@ -236,6 +244,82 @@ export default function HomePage() {
           </div>
         </main>
 
+        {/* WHEEL OF FORTUNE SECTION - SHTO KËTË */}
+        {currentUser && (
+          <section className="py-16 px-6">
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-red-600/20 backdrop-blur-lg rounded-3xl p-4 border-2 border-white/10 shadow-2xl">
+                <div className="text-center space-y-3">
+                  <div className="flex items-center justify-center gap-3">
+                    <Gift className="w-10 h-10 text-yellow-400 animate-bounce" />
+                    <h2 className="text-4xl md:text-5xl font-black text-white">
+                      Rrota e Fatit
+                    </h2>
+                    <Gift className="w-10 h-10 text-yellow-400 animate-bounce" />
+                  </div>
+
+                  <p className="text-xl text-white/90 max-w-2xl mx-auto">
+                    🎰 Rrotulloje rroten dhe fito kupona ekskluzive!
+                    <br />
+                    <span className="text-yellow-400 font-semibold">
+                      {canSpin
+                        ? "Loja jote e sotme të pret!"
+                        : "Kthehu nesër për një shans tjetër!"}
+                    </span>
+                  </p>
+
+                  <div className="flex flex-wrap justify-center gap-4 text-sm text-white/70">
+                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                      <span>🎁</span>
+                      <span>Deri në 50% zbritje</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                      <span>⏰</span>
+                      <span>1 herë në ditë</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                      <span>✨</span>
+                      <span>100% FALAS</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setShowWheel(true)}
+                    disabled={!canSpin}
+                    className={`relative group px-10 py-5 rounded-2xl text-xl font-black transition-all duration-300 transform ${
+                      canSpin
+                        ? "bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white hover:scale-110 hover:shadow-2xl hover:shadow-yellow-500/50 animate-pulse"
+                        : "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
+                    }`}
+                  >
+                    {canSpin ? (
+                      <>
+                        <span className="relative z-10 flex items-center gap-3">
+                          🎲 PROVO FATIN TËND TANI!
+                          <Sparkles className="w-6 h-6 group-hover:rotate-180 transition-transform duration-500" />
+                        </span>
+                        {/* Glow effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                      </>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        🔒 Kthehu Nesër
+                      </span>
+                    )}
+                  </button>
+
+                  {!canSpin && (
+                    <p className="text-white/60 text-sm">
+                      Ke përdorur shansin tënd të sotëm. Kthehu nesër për një
+                      lojë të re! 🌟
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Pizza Builder Section */}
         <section className="py-16 px-4">
           <PizzaBuilderGame />
@@ -292,6 +376,9 @@ export default function HomePage() {
           clearCart={handleClearCart}
         />
       )}
+
+      {/* WHEEL SPINNER MODAL - SHTO KËTË */}
+      {showWheel && <WheelSpinner onClose={() => setShowWheel(false)} />}
 
       {/* Animations */}
       <style>{`

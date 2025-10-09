@@ -2,6 +2,14 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export type Role = "user" | "admin";
+export type Coupon = {
+  id: string;
+  code: string;
+  discount: number;
+  expiresAt: string;
+  used: boolean;
+};
+
 export type User = {
   id?: number;
   name: string;
@@ -9,11 +17,16 @@ export type User = {
   phone: string;
   address: string;
   role: Role;
+  points?: number;
+  coupons?: Coupon[];
+  lastSpinDate?: string | null;
 };
+
 type FullUser = User & { password: string };
 
 type AuthContextType = {
   currentUser: User | null;
+  setCurrentUser: (user: User | null) => void; // SHTO KËTË RRESHT
   signup: (userData: FullUser) => Promise<void>;
   login: (email: string, password: string) => Promise<Role | false>;
   logout: () => void;
@@ -73,7 +86,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ currentUser, setCurrentUser, signup, login, logout }} // SHTO setCurrentUser KËTU
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import UserProfile from "./UserProfile";
 import UserInvoices from "./UserInvoices";
+import Rewards from "../../Rewards";
 
 interface OrderItem {
   title: string;
@@ -136,9 +137,9 @@ export default function UserDashboard() {
   const [ratingMap, setRatingMap] = useState<
     Record<number, Record<string, number>>
   >({});
-  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "invoices">(
-    "orders"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "orders" | "profile" | "invoices" | "rewards"
+  >("orders");
 
   const fetchUserOrders = async () => {
     if (!currentUser) return;
@@ -269,6 +270,16 @@ export default function UserDashboard() {
             }`}
           >
             Profili Im
+          </button>
+          <button
+            onClick={() => setActiveTab("rewards")}
+            className={`px-4 py-2 rounded-full font-medium transition-all ${
+              activeTab === "rewards"
+                ? "bg-orange-600 text-white shadow"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white"
+            }`}
+          >
+            Rewards & Kupona
           </button>
         </div>
 
@@ -501,6 +512,7 @@ export default function UserDashboard() {
         )}
         {activeTab === "profile" && <UserProfile />}
         {activeTab === "invoices" && <UserInvoices />}
+        {activeTab === "rewards" && <Rewards />}
       </div>
     </div>
   );

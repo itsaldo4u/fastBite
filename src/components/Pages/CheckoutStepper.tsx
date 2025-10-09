@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useUsers } from "../context/UsersContext";
+import { useRewards } from "../context/RewardsContext";
 
 export type CartItem = {
   id: string;
@@ -39,6 +40,7 @@ export default function CheckoutStepper({
 }: CheckoutStepperProps) {
   const { currentUser } = useAuth();
   const { fetchUsers } = useUsers();
+  const { addPoints, applyCoupon, markCouponAsUsed } = useRewards();
 
   const [step, setStep] = useState(1);
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -46,6 +48,13 @@ export default function CheckoutStepper({
 
   const [receiptItems, setReceiptItems] = useState<CartItem[]>([]);
   const [finalTotalPrice, setFinalTotalPrice] = useState<number>(0);
+  const [savedDiscountAmount, setSavedDiscountAmount] = useState<number>(0);
+
+  // State për kuponin
+  const [couponCode, setCouponCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [couponError, setCouponError] = useState("");
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -76,6 +85,10 @@ export default function CheckoutStepper({
     (total, item) => total + item.price * item.quantity,
     0
   );
+
+  // Llogarit çmimin me zbritje
+  const discountAmount = (totalPrice * couponDiscount) / 100;
+  const finalPrice = totalPrice - discountAmount;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -152,36 +165,58 @@ export default function CheckoutStepper({
     setStep((s) => s - 1);
   };
 
-  // Function to register new user if they don't exist
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponError("Ju lutem shkruani kodin e kuponit.");
+      return;
+    }
+
+    const result = await applyCoupon(couponCode);
+
+    if (result.valid) {
+      setCouponDiscount(result.discount);
+      setCouponApplied(true);
+      setCouponError("");
+    } else {
+      setCouponError("Kupon i pavlefshëm ose i skaduar.");
+      setCouponDiscount(0);
+      setCouponApplied(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponCode("");
+    setCouponDiscount(0);
+    setCouponApplied(false);
+    setCouponError("");
+  };
+
   const registerNewUserIfNeeded = async (): Promise<number | null> => {
     if (currentUser) {
       return currentUser.id || null;
     }
 
     try {
-      // Check if user exists by email
       const existingUserResponse = await axios.get(
         `http://localhost:3000/users?email=${formData.email}`
       );
 
       if (existingUserResponse.data.length > 0) {
-        // User exists, return their ID
         return existingUserResponse.data[0].id;
       }
 
-      // User doesn't exist, create new user
       const newUser = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
         role: "user" as const,
-        password: "temp123", // Temporary password, they can change it later
+        password: "temp123",
+        points: 0,
+        coupons: [],
       };
 
       const response = await axios.post("http://localhost:3000/users", newUser);
-
-      // Refresh users list in context
       await fetchUsers();
 
       return response.data.id;
@@ -195,14 +230,14 @@ export default function CheckoutStepper({
     e.preventDefault();
     if (!validateStep()) return;
 
-    // Store a snapshot of cart items and total price *before* submitting and clearing
+    // Ruaj snapshot-in e vlerave para se të zbrazet karroca
     setReceiptItems([...cartItems]);
-    setFinalTotalPrice(totalPrice);
+    setSavedDiscountAmount(discountAmount);
+    setFinalTotalPrice(finalPrice);
 
     try {
       setIsSubmitting(true);
 
-      // Register new user if needed
       const userId = await registerNewUserIfNeeded();
 
       const orderData = {
@@ -218,15 +253,30 @@ export default function CheckoutStepper({
           formData.paymentMethod === "card" ? formData.expiryDate : null,
         cvv: formData.paymentMethod === "card" ? formData.cvv : null,
         items: cartItems,
-        totalPrice,
+        totalPrice: finalPrice,
+        originalPrice: totalPrice,
+        couponUsed: couponApplied ? couponCode : null,
+        discount: couponDiscount,
         createdAt: new Date().toISOString(),
         status: "pending",
+        prepTime: 30,
       };
 
       const response = await axios.post(
         "http://localhost:3000/orders",
         orderData
       );
+
+      // Shto pika: 1 pikë për çdo $1 të shpenzuar
+      const pointsEarned = Math.floor(finalPrice);
+      if (userId) {
+        await addPoints(pointsEarned);
+      }
+
+      // Shëno kuponin si të përdorur
+      if (couponApplied && couponCode) {
+        await markCouponAsUsed(couponCode);
+      }
 
       setOrderId(response.data.id?.toString() || null);
       clearCart();
@@ -509,6 +559,80 @@ export default function CheckoutStepper({
                   </div>
                 </div>
               )}
+
+              {/* Seksioni i Kuponit */}
+              <div className="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                <h4 className="font-semibold mb-3 text-gray-800 dark:text-white flex items-center gap-2">
+                  🎟️ Ke një kupon?
+                </h4>
+
+                {!couponApplied ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => {
+                        setCouponCode(e.target.value.toUpperCase());
+                        setCouponError("");
+                      }}
+                      placeholder="Shkruaj kodin e kuponit"
+                      className="flex-1 p-2 border border-gray-300 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold transition-all"
+                    >
+                      Apliko
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between bg-green-100 dark:bg-green-900/30 p-3 rounded-lg">
+                    <div>
+                      <p className="font-semibold text-green-800 dark:text-green-300">
+                        ✓ Kupon i aplikuar: {couponCode}
+                      </p>
+                      <p className="text-sm text-green-700 dark:text-green-400">
+                        Zbritje: {couponDiscount}% (-$
+                        {discountAmount.toFixed(2)})
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-red-600 hover:text-red-700 font-semibold"
+                    >
+                      Hiq
+                    </button>
+                  </div>
+                )}
+
+                {couponError && (
+                  <p className="mt-2 text-red-600 text-sm">{couponError}</p>
+                )}
+              </div>
+
+              {/* Përmbledhja e çmimit */}
+              <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Subtotali:
+                  </span>
+                  <span className="font-medium">${totalPrice.toFixed(2)}</span>
+                </div>
+                {couponApplied && (
+                  <div className="flex justify-between mb-2 text-green-600 dark:text-green-400">
+                    <span>Zbritje ({couponDiscount}%):</span>
+                    <span>-${discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between pt-2 border-t border-gray-300 dark:border-gray-600">
+                  <span className="text-lg font-bold">Totali:</span>
+                  <span className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                    ${finalPrice.toFixed(2)}
+                  </span>
+                </div>
+              </div>
             </>
           )}
 
@@ -527,6 +651,12 @@ export default function CheckoutStepper({
                     <span className="font-mono font-bold">{orderId}</span>
                   </p>
                 )}
+
+                <div className="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg inline-block">
+                  <p className="text-yellow-800 dark:text-yellow-300 font-semibold">
+                    ⭐ Ke fituar {Math.floor(finalTotalPrice)} pike!
+                  </p>
+                </div>
               </div>
 
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
@@ -594,6 +724,12 @@ export default function CheckoutStepper({
                 </ul>
 
                 <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
+                  {savedDiscountAmount > 0 && (
+                    <div className="flex justify-between items-center mb-2 text-green-600 dark:text-green-400">
+                      <span>Zbritje ({couponDiscount}%):</span>
+                      <span>-${savedDiscountAmount.toFixed(2)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold text-blue-800 dark:text-blue-300">
                       Totali:

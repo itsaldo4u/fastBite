@@ -33,12 +33,12 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-400 to-red-500 px-4">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
+      <div className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-2 text-center text-gray-800 dark:text-white">
           Krijo llogari
         </h2>
 
-        <form onSubmit={handleSignup} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-2">
           <InputField
             label="Emri"
             name="name"
