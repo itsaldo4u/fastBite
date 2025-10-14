@@ -482,7 +482,7 @@ export default function CheckoutStepper({
               </div>
 
               {formData.paymentMethod === "card" && (
-                <div className="grid grid-cols-3 gap-4 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
                   <div className="col-span-2">
                     <label className="block mb-1 font-semibold">
                       Numri i Kartës
@@ -565,7 +565,7 @@ export default function CheckoutStepper({
                 </h4>
 
                 {!couponApplied ? (
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       value={couponCode}
