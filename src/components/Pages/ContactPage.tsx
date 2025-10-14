@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -8,16 +9,25 @@ export default function ContactPage() {
     message: "",
   });
 
+  const [status, setStatus] = useState<string | null>(null);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // opsionale: dërgo të dhënat në backend ose email service
+
+    try {
+      await axios.post("http://localhost:3000/contact", formData);
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Gabim gjatë dërgimit:", error);
+      setStatus("error");
+    }
   };
 
   return (
@@ -93,8 +103,19 @@ export default function ContactPage() {
             className="group bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold py-3 px-6 rounded-full shadow-xl hover:shadow-yellow-500/25 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
           >
             <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <span>Dergo Mesazh</span>
+            <span>Dërgo Mesazh</span>
           </button>
+
+          {status === "success" && (
+            <p className="text-green-400 font-semibold text-sm">
+              ✅ Mesazhi u dërgua me sukses!
+            </p>
+          )}
+          {status === "error" && (
+            <p className="text-red-400 font-semibold text-sm">
+              ❌ Ndodhi një gabim. Provo përsëri.
+            </p>
+          )}
         </form>
       </div>
     </div>

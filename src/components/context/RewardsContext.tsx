@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
-import type { User, Coupon } from "./AuthContext";
+import type { Coupon } from "./AuthContext";
 
 type RewardsContextType = {
   userPoints: number;
@@ -23,39 +23,66 @@ export const RewardsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { currentUser } = useAuth();
   const [userPoints, setUserPoints] = useState(0);
   const [userCoupons, setUserCoupons] = useState<Coupon[]>([]);
   const baseURL = "http://localhost:3000";
 
+  // 🔹 Merr rewards për përdoruesin aktual
   useEffect(() => {
-    if (currentUser) {
-      setUserPoints(currentUser.points || 0);
-      setUserCoupons(currentUser.coupons || []);
-    }
+    const fetchRewards = async () => {
+      if (!currentUser) return;
+
+      try {
+        const res = await axios.get(
+          `${baseURL}/rewards?userId=${currentUser.id}`
+        );
+        const reward = res.data[0];
+
+        if (reward) {
+          setUserPoints(reward.points || 0);
+          setUserCoupons(reward.coupons || []);
+        } else {
+          // Krijo reward të ri nëse nuk ekziston
+          await axios.post(`${baseURL}/rewards`, {
+            userId: currentUser.id,
+            points: 0,
+            coupons: [],
+            lastSpinDate: null,
+          });
+          setUserPoints(0);
+          setUserCoupons([]);
+        }
+      } catch (error) {
+        console.error("Gabim në marrjen e rewards:", error);
+      }
+    };
+
+    fetchRewards();
   }, [currentUser]);
 
+  // 🔹 Shto pikë
   const addPoints = async (points: number) => {
     if (!currentUser) return;
-
     const newPoints = userPoints + points;
 
     try {
-      const res = await axios.patch<User>(
-        `${baseURL}/users/${currentUser.id}`,
-        {
-          points: newPoints,
-        }
+      const res = await axios.get(
+        `${baseURL}/rewards?userId=${currentUser.id}`
       );
+      const reward = res.data[0];
+      if (!reward) return;
 
+      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
+        points: newPoints,
+      });
       setUserPoints(newPoints);
-      if (setCurrentUser) setCurrentUser(res.data);
-      localStorage.setItem("fastfood_user", JSON.stringify(res.data));
     } catch (error) {
       console.error("Gabim në shtimin e pikave:", error);
     }
   };
 
+  // 🔹 Gjenero kupon
   const generateCoupon = async (pointsCost: number, discount: number) => {
     if (!currentUser || userPoints < pointsCost) {
       alert("Nuk keni pika të mjaftueshme!");
@@ -77,18 +104,19 @@ export const RewardsProvider = ({
     const updatedCoupons = [...userCoupons, newCoupon];
 
     try {
-      const res = await axios.patch<User>(
-        `${baseURL}/users/${currentUser.id}`,
-        {
-          points: newPoints,
-          coupons: updatedCoupons,
-        }
+      const res = await axios.get(
+        `${baseURL}/rewards?userId=${currentUser.id}`
       );
+      const reward = res.data[0];
+      if (!reward) return;
+
+      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
+        points: newPoints,
+        coupons: updatedCoupons,
+      });
 
       setUserPoints(newPoints);
       setUserCoupons(updatedCoupons);
-      if (setCurrentUser) setCurrentUser(res.data);
-      localStorage.setItem("fastfood_user", JSON.stringify(res.data));
 
       alert(`Kuponi juaj: ${newCoupon.code}`);
     } catch (error) {
@@ -96,6 +124,7 @@ export const RewardsProvider = ({
     }
   };
 
+  // 🔹 Apliko kupon
   const applyCoupon = async (
     couponCode: string
   ): Promise<{ valid: boolean; discount: number }> => {
@@ -106,13 +135,12 @@ export const RewardsProvider = ({
         c.code === couponCode && !c.used && new Date(c.expiresAt) > new Date()
     );
 
-    if (!coupon) {
-      return { valid: false, discount: 0 };
-    }
+    if (!coupon) return { valid: false, discount: 0 };
 
     return { valid: true, discount: coupon.discount };
   };
 
+  // 🔹 Shëno kuponin si të përdorur
   const markCouponAsUsed = async (couponCode: string) => {
     if (!currentUser) return;
 
@@ -121,32 +149,33 @@ export const RewardsProvider = ({
     );
 
     try {
-      const res = await axios.patch<User>(
-        `${baseURL}/users/${currentUser.id}`,
-        {
-          coupons: updatedCoupons,
-        }
+      const res = await axios.get(
+        `${baseURL}/rewards?userId=${currentUser.id}`
       );
+      const reward = res.data[0];
+      if (!reward) return;
+
+      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
+        coupons: updatedCoupons,
+      });
 
       setUserCoupons(updatedCoupons);
-      if (setCurrentUser) setCurrentUser(res.data);
-      localStorage.setItem("fastfood_user", JSON.stringify(res.data));
     } catch (error) {
       console.error("Gabim në shënimin e kuponit:", error);
     }
   };
 
-  // FUNKSIONET EREJA PËR WHEEL
+  // 🔹 Kontrollo nëse mund të rrotullojë rrotën sot
   const canSpinToday = (): boolean => {
     if (!currentUser) return false;
 
-    const lastSpin = currentUser.lastSpinDate;
+    const reward = JSON.parse(localStorage.getItem("reward_cache") || "null");
+    const lastSpin = reward?.lastSpinDate;
     if (!lastSpin) return true;
 
     const lastSpinDate = new Date(lastSpin);
     const today = new Date();
 
-    // Kontrollo nëse është i njëjti ditë
     return (
       lastSpinDate.getDate() !== today.getDate() ||
       lastSpinDate.getMonth() !== today.getMonth() ||
@@ -154,10 +183,10 @@ export const RewardsProvider = ({
     );
   };
 
+  // 🔹 Spin wheel -> gjenero kupon të ri
   const spinWheel = async (discount: number) => {
     if (!currentUser) return;
 
-    // Gjenero kuponin e ri
     const newCoupon: Coupon = {
       id: `WHEEL-${Date.now()}`,
       code: `LUCKY${discount}-${Math.random()
@@ -173,17 +202,22 @@ export const RewardsProvider = ({
     const today = new Date().toISOString();
 
     try {
-      const res = await axios.patch<User>(
-        `${baseURL}/users/${currentUser.id}`,
-        {
-          coupons: updatedCoupons,
-          lastSpinDate: today,
-        }
+      const res = await axios.get(
+        `${baseURL}/rewards?userId=${currentUser.id}`
       );
+      const reward = res.data[0];
+      if (!reward) return;
+
+      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
+        coupons: updatedCoupons,
+        lastSpinDate: today,
+      });
 
       setUserCoupons(updatedCoupons);
-      if (setCurrentUser) setCurrentUser(res.data);
-      localStorage.setItem("fastfood_user", JSON.stringify(res.data));
+      localStorage.setItem(
+        "reward_cache",
+        JSON.stringify({ lastSpinDate: today })
+      );
     } catch (error) {
       console.error("Gabim në spin wheel:", error);
     }
@@ -207,6 +241,7 @@ export const RewardsProvider = ({
   );
 };
 
+// 🔹 Hook i personalizuar
 export const useRewards = () => {
   const ctx = useContext(RewardsContext);
   if (!ctx)

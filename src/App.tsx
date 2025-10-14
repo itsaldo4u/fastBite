@@ -17,6 +17,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ContactPage from "./components/Pages/ContactPage";
 import OrderTracking from "./components/Pages/OrderTracking";
+import Rewards from "./components/Rewards";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                         <Route path="/admin" element={<AdminDashboard />} />
                         <Route path="/dashboard" element={<UserDashboard />} />
                         <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/rewards" element={<Rewards />} />
                         <Route
                           path="/track-order"
                           element={<OrderTracking />}
