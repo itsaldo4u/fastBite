@@ -212,8 +212,6 @@ export default function CheckoutStepper({
         address: formData.address,
         role: "user" as const,
         password: "temp123",
-        points: 0,
-        coupons: [],
       };
 
       const response = await axios.post("http://localhost:3000/users", newUser);
@@ -652,11 +650,13 @@ export default function CheckoutStepper({
                   </p>
                 )}
 
-                <div className="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg inline-block">
-                  <p className="text-yellow-800 dark:text-yellow-300 font-semibold">
-                    ⭐ Ke fituar {Math.floor(finalTotalPrice)} pike!
-                  </p>
-                </div>
+                {currentUser && (
+                  <div className="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg inline-block">
+                    <p className="text-yellow-800 dark:text-yellow-300 font-semibold">
+                      ⭐ Ke fituar {Math.floor(finalTotalPrice)} pikë!
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6">

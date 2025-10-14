@@ -16,17 +16,7 @@
       "password": "a123",
       "phone": "069515253",
       "address": "rruga bardhyl , oslo bar",
-      "role": "user",
-      "points": 468,
-      "coupons": [
-        {
-          "id": "COUPON-1760018144101",
-          "code": "SAVE10-9JRMFR",
-          "discount": 10,
-          "expiresAt": "2025-11-08T13:55:44.101Z",
-          "used": true
-        }
-      ]
+      "role": "user"
     },
     {
       "id": "c7f9",
@@ -35,21 +25,233 @@
       "password": "123456",
       "phone": "068686565",
       "address": "Kine",
+      "role": "user"
+    },
+    {
+      "id": "e6ce",
+      "name": "kico",
+      "email": "kico@mail.com",
+      "phone": "12345678",
+      "address": "rruga kico mihali",
       "role": "user",
-      "coupons": [
-        {
-          "id": "WHEEL-1759928009460",
-          "code": "LUCKY20-713KFQ",
-          "discount": 20,
-          "expiresAt": "2025-10-15T12:53:29.460Z",
-          "used": true
-        }
-      ],
-      "lastSpinDate": "2025-10-08T12:53:29.460Z",
-      "points": 13
+      "password": "temp123"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "0750",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "fe01",
+          "title": "Pizza Margherita",
+          "price": 4.5,
+          "quantity": 1
+        },
+        {
+          "id": "bu11",
+          "title": "Burger Classic",
+          "price": 5.99,
+          "quantity": 1
+        },
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 1
+        },
+        {
+          "id": "a199",
+          "title": "Hot Dog",
+          "price": 10,
+          "quantity": 1
+        },
+        {
+          "id": "pi01",
+          "title": "Coca Cola 0.5L",
+          "price": 1.2,
+          "quantity": 1
+        },
+        {
+          "id": "pi02",
+          "title": "Fanta Portokall",
+          "price": 1.3,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 23.592000000000002,
+      "originalPrice": 29.490000000000002,
+      "couponUsed": "LUCKY20-HER3PF",
+      "discount": 20,
+      "createdAt": "2025-10-14T09:47:46.207Z",
+      "status": "pending",
+      "prepTime": 30
+    },
+    {
+      "id": "472e",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "1",
+          "title": "2 Pica + 1 Coca Cola",
+          "price": 17,
+          "quantity": 1
+        },
+        {
+          "id": "2",
+          "title": "Margharita Menu Familjar",
+          "price": 12,
+          "quantity": 1
+        },
+        {
+          "id": "3",
+          "title": "Pica Speciale XXL",
+          "price": 13,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 42,
+      "originalPrice": 42,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-14T09:53:49.339Z",
+      "status": "pending",
+      "prepTime": 30
+    },
+    {
+      "id": "6f43",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "03c8",
+          "title": "trdx",
+          "price": 440,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 440,
+      "originalPrice": 440,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-14T09:54:49.523Z",
+      "status": "pending",
+      "prepTime": 30
+    },
+    {
+      "id": "a75d",
+      "userId": "5a40",
+      "name": "kico",
+      "email": "kico@mail.com",
+      "phone": "12345678",
+      "address": "rruga mustafa aga",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "1",
+          "title": "2 Pica + 1 Coca Cola",
+          "price": 17,
+          "quantity": 5
+        }
+      ],
+      "totalPrice": 85,
+      "originalPrice": 85,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-14T09:56:22.582Z",
+      "status": "pending",
+      "prepTime": 30
+    },
+    {
+      "id": "f18f",
+      "userId": "5a40",
+      "name": "kico",
+      "email": "kico@mail.com",
+      "phone": "012393812",
+      "address": "kinostudio",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "1",
+          "title": "2 Pica + 1 Coca Cola",
+          "price": 17,
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 17,
+      "originalPrice": 17,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-14T09:59:16.050Z",
+      "status": "pending",
+      "prepTime": 30
+    },
+    {
+      "id": "e5ae",
+      "userId": "e6ce",
+      "name": "kico",
+      "email": "kico@mail.com",
+      "phone": "12345678",
+      "address": "rruga kico mihali",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1760436255642",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 20.07,
+          "quantity": 5,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Domate",
+            "Qepë",
+            "Rukola",
+            "Salsiçe",
+            "Ananas"
+          ]
+        }
+      ],
+      "totalPrice": 100.35,
+      "originalPrice": 100.35,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-14T10:04:45.581Z",
+      "status": "pending",
+      "prepTime": 30
+    }
+  ],
   "ratings": [],
   "products": [
     {
@@ -221,6 +423,22 @@
       "id": "3"
     }
   ],
-  "coupons": [],
-  "rewards": []
+  "contact": [],
+  "rewards": [
+    {
+      "id": "139c",
+      "userId": "964d",
+      "points": 505,
+      "coupons": [
+        {
+          "id": "WHEEL-1760435198137",
+          "code": "LUCKY20-HER3PF",
+          "discount": 20,
+          "expiresAt": "2025-10-21T09:46:38.137Z",
+          "used": true
+        }
+      ],
+      "lastSpinDate": "2025-10-14T09:46:38.137Z"
+    }
+  ]
 }

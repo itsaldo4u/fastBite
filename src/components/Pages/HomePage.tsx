@@ -189,61 +189,113 @@ export default function HomePage() {
             >
               <div className="relative">
                 {currentOffer ? (
-                  <div className="bg-gradient-to-br from-yellow-400/10 to-red-500/10 rounded-3xl shadow-2xl transition-all duration-500 hover:scale-105 max-w-sm mx-auto p-6">
-                    <div className="text-center">
-                      <img
-                        src={currentOffer.image}
-                        alt={currentOffer.title}
-                        className="mx-auto mb-4 w-48 h-48 object-cover rounded-lg"
-                      />
-                      <h3 className="text-2xl font-bold text-white">
-                        {currentOffer.title}
-                      </h3>
-                      <div className="space-y-2 mt-2">
-                        <div className="text-3xl font-black text-yellow-400">
-                          {currentOffer.newPrice}€
-                        </div>
-                        <div className="text-lg text-white/70 line-through">
-                          {currentOffer.oldPrice}€
-                        </div>
+                  <div className="relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-purple-900/50 to-slate-900/90 backdrop-blur-xl rounded-3xl shadow-2xl transition-all duration-500 hover:shadow-purple-500/20 max-w-sm mx-auto border border-white/10">
+                    {/* Animated background gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-red-500/5 to-purple-500/5 animate-pulse"></div>
+
+                    {/* Content */}
+                    <div className="relative p-5">
+                      {/* Discount badge */}
+                      <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-black px-4 py-2 rounded-full text-sm transform rotate-3 shadow-lg">
+                        OFERTË
                       </div>
-                      <button
-                        onClick={() =>
-                          handleAddToCart(
-                            currentOffer.id.toString(),
-                            currentOffer.title,
-                            currentOffer.newPrice
-                          )
-                        }
-                        className="mt-4 bg-white text-red-600 font-bold py-3 px-6 rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105"
-                      >
-                        Shto në Shportë
-                      </button>
+
+                      <div className="text-center">
+                        {/* Image with modern frame */}
+                        <div className="relative mb-6 group">
+                          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-red-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                          <img
+                            src={currentOffer.image}
+                            alt={currentOffer.title}
+                            className="relative mx-auto w-48 h-48 object-cover rounded-2xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+
+                        {/* Title */}
+                        <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-4">
+                          {currentOffer.title}
+                        </h3>
+
+                        {/* Price section */}
+                        <div className="relative inline-block mb-6">
+                          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-red-500/20 rounded-2xl blur-lg"></div>
+                          <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
+                            <div className="text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
+                              {currentOffer.newPrice}€
+                            </div>
+                            <div className="text-base text-white/50 line-through mt-1">
+                              {currentOffer.oldPrice}€
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* CTA Button */}
+                        <button
+                          onClick={() =>
+                            handleAddToCart(
+                              currentOffer.id.toString(),
+                              currentOffer.title,
+                              currentOffer.newPrice
+                            )
+                          }
+                          className="relative w-full group overflow-hidden bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-slate-900 font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50"
+                        >
+                          <span className="relative z-10 flex items-center justify-center gap-2">
+                            Shto në Shportë
+                            <svg
+                              className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"
+                              />
+                            </svg>
+                          </span>
+                          <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="p-8 rounded-3xl bg-white/10 text-center text-white">
-                    Duke ngarkuar ofertat...
+                  <div className="p-8 rounded-3xl bg-gradient-to-br from-slate-900/90 to-purple-900/50 backdrop-blur-xl text-center text-white border border-white/10">
+                    <div className="animate-pulse">
+                      Duke ngarkuar ofertat...
+                    </div>
                   </div>
                 )}
-                <div className="flex justify-center mt-6 space-x-2">
+
+                {/* Modern pagination dots */}
+                <div className="flex justify-center mt-8 space-x-3">
                   {offers.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentOfferIndex(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      className={`relative transition-all duration-300 ${
                         index === currentOfferIndex
-                          ? "bg-yellow-400 w-8"
-                          : "bg-white/30 hover:bg-white/50"
+                          ? "w-10 h-3"
+                          : "w-3 h-3 hover:scale-125"
                       }`}
-                    />
+                    >
+                      <div
+                        className={`absolute inset-0 rounded-full transition-all duration-300 ${
+                          index === currentOfferIndex
+                            ? "bg-gradient-to-r from-yellow-400 to-red-500 shadow-lg shadow-yellow-500/50"
+                            : "bg-white/20 hover:bg-white/40"
+                        }`}
+                      ></div>
+                    </button>
                   ))}
                 </div>
               </div>
             </div>
           </div>
         </main>
-
+        <br />
         {/* WHEEL OF FORTUNE SECTION - SHTO KËTË */}
         {currentUser && (
           <section className="py-16 px-6">

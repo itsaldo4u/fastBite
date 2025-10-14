@@ -381,7 +381,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
             <div className="flex justify-center gap-4">
               {selectedPrize.discount > 0 && (
                 <button
-                  onClick={() => (window.location.href = "/dashboard")}
+                  onClick={() => (window.location.href = "/rewards")}
                   className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition font-semibold"
                 >
                   Shiko Kuponin
