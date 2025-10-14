@@ -299,33 +299,28 @@ export default function CheckoutStepper({
     ];
 
     return (
-      <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-t-2xl p-6 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-t-2xl p-6 flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
         {stepsArr.map(({ id, label, icon }) => {
           const isActive = id === step;
           const isCompleted = id < step;
 
           return (
-            <div key={id} className="flex items-center space-x-3">
+            <div
+              key={id}
+              className="flex items-center space-x-3 w-full sm:w-auto"
+            >
               <div
-                className={`flex items-center justify-center w-10 h-10 rounded-full border-2
-                ${
+                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
                   isCompleted
                     ? "bg-green-500 border-green-500 text-white"
                     : isActive
                     ? "bg-white border-white text-blue-700"
                     : "bg-transparent border-white text-white opacity-60"
-                }
-                transition-all duration-300`}
+                } transition-all duration-300`}
               >
                 <span className="text-lg">{icon}</span>
               </div>
-              <span
-                className={`font-semibold text-sm ${
-                  isActive || isCompleted
-                    ? "text-white"
-                    : "text-white opacity-60"
-                }`}
-              >
+              <span className="font-semibold text-sm break-words text-center">
                 {label}
               </span>
               {id !== stepsArr.length && (
@@ -693,7 +688,7 @@ export default function CheckoutStepper({
                     <span className="text-gray-600 dark:text-gray-300">
                       Pagesa:
                     </span>
-                    <span className="font-medium">
+                    <span className="font-medium break-words max-w-[150px] sm:max-w-full">
                       {formData.paymentMethod === "card"
                         ? "Kartë Krediti/Debiti"
                         : "Para në dorë"}
