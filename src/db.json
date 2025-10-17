@@ -250,6 +250,69 @@
       "createdAt": "2025-10-14T10:04:45.581Z",
       "status": "pending",
       "prepTime": 30
+    },
+    {
+      "id": "5547",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 12
+        }
+      ],
+      "totalPrice": 62.4,
+      "originalPrice": 78,
+      "couponUsed": "SAVE20-ME218K",
+      "discount": 20,
+      "createdAt": "2025-10-17T09:22:57.922Z",
+      "status": "pending",
+      "prepTime": 30
+    },
+    {
+      "id": "4bdf",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pizza-1760694011345",
+          "title": "Pizza Medium (30cm) - Klasike",
+          "price": 20.67,
+          "quantity": 1,
+          "size": "medium",
+          "crust": "classic",
+          "toppings": [
+            "Domate",
+            "Pepperoni",
+            "Kerpudha",
+            "Djathë Extra",
+            "Rukola"
+          ]
+        }
+      ],
+      "totalPrice": 20.67,
+      "originalPrice": 20.67,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-17T09:40:26.703Z",
+      "status": "pending",
+      "prepTime": 30
     }
   ],
   "ratings": [],
@@ -428,7 +491,7 @@
     {
       "id": "139c",
       "userId": "964d",
-      "points": 505,
+      "points": 87,
       "coupons": [
         {
           "id": "WHEEL-1760435198137",
@@ -436,9 +499,30 @@
           "discount": 20,
           "expiresAt": "2025-10-21T09:46:38.137Z",
           "used": true
+        },
+        {
+          "id": "WHEEL-1760692885356",
+          "code": "LUCKY10-B43LYX",
+          "discount": 10,
+          "expiresAt": "2025-10-24T09:21:25.356Z",
+          "used": false
+        },
+        {
+          "id": "COUPON-1760692892860",
+          "code": "SAVE20-ME218K",
+          "discount": 20,
+          "expiresAt": "2025-11-16T09:21:32.860Z",
+          "used": true
+        },
+        {
+          "id": "COUPON-1760692901414",
+          "code": "SAVE15-BNFLG9",
+          "discount": 15,
+          "expiresAt": "2025-11-16T09:21:41.414Z",
+          "used": false
         }
       ],
-      "lastSpinDate": "2025-10-14T09:46:38.137Z"
+      "lastSpinDate": "2025-10-17T09:21:25.356Z"
     }
   ]
 }

@@ -296,7 +296,57 @@ export default function HomePage() {
           </div>
         </main>
         <br />
-        {/* WHEEL OF FORTUNE SECTION - SHTO KËTË */}
+        {/* Join FastBite+ Section (visible only if user NOT logged in) */}
+        {!currentUser && (
+          <section className="py-20 px-6">
+            <div className="max-w-5xl mx-auto text-center bg-gradient-to-r from-yellow-400/10 via-red-500/10 to-pink-600/10 backdrop-blur-lg rounded-3xl border border-white/10 p-10 shadow-2xl">
+              <div className="space-y-6">
+                <h2 className="text-4xl md:text-5xl font-black text-white">
+                  Bashkohu me{" "}
+                  <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                    FastBite+
+                  </span>
+                </h2>
+                <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                  Krijo një llogari FALAS për të përfituar nga{" "}
+                  <span className="text-yellow-400 font-semibold">
+                    kuponat e përditshëm
+                  </span>
+                  , shpërblimet dhe aksesin në lojën ekskluzive{" "}
+                  <span className="text-pink-400 font-semibold">
+                    Rrota e Fatit
+                  </span>
+                  .
+                </p>
+
+                <div className="flex justify-center gap-4 mt-6">
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="group bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white font-bold py-4 px-10 rounded-full shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/30 flex items-center gap-2"
+                  >
+                    <span>Krijo Llogari Falas</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="group border-2 border-white/20 bg-white/10 text-white font-semibold py-4 px-10 rounded-full hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
+                  >
+                    <Sparkles className="w-5 h-5 text-yellow-400 group-hover:rotate-12 transition-transform" />
+                    <span>Hyr në Llogarinë tënde</span>
+                  </button>
+                </div>
+
+                <p className="text-sm text-gray-400 mt-6">
+                  🚀 Bëhu pjesë e komunitetit FastBite dhe fito shpërblime çdo
+                  ditë!
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* WHEEL OF FORTUNE SECTION */}
         {currentUser && (
           <section className="py-16 px-6">
             <div className="max-w-2xl mx-auto">

@@ -13,10 +13,7 @@ export default function Footer() {
           <a href="/privacy" className="hover:text-red-500 transition">
             Politika e Privatësisë
           </a>
-          <a
-            href="mailto:contact@fastfoodpiceri.com"
-            className="hover:text-red-500 transition"
-          >
+          <a href="/contact" className="hover:text-red-500 transition">
             Kontakt
           </a>
         </div>
