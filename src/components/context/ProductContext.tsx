@@ -32,7 +32,7 @@ export const ProductProvider = ({
   children: React.ReactNode;
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchProducts();

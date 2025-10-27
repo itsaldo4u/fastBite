@@ -29,7 +29,7 @@ export const RewardsProvider = ({
   const [userCoupons, setUserCoupons] = useState<Coupon[]>([]);
   const [lastSpinDate, setLastSpinDate] = useState<string | null>(null);
 
-  const baseURL = process.env.REACT_APP_API_URL + "/rewards";
+  const baseURL = import.meta.env.VITE_API_URL + "/rewards";
 
   // Merr reward për userin aktual nga backend
   const fetchRewards = async () => {

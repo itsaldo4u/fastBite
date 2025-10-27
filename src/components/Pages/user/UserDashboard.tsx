@@ -44,12 +44,14 @@ export function OrdersPanel() {
     "orders" | "profile" | "invoices" | "rewards"
   >("orders");
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // Marrja e porosive
   const fetchUserOrders = async () => {
     if (!currentUser) return;
     try {
       const res = await axios.get<Order[]>(
-        `http://localhost:5000/orders?userId=${currentUser._id}`
+        `${API_URL}/orders?userId=${currentUser._id}`
       );
       const filtered = res.data.filter(
         (order) => !(order.status === "delivered" && order.review)
@@ -113,13 +115,13 @@ export function OrdersPanel() {
     }
 
     try {
-      // 1️⃣ Përditëso porosinë me review
-      await axios.patch(`http://localhost:5000/orders/${orderId}/review`, {
+      // Përditëso porosinë me review
+      await axios.patch(`${API_URL}/orders/${orderId}/review`, {
         review,
         ratingMap: productRatings,
       });
 
-      // 2️⃣ Dërgo rating-et për çdo produkt
+      // Dërgo rating-et për çdo produkt
       const ratingPromises = items.map((item) => {
         const rating = productRatings[item.title];
         if (!rating) return Promise.resolve();
@@ -139,13 +141,13 @@ export function OrdersPanel() {
           rating: validRating,
         };
 
-        return axios.post("http://localhost:5000/ratings", payload);
+        return axios.post(`${API_URL}/ratings`, payload);
       });
 
       await Promise.all(ratingPromises);
       await fetchProducts();
 
-      // 3️⃣ Pastro state
+      // Pastro state
       setOrders((prev) => prev.filter((order) => order._id !== orderId));
       setReviewMap((prev) => {
         const newMap = { ...prev };
@@ -169,13 +171,8 @@ export function OrdersPanel() {
   if (!currentUser) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-        {/* Animated gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-red-500 via-orange-500 to-yellow-400 bg-[length:400%_400%] animate-gradient-shift" />
-
-        {/* Background overlay */}
         <div className="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent" />
-
-        {/* Floating decorative elements */}
         <div className="absolute top-1/5 left-1/10 text-5xl opacity-10 animate-float">
           🍔
         </div>
@@ -202,13 +199,8 @@ export function OrdersPanel() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 bg-[length:400%_400%] animate-gradient-shift" />
-
-      {/* Background overlay */}
       <div className="absolute inset-0 bg-gradient-radial from-white/5 via-transparent to-transparent" />
-
-      {/* Floating decorative elements */}
       <div className="absolute top-1/6 left-1/12 text-5xl opacity-10 animate-float">
         🍕
       </div>
@@ -228,9 +220,7 @@ export function OrdersPanel() {
         🍦
       </div>
 
-      {/* Main content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-6">
-        {/* Welcome Header */}
         <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-6 mb-6 transform transition-all duration-300 hover:translate-y-[-4px] hover:shadow-3xl">
           <h1 className="text-3xl font-extrabold text-gray-800 text-center relative">
             {currentUser.name

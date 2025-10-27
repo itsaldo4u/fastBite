@@ -67,11 +67,12 @@ export default function AdminDashboard() {
   // Accept order — just mark in frontend for now
   const handleAcceptOrder = async (id: string) => {
     try {
-      await axios.patch(`http://localhost:5000/orders/${id}/status`, {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/orders/${id}/status`, {
         status: "preparing",
       });
+
       toast.success(`Porosia ${id.substring(0, 8)} u pranua!`);
-      fetchOrders(); // rifreskon listën e porosive
+      fetchOrders();
     } catch (error) {
       console.error("Gabim gjatë pranimit të porosisë:", error);
       toast.error("Ndodhi një gabim gjatë pranimit të porosisë.");

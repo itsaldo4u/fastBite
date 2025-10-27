@@ -19,10 +19,12 @@ export default function OffersPage() {
 
   const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
 
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/offers");
+        const res = await fetch(`${VITE_API_URL}/offers`);
         const data = await res.json();
         setOffers(data);
       } catch (error) {

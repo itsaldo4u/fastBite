@@ -16,8 +16,7 @@ export const UsersProvider = ({ children }: { children: React.ReactNode }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const baseURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
-
+  const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   // GET all users
   const fetchUsers = async () => {

@@ -57,7 +57,7 @@ const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
 export const OrdersProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchOrders();

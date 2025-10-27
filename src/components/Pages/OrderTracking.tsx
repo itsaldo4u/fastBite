@@ -10,6 +10,7 @@ export default function OrderTracking() {
   const [order, setOrder] = useState<Order | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const [error, setError] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleTrack = async () => {
     if (!orderId.trim()) {
@@ -20,7 +21,7 @@ export default function OrderTracking() {
 
     try {
       const res = await axios.get<{ trackingId: string; order: Order }>(
-        `http://localhost:5000/orders/track/${orderId.trim()}`
+        `${API_URL}/orders/track/${orderId.trim()}`
       );
       const orderData = res.data.order;
 

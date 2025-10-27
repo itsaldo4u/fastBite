@@ -22,13 +22,15 @@ export default function UserInvoices() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // Fetch delivered orders
   const fetchDeliveredOrders = async () => {
     if (!currentUser) return;
     try {
       setLoading(true);
       const res = await axios.get<Order[]>(
-        `http://localhost:5000/orders/user-invoices/${currentUser._id}`
+        `${API_URL}/orders/user-invoices/${currentUser._id}`
       );
       setInvoices(res.data);
     } catch (error) {
@@ -42,7 +44,7 @@ export default function UserInvoices() {
   const handleDelete = async (_id: string) => {
     if (!window.confirm("Jeni i sigurt që doni të fshini këtë faturë?")) return;
     try {
-      await axios.delete(`http://localhost:5000/orders/${_id}`);
+      await axios.delete(`${API_URL}/orders/${_id}`);
       setInvoices((prev) => prev.filter((order) => order._id !== _id));
     } catch (error) {
       console.error("Gabim gjatë fshirjes:", error);
@@ -150,7 +152,6 @@ export default function UserInvoices() {
     fetchDeliveredOrders();
   }, [currentUser]);
 
-  // Filter invoices
   const filteredInvoices = invoices.filter(
     (order) =>
       order._id.includes(searchTerm) ||

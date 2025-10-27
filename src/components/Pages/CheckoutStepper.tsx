@@ -56,6 +56,7 @@ export default function CheckoutStepper({
   const [couponError, setCouponError] = useState("");
 
   const [errors, setErrors] = useState<Errors>({});
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -231,10 +232,7 @@ export default function CheckoutStepper({
       };
 
       // POST te backend
-      const response = await axios.post(
-        "http://localhost:5000/orders",
-        orderData
-      );
+      const response = await axios.post(`${API_URL}/orders`, orderData);
 
       // Ruaj ID për user dhe ID për backend veçmas
       setOrderTrackingId(response.data.order?.trackingId || null); // ID lexueshme për user
