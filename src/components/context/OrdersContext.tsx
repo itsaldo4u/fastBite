@@ -57,7 +57,7 @@ const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
 export const OrdersProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
-  const baseURL = "http://localhost:5000";
+  const baseURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchOrders();

@@ -7,11 +7,14 @@ export default function UserOrders() {
   const { currentUser } = useAuth();
   const [userOrders, setUserOrders] = useState<Order[]>([]);
 
+  // përdor backend URL nga .env
+  const baseURL = process.env.REACT_APP_API_URL;
+
   const fetchOrders = async () => {
     if (!currentUser) return;
     try {
       const res = await axios.get<Order[]>(
-        `http://localhost:5000/orders?userId=${currentUser._id}`
+        `${baseURL}/orders?userId=${currentUser._id}`
       );
       setUserOrders(res.data);
     } catch (error) {

@@ -29,7 +29,7 @@ const OffersContext = createContext<OffersContextType | undefined>(undefined);
 
 export const OffersProvider = ({ children }: { children: React.ReactNode }) => {
   const [offers, setOffers] = useState<Offer[]>([]);
-  const baseURL = "http://localhost:5000/offers";
+  const baseURL = `${process.env.REACT_APP_API_URL}/offers`;
 
   // Merr të gjitha ofertat nga backend
   const fetchOffers = async () => {

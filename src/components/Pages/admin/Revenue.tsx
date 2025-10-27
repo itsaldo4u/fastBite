@@ -19,7 +19,8 @@ import {
   Award,
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000/orders";
+const API_URL = `${process.env.REACT_APP_API_URL}/orders`;
+
 
 type OrderItem = {
   productId: number;

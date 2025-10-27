@@ -10,7 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000/ratings";
+const API_URL = `${process.env.REACT_APP_API_URL}/ratings`;
 
 type Review = {
   _id?: string;

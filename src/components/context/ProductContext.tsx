@@ -32,7 +32,7 @@ export const ProductProvider = ({
   children: React.ReactNode;
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const baseURL = "http://localhost:5000";
+  const baseURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchProducts();

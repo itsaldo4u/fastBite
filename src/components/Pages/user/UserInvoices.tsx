@@ -22,7 +22,7 @@ export default function UserInvoices() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Fetch orders with status "delivered"
+  // Fetch delivered orders
   const fetchDeliveredOrders = async () => {
     if (!currentUser) return;
     try {
@@ -30,7 +30,6 @@ export default function UserInvoices() {
       const res = await axios.get<Order[]>(
         `http://localhost:5000/orders/user-invoices/${currentUser._id}`
       );
-
       setInvoices(res.data);
     } catch (error) {
       console.error("Gabim në marrjen e porosive të dorëzuara:", error);
@@ -131,7 +130,7 @@ export default function UserInvoices() {
     </html>
   `;
 
-  // Show invoice in new window
+  // Show invoice
   const handleShowInvoice = (order: Order) => {
     const win = window.open("", "_blank");
     if (!win) return;
@@ -139,7 +138,7 @@ export default function UserInvoices() {
     win.document.close();
   };
 
-  // Download/Print invoice
+  // Print/download
   const handleDownloadPDF = (order: Order) => {
     handleShowInvoice(order);
     setTimeout(() => {
@@ -151,7 +150,7 @@ export default function UserInvoices() {
     fetchDeliveredOrders();
   }, [currentUser]);
 
-  // Filter invoices based on search
+  // Filter invoices
   const filteredInvoices = invoices.filter(
     (order) =>
       order._id.includes(searchTerm) ||

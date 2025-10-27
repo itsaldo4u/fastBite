@@ -40,7 +40,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const baseURL = "http://localhost:5000";
+  const baseURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   // Lexo user nga localStorage
   useEffect(() => {

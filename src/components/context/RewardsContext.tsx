@@ -29,7 +29,7 @@ export const RewardsProvider = ({
   const [userCoupons, setUserCoupons] = useState<Coupon[]>([]);
   const [lastSpinDate, setLastSpinDate] = useState<string | null>(null);
 
-  const baseURL = "http://localhost:5000/rewards";
+  const baseURL = process.env.REACT_APP_API_URL + "/rewards";
 
   // Merr reward për userin aktual nga backend
   const fetchRewards = async () => {
@@ -166,7 +166,8 @@ export const RewardsProvider = ({
     setLastSpinDate(today);
 
     try {
-      await axios.put(`${baseURL}/spin/${currentUser.id}`);
+      // Dërgo discount tek backend
+      await axios.put(`${baseURL}/spin/${currentUser.id}`, { discount });
       await updateReward({ coupons: updatedCoupons, lastSpinDate: today });
     } catch (error) {
       console.error("Gabim gjatë rrotullimit të rrotës:", error);

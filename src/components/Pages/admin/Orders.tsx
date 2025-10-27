@@ -42,7 +42,7 @@ export type Order = {
   items?: OrderItem[];
 };
 
-const BACKEND_URL = "http://localhost:5000/orders";
+const BACKEND_URL = `${process.env.REACT_APP_API_URL}/orders`;
 
 export default function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
