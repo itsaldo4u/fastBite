@@ -1,9 +1,10 @@
-// src/context/OffersContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+// Lloji kryesor për ofertat
 export type Offer = {
-  id: number;
+  _id: string;
+  id?: string; // opsional, në rast se backend e dërgon ndryshe
   title: string;
   description?: string;
   oldPrice: number;
@@ -14,55 +15,61 @@ export type Offer = {
   gradient?: string;
 };
 
+// Tipet për context
 type OffersContextType = {
   offers: Offer[];
   fetchOffers: () => Promise<void>;
-  addOffer: (data: Omit<Offer, "id">) => Promise<void>;
-  updateOffer: (id: number, data: Omit<Offer, "id">) => Promise<void>;
-  deleteOffer: (id: number) => Promise<void>;
+  addOffer: (data: Omit<Offer, "_id" | "id">) => Promise<void>;
+  updateOffer: (id: string, data: Omit<Offer, "_id" | "id">) => Promise<void>;
+  deleteOffer: (id: string) => Promise<void>;
 };
 
+// Krijo context
 const OffersContext = createContext<OffersContextType | undefined>(undefined);
 
 export const OffersProvider = ({ children }: { children: React.ReactNode }) => {
   const [offers, setOffers] = useState<Offer[]>([]);
-  const baseURL = "http://localhost:3000/offers";
+  const baseURL = "http://localhost:5000/offers";
 
+  // Merr të gjitha ofertat nga backend
   const fetchOffers = async () => {
     try {
-      const res = await axios.get<Offer[]>(baseURL);
+      const res = await axios.get(baseURL);
       setOffers(res.data);
     } catch (error) {
-      console.error("Gabim në marrjen e ofertave:", error);
+      console.error("❌ Gabim në marrjen e ofertave:", error);
     }
   };
 
-  const addOffer = async (data: Omit<Offer, "id">) => {
+  // Shto ofertë të re
+  const addOffer = async (data: Omit<Offer, "_id" | "id">) => {
     try {
       await axios.post(baseURL, data);
       await fetchOffers();
     } catch (error) {
-      console.error("Gabim në shtimin e ofertës:", error);
+      console.error("❌ Gabim në shtimin e ofertës:", error);
       throw error;
     }
   };
 
-  const updateOffer = async (id: number, data: Omit<Offer, "id">) => {
+  // Përditëso ofertë ekzistuese
+  const updateOffer = async (id: string, data: Omit<Offer, "_id" | "id">) => {
     try {
-      await axios.patch(`${baseURL}/${id}`, data);
+      await axios.put(`${baseURL}/${id}`, data);
       await fetchOffers();
     } catch (error) {
-      console.error("Gabim në përditësimin e ofertës:", error);
+      console.error("❌ Gabim në përditësimin e ofertës:", error);
       throw error;
     }
   };
 
-  const deleteOffer = async (id: number) => {
+  // Fshi ofertë
+  const deleteOffer = async (id: string) => {
     try {
       await axios.delete(`${baseURL}/${id}`);
-      setOffers((prev) => prev.filter((offer) => offer.id !== id));
+      setOffers((prev) => prev.filter((offer) => offer._id !== id));
     } catch (error) {
-      console.error("Gabim gjatë fshirjes së ofertës:", error);
+      console.error("❌ Gabim gjatë fshirjes së ofertës:", error);
       throw error;
     }
   };
@@ -80,9 +87,11 @@ export const OffersProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// Hook për përdorim të thjeshtë në komponente
 export const useOffers = () => {
   const ctx = useContext(OffersContext);
-  if (!ctx)
+  if (!ctx) {
     throw new Error("useOffers duhet të përdoret brenda OffersProvider");
+  }
   return ctx;
 };

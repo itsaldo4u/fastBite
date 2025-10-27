@@ -4,51 +4,39 @@ import ShoppingCartDropdown from "../ShoppingCartDropdown";
 import { ShoppingCart, Utensils, Sparkles, TrendingUp } from "lucide-react";
 import CheckoutStepper from "./CheckoutStepper";
 import { useProduct } from "../context/ProductContext";
+import { useCart } from "../context/CartContext";
 
 export default function MenuPage() {
   const { products } = useProduct();
+  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
 
-  const [cartItems, setCartItems] = useState<
-    { id: string; title: string; price: number; quantity: number }[]
-  >([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const handleAddToCart = (id: string) => {
-    setCartItems((prev) => {
-      const exist = prev.find((item) => item.id === id);
-      if (exist) {
-        return prev.map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      const product = products.find((p) => p.id === id);
-      if (!product) return prev;
-      return [
-        ...prev,
-        { id, title: product.title, price: product.price, quantity: 1 },
-      ];
+    const product = products.find((p) => p.id === id);
+    if (!product) return;
+
+    const finalPrice = product.discount
+      ? product.price - product.price * (product.discount / 100)
+      : product.price;
+
+    addToCart({
+      id,
+      title: product.title,
+      price: finalPrice, // ✅ përdor çmimin me zbritje
     });
     setCartOpen(true);
   };
 
   const handleRemoveFromCart = (id: string) => {
-    setCartItems((prev) => {
-      const exist = prev.find((item) => item.id === id);
-      if (!exist) return prev;
-      if (exist.quantity === 1) {
-        return prev.filter((item) => item.id !== id);
-      }
-      return prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-      );
-    });
+    removeFromCart(id);
   };
 
   const handleClearCart = () => {
-    setCartItems([]);
+    clearCart();
     setCartOpen(false);
   };
 
@@ -64,7 +52,6 @@ export default function MenuPage() {
   };
 
   const categories = ["Pizza", "Burger", "Pije"];
-
   const offerSliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,9 +73,7 @@ export default function MenuPage() {
 
     animationFrameId = requestAnimationFrame(scroll);
 
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused]);
 
   return (
@@ -98,7 +83,6 @@ export default function MenuPage() {
         <div className="absolute top-24 left-24 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-16 right-16 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl animate-pulse delay-500" />
-        {/* Animated floating elements */}
         <div className="absolute top-32 right-1/4 w-3 h-3 bg-yellow-400/40 rounded-full animate-bounce delay-300" />
         <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-pink-500/40 rounded-full animate-bounce delay-700" />
         <div className="absolute top-2/3 right-1/3 w-4 h-4 bg-purple-400/30 rounded-full animate-bounce delay-1000" />
@@ -160,7 +144,7 @@ export default function MenuPage() {
                 .filter((p) => p.isCombo || p.discount || p.isNew)
                 .map((product, idx) => (
                   <div
-                    key={product.id + "_" + idx}
+                    key={`${product.id}_offer_${idx}`}
                     className="flex-shrink-0 w-80 cursor-pointer transform hover:scale-105 transition-all duration-300"
                   >
                     <ProductCard {...product} onAddToCart={handleAddToCart} />
@@ -172,39 +156,19 @@ export default function MenuPage() {
           </div>
         </section>
 
-        {/* Floating Stats (shkon mbi grid) */}
-        <div className="flex justify-center mb-12">
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl px-8 py-4 flex items-center space-x-8 shadow-2xl">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-yellow-400">
-                {products.length}
-              </div>
-              <div className="text-xs text-gray-300">Produktet</div>
-            </div>
-            <div className="h-8 w-px bg-white/20" />
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-400">
-                {products.filter((p) => p.discount).length}
-              </div>
-              <div className="text-xs text-gray-300">Oferta</div>
-            </div>
-            <div className="h-8 w-px bg-white/20" />
-            <div className="text-center">
-              <div className="text-2xl font-bold text-pink-400">4.8★</div>
-              <div className="text-xs text-gray-300">Rating</div>
-            </div>
-          </div>
-        </div>
-
         {/* Food Categories Grid */}
         {categories
           .filter((cat) => !activeCategory || activeCategory === cat)
           .map((cat, categoryIndex) => (
-            <section key={cat} className="mb-20">
+            <section key={`cat_${cat}`} className="mb-20">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent flex items-center">
                   <span className="mr-3 text-4xl">
-                    {cat === "Pizza" ? "🍕" : cat === "Burger" ? "🍔" : "🥤"}
+                    {cat === "Pizza"
+                      ? "🍕"
+                      : cat === "Burger"
+                      ? "🍔"
+                      : "🥤"}
                   </span>
                   {cat}
                 </h2>
@@ -216,7 +180,7 @@ export default function MenuPage() {
                   .filter((p) => p.category === cat)
                   .map((product, index) => (
                     <div
-                      key={product.id}
+                      key={`product_${product.id}_cat_${cat}`}
                       className={`transform transition-all duration-500 hover:scale-105 ${
                         index % 3 === 1 ? "lg:translate-y-8" : ""
                       } ${index % 4 === 2 ? "xl:translate-y-4" : ""}`}
@@ -244,7 +208,7 @@ export default function MenuPage() {
           <div className="flex space-x-2 bg-white/10 backdrop-blur-sm rounded-2xl p-2 border border-white/20">
             {categories.map((cat) => (
               <button
-                key={cat}
+                key={`bottom_cat_${cat}`}
                 onClick={() =>
                   setActiveCategory(activeCategory === cat ? null : cat)
                 }

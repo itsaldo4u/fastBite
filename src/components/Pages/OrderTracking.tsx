@@ -4,7 +4,6 @@ import { Search, Package, CheckCircle, ChefHat, Truck } from "lucide-react";
 import OrderCard from "./OrderCard";
 
 import type { Order } from "./user/UserDashboard";
-import { statusToStep } from "./user/UserDashboard";
 
 export default function OrderTracking() {
   const [orderId, setOrderId] = useState("");
@@ -20,19 +19,28 @@ export default function OrderTracking() {
     }
 
     try {
-      const res = await axios.get<Order>(
-        `http://localhost:3000/orders/${orderId.trim()}`
+      const res = await axios.get<{ trackingId: string; order: Order }>(
+        `http://localhost:5000/orders/track/${orderId.trim()}`
       );
-      const orderData = res.data;
+      const orderData = res.data.order;
 
-      setOrder(orderData);
+      // Krijojmë trackingId nëse mungon
+      const orderWithTracking: Order = {
+        ...orderData,
+        trackingId: orderData.trackingId ?? orderData._id.slice(-6),
+      };
+
+      setOrder(orderWithTracking);
       setError("");
 
-      if (orderData.status === "pending" || orderData.status === "preparing") {
-        const createdAtMs = new Date(orderData.createdAt).getTime();
+      if (
+        orderWithTracking.status === "pending" ||
+        orderWithTracking.status === "preparing"
+      ) {
+        const createdAtMs = new Date(orderWithTracking.createdAt).getTime();
         const nowMs = Date.now();
         const elapsedMinutes = (nowMs - createdAtMs) / 60000;
-        const left = orderData.prepTime - elapsedMinutes;
+        const left = orderWithTracking.prepTime - elapsedMinutes;
         setTimeLeft(left > 0 ? Math.ceil(left) : 0);
       } else {
         setTimeLeft(0);
@@ -128,8 +136,11 @@ export default function OrderTracking() {
             <OrderCard
               order={order}
               timeLeft={timeLeft}
-              currentStep={statusToStep[order.status]}
-              showReview={false}
+              reviewMap={{}}
+              ratingMap={{}}
+              onReviewChange={() => {}}
+              onRatingChange={() => {}}
+              onReviewSubmit={() => {}}
             />
           </div>
         )}

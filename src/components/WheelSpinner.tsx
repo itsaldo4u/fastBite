@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { X, Gift } from "lucide-react";
 import { useRewards } from "./context/RewardsContext";
-import { useAuth } from "./context/AuthContext";
 
 type Prize = {
   id: number;
@@ -24,25 +23,22 @@ const prizes: Prize[] = [
 ];
 
 export default function WheelSpinner({ onClose }: { onClose: () => void }) {
-  const { canSpinToday, spinWheel } = useRewards();
-  const { currentUser } = useAuth();
+  const { lastSpinDate, canSpinToday, spinWheel } = useRewards();
 
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [selectedPrize, setSelectedPrize] = useState<Prize | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const canSpin = currentUser && canSpinToday();
+  const canSpin = canSpinToday();
 
+  // Zgjedh çmimin bazuar në probabilitet
   const selectPrize = (): Prize => {
     const random = Math.random() * 100;
     let cumulative = 0;
-
     for (const prize of prizes) {
       cumulative += prize.chance;
-      if (random <= cumulative) {
-        return prize;
-      }
+      if (random <= cumulative) return prize;
     }
     return prizes[prizes.length - 1];
   };
@@ -57,7 +53,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
     const segmentAngle = 360 / prizes.length;
     const targetAngle = prizeIndex * segmentAngle;
 
-    const finalRotation = 360 * 5 + (360 - targetAngle);
+    const finalRotation = 360 * 5 + (360 - targetAngle); // 5 rrotullime
     setRotation(finalRotation);
 
     setTimeout(async () => {
@@ -66,25 +62,25 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
 
       if (prize.discount > 0) {
         setShowConfetti(true);
-        await spinWheel(prize.discount);
+        await spinWheel(prize.discount); // ruan kuponin dhe datën
 
-        setTimeout(() => {
-          setShowConfetti(false);
-        }, 3000);
+        setTimeout(() => setShowConfetti(false), 3000);
       }
     }, 4000);
   };
 
+  // Kohë për spin-in e ardhshëm
   const getNextSpinTime = () => {
-    if (!currentUser?.lastSpinDate) return "Spin tani!";
-
-    const lastSpin = new Date(currentUser.lastSpinDate);
-    const tomorrow = new Date(lastSpin);
+    if (!lastSpinDate) return "Spin tani!";
+    const last = new Date(lastSpinDate);
+    const tomorrow = new Date(last);
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(0, 0, 0, 0);
 
     const now = new Date();
     const diff = tomorrow.getTime() - now.getTime();
+    if (diff <= 0) return "Spin tani!";
+
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -93,11 +89,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-center items-center p-4">
-      <div
-        className="bg-gradient-to-br from-purple-900/80 via-pink-900/80 to-red-900/80 
-      rounded-2xl shadow-2xl w-[90%] max-w-md p-6 relative overflow-hidden 
-      backdrop-blur-xl border border-white/10"
-      >
+      <div className="bg-gradient-to-br from-purple-900/80 via-pink-900/80 to-red-900/80 rounded-2xl shadow-2xl w-[90%] max-w-md p-6 relative overflow-hidden backdrop-blur-xl border border-white/10">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -106,7 +98,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
           <X size={28} />
         </button>
 
-        {/* Confetti Effect */}
+        {/* Confetti */}
         {showConfetti && (
           <div className="absolute inset-0 pointer-events-none">
             {[...Array(50)].map((_, i) => (
@@ -116,7 +108,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `-10px`,
-                  backgroundColor: `hsl(${Math.random() * 360}, 70%, 60%)`,
+                  backgroundColor: `hsl(${Math.random() * 360},70%,60%)`,
                   animationDelay: `${Math.random() * 0.5}s`,
                   animationDuration: `${2 + Math.random()}s`,
                 }}
@@ -139,18 +131,15 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
           </p>
         </div>
 
-        {/* Wheel Container */}
+        {/* Wheel */}
         <div className="relative flex items-center justify-center mb-8">
-          {/* Arrow Pointer */}
+          {/* Arrow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 z-20">
             <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[35px] border-t-yellow-400 drop-shadow-2xl" />
           </div>
 
-          {/* Wheel */}
           <div className="relative w-72 h-72 sm:w-80 sm:h-80">
-            {/* Shadow/Glow Effect */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-400/30 to-orange-600/30 blur-xl"></div>
-
             <svg
               viewBox="0 0 200 200"
               className="w-full h-full transition-transform duration-[4000ms] ease-out drop-shadow-2xl"
@@ -159,7 +148,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                 filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.5))",
               }}
             >
-              {/* Pizza Crust Border */}
+              {/* Segments */}
               <circle
                 cx="100"
                 cy="100"
@@ -168,20 +157,15 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                 stroke="#8B6F47"
                 strokeWidth="2"
               />
-
-              {/* Main Pizza Background */}
               <circle cx="100" cy="100" r="90" fill="#FFE4B5" />
 
               {prizes.map((prize, index) => {
                 const angle = (360 / prizes.length) * index - 90;
                 const nextAngle = (360 / prizes.length) * (index + 1) - 90;
-
                 const startX = 100 + 90 * Math.cos((angle * Math.PI) / 180);
                 const startY = 100 + 90 * Math.sin((angle * Math.PI) / 180);
                 const endX = 100 + 90 * Math.cos((nextAngle * Math.PI) / 180);
                 const endY = 100 + 90 * Math.sin((nextAngle * Math.PI) / 180);
-
-                // Teksti në mesin e segmentit
                 const textAngle = angle + 360 / prizes.length / 2;
                 const textRadius = 58;
                 const textX =
@@ -191,7 +175,6 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
 
                 return (
                   <g key={prize.id}>
-                    {/* Pizza Slice */}
                     <path
                       d={`M 100 100 L ${startX} ${startY} A 90 90 0 0 1 ${endX} ${endY} Z`}
                       fill={prize.color}
@@ -199,34 +182,6 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                       strokeWidth="3"
                       opacity="0.95"
                     />
-
-                    {/* Pepperoni/Toppings Effect (vetëm për zbritjet) */}
-                    {prize.discount > 0 && (
-                      <>
-                        <circle
-                          cx={100 + 40 * Math.cos((textAngle * Math.PI) / 180)}
-                          cy={100 + 40 * Math.sin((textAngle * Math.PI) / 180)}
-                          r="3"
-                          fill="#8B0000"
-                          opacity="0.5"
-                        />
-                        <circle
-                          cx={
-                            100 +
-                            72 * Math.cos(((textAngle - 8) * Math.PI) / 180)
-                          }
-                          cy={
-                            100 +
-                            72 * Math.sin(((textAngle - 8) * Math.PI) / 180)
-                          }
-                          r="2.5"
-                          fill="#8B0000"
-                          opacity="0.5"
-                        />
-                      </>
-                    )}
-
-                    {/* Text Background Box për lexueshmëri */}
                     <rect
                       x={textX - 20}
                       y={textY - 10}
@@ -237,10 +192,8 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                       stroke="rgba(255,255,255,0.4)"
                       strokeWidth="1.5"
                     />
-
                     {prize.discount > 0 ? (
                       <>
-                        {/* Përqindja */}
                         <text
                           x={textX}
                           y={textY - 2}
@@ -248,15 +201,9 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                           fontSize="10"
                           fontWeight="900"
                           textAnchor="middle"
-                          dominantBaseline="middle"
-                          style={{
-                            fontFamily: "Arial, sans-serif",
-                          }}
                         >
                           {prize.label}
                         </text>
-
-                        {/* "OFF" poshtë */}
                         <text
                           x={textX}
                           y={textY + 12}
@@ -265,15 +212,11 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                           fontWeight="700"
                           textAnchor="middle"
                           opacity="0.85"
-                          style={{
-                            fontFamily: "Arial, sans-serif",
-                          }}
                         >
                           OFF
                         </text>
                       </>
                     ) : (
-                      /* X për "Më fat herën tjetër" */
                       <text
                         x={textX}
                         y={textY + 4}
@@ -281,7 +224,6 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                         fontSize="20"
                         fontWeight="900"
                         textAnchor="middle"
-                        dominantBaseline="middle"
                       >
                         ❌
                       </text>
@@ -290,7 +232,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                 );
               })}
 
-              {/* Center Circle (Pizza Center) */}
+              {/* Center */}
               <circle
                 cx="100"
                 cy="100"
@@ -307,9 +249,6 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
                 fontSize="11"
                 fontWeight="bold"
                 textAnchor="middle"
-                style={{
-                  textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
-                }}
               >
                 SPIN
               </text>
@@ -337,7 +276,7 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      {/* RESULT MODAL */}
+      {/* Result Modal */}
       {selectedPrize && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60]">
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 max-w-md w-[90%] text-center shadow-2xl relative">
@@ -347,7 +286,6 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
             >
               <X size={22} />
             </button>
-
             {selectedPrize.discount > 0 ? (
               <>
                 <div className="text-6xl mb-4 animate-bounce">🎉</div>
@@ -400,20 +338,12 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
 
       {/* Confetti Animation */}
       <style>{`
-      @keyframes confetti {
-        0% {
-          transform: translateY(0) rotate(0deg);
-          opacity: 1;
+        @keyframes confetti {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
-        100% {
-          transform: translateY(100vh) rotate(720deg);
-          opacity: 0;
-        }
-      }
-      .animate-confetti {
-        animation: confetti 3s ease-out forwards;
-      }
-    `}</style>
+        .animate-confetti { animation: confetti 3s ease-out forwards; }
+      `}</style>
     </div>
   );
 }

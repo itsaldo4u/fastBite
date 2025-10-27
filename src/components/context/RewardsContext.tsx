@@ -6,6 +6,7 @@ import type { Coupon } from "./AuthContext";
 type RewardsContextType = {
   userPoints: number;
   userCoupons: Coupon[];
+  lastSpinDate: string | null;
   addPoints: (points: number) => Promise<void>;
   generateCoupon: (pointsCost: number, discount: number) => Promise<void>;
   applyCoupon: (
@@ -26,65 +27,71 @@ export const RewardsProvider = ({
   const { currentUser } = useAuth();
   const [userPoints, setUserPoints] = useState(0);
   const [userCoupons, setUserCoupons] = useState<Coupon[]>([]);
-  const baseURL = "http://localhost:3000";
+  const [lastSpinDate, setLastSpinDate] = useState<string | null>(null);
 
-  // 🔹 Merr rewards për përdoruesin aktual
-  useEffect(() => {
-    const fetchRewards = async () => {
-      if (!currentUser) return;
+  const baseURL = "http://localhost:5000/rewards";
 
-      try {
-        const res = await axios.get(
-          `${baseURL}/rewards?userId=${currentUser.id}`
-        );
-        const reward = res.data[0];
-
-        if (reward) {
-          setUserPoints(reward.points || 0);
-          setUserCoupons(reward.coupons || []);
-        } else {
-          // Krijo reward të ri nëse nuk ekziston
-          await axios.post(`${baseURL}/rewards`, {
-            userId: currentUser.id,
-            points: 0,
-            coupons: [],
-            lastSpinDate: null,
-          });
-          setUserPoints(0);
-          setUserCoupons([]);
-        }
-      } catch (error) {
-        console.error("Gabim në marrjen e rewards:", error);
-      }
-    };
-
-    fetchRewards();
-  }, [currentUser]);
-
-  // 🔹 Shto pikë
-  const addPoints = async (points: number) => {
-    if (!currentUser) return;
-    const newPoints = userPoints + points;
+  // Merr reward për userin aktual nga backend
+  const fetchRewards = async () => {
+    if (!currentUser?.id) return;
 
     try {
-      const res = await axios.get(
-        `${baseURL}/rewards?userId=${currentUser.id}`
-      );
-      const reward = res.data[0];
-      if (!reward) return;
+      const res = await axios.get(`${baseURL}/user/${currentUser.id}`);
+      const reward = res.data;
 
-      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
-        points: newPoints,
-      });
-      setUserPoints(newPoints);
+      setUserPoints(reward.points || 0);
+      setUserCoupons(reward.coupons || []);
+      setLastSpinDate(reward.lastSpinDate || null);
     } catch (error) {
-      console.error("Gabim në shtimin e pikave:", error);
+      console.error("Gabim në marrjen e rewards:", error);
+      // Nëse reward nuk ekziston, krijo një të ri
+      try {
+        const { data: newReward } = await axios.post(baseURL, {
+          userId: currentUser.id,
+          points: 0,
+          coupons: [],
+          lastSpinDate: null,
+        });
+        setUserPoints(newReward.points || 0);
+        setUserCoupons(newReward.coupons || []);
+        setLastSpinDate(newReward.lastSpinDate || null);
+      } catch (err) {
+        console.error("Gabim në krijimin e reward të ri:", err);
+      }
     }
   };
 
-  // 🔹 Gjenero kupon
+  useEffect(() => {
+    fetchRewards();
+  }, [currentUser]);
+
+  // Përditëso reward në backend
+  const updateReward = async (
+    updateData: Partial<{
+      points: number;
+      coupons: Coupon[];
+      lastSpinDate: string;
+    }>
+  ) => {
+    if (!currentUser?.id) return;
+
+    try {
+      await axios.patch(`${baseURL}/${currentUser.id}`, updateData);
+    } catch (error) {
+      console.error("Gabim në përditësimin e reward:", error);
+    }
+  };
+
+  // Shto pika
+  const addPoints = async (points: number) => {
+    const newPoints = userPoints + points;
+    setUserPoints(newPoints);
+    await updateReward({ points: newPoints });
+  };
+
+  // Gjenero kupon nga pikat
   const generateCoupon = async (pointsCost: number, discount: number) => {
-    if (!currentUser || userPoints < pointsCost) {
+    if (userPoints < pointsCost) {
       alert("Nuk keni pika të mjaftueshme!");
       return;
     }
@@ -100,92 +107,46 @@ export const RewardsProvider = ({
       used: false,
     };
 
-    const newPoints = userPoints - pointsCost;
     const updatedCoupons = [...userCoupons, newCoupon];
+    const newPoints = userPoints - pointsCost;
 
-    try {
-      const res = await axios.get(
-        `${baseURL}/rewards?userId=${currentUser.id}`
-      );
-      const reward = res.data[0];
-      if (!reward) return;
+    setUserPoints(newPoints);
+    setUserCoupons(updatedCoupons);
 
-      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
-        points: newPoints,
-        coupons: updatedCoupons,
-      });
-
-      setUserPoints(newPoints);
-      setUserCoupons(updatedCoupons);
-
-      alert(`Kuponi juaj: ${newCoupon.code}`);
-    } catch (error) {
-      console.error("Gabim në gjenerimin e kuponit:", error);
-    }
+    await updateReward({ points: newPoints, coupons: updatedCoupons });
+    alert(`Kuponi juaj: ${newCoupon.code}`);
   };
 
-  // 🔹 Apliko kupon
-  const applyCoupon = async (
-    couponCode: string
-  ): Promise<{ valid: boolean; discount: number }> => {
-    if (!currentUser) return { valid: false, discount: 0 };
-
+  // Apliko kupon
+  const applyCoupon = async (couponCode: string) => {
     const coupon = userCoupons.find(
       (c) =>
         c.code === couponCode && !c.used && new Date(c.expiresAt) > new Date()
     );
-
     if (!coupon) return { valid: false, discount: 0 };
-
     return { valid: true, discount: coupon.discount };
   };
 
-  // 🔹 Shëno kuponin si të përdorur
+  // Shëno kuponin si përdorur
   const markCouponAsUsed = async (couponCode: string) => {
-    if (!currentUser) return;
-
     const updatedCoupons = userCoupons.map((c) =>
       c.code === couponCode ? { ...c, used: true } : c
     );
-
-    try {
-      const res = await axios.get(
-        `${baseURL}/rewards?userId=${currentUser.id}`
-      );
-      const reward = res.data[0];
-      if (!reward) return;
-
-      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
-        coupons: updatedCoupons,
-      });
-
-      setUserCoupons(updatedCoupons);
-    } catch (error) {
-      console.error("Gabim në shënimin e kuponit:", error);
-    }
+    setUserCoupons(updatedCoupons);
+    await updateReward({ coupons: updatedCoupons });
   };
 
-  // 🔹 Kontrollo nëse mund të rrotullojë rrotën sot
+  // Kontrollo nëse mund të rrotullohet rrota sot
   const canSpinToday = (): boolean => {
-    if (!currentUser) return false;
-
-    const reward = JSON.parse(localStorage.getItem("reward_cache") || "null");
-    const lastSpin = reward?.lastSpinDate;
-    if (!lastSpin) return true;
-
-    const lastSpinDate = new Date(lastSpin);
+    if (!lastSpinDate) return true;
+    const last = new Date(lastSpinDate);
     const today = new Date();
-
-    return (
-      lastSpinDate.getDate() !== today.getDate() ||
-      lastSpinDate.getMonth() !== today.getMonth() ||
-      lastSpinDate.getFullYear() !== today.getFullYear()
-    );
+    return last.toDateString() !== today.toDateString();
   };
 
-  // 🔹 Spin wheel -> gjenero kupon të ri
+  // Rrotullo rrotën dhe gjenero kupon të ri
   const spinWheel = async (discount: number) => {
-    if (!currentUser) return;
+    if (!currentUser?.id) return;
 
     const newCoupon: Coupon = {
       id: `WHEEL-${Date.now()}`,
@@ -194,32 +155,21 @@ export const RewardsProvider = ({
         .substring(2, 8)
         .toUpperCase()}`,
       discount,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 ditë
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       used: false,
     };
 
     const updatedCoupons = [...userCoupons, newCoupon];
     const today = new Date().toISOString();
 
+    setUserCoupons(updatedCoupons);
+    setLastSpinDate(today);
+
     try {
-      const res = await axios.get(
-        `${baseURL}/rewards?userId=${currentUser.id}`
-      );
-      const reward = res.data[0];
-      if (!reward) return;
-
-      await axios.patch(`${baseURL}/rewards/${reward.id}`, {
-        coupons: updatedCoupons,
-        lastSpinDate: today,
-      });
-
-      setUserCoupons(updatedCoupons);
-      localStorage.setItem(
-        "reward_cache",
-        JSON.stringify({ lastSpinDate: today })
-      );
+      await axios.put(`${baseURL}/spin/${currentUser.id}`);
+      await updateReward({ coupons: updatedCoupons, lastSpinDate: today });
     } catch (error) {
-      console.error("Gabim në spin wheel:", error);
+      console.error("Gabim gjatë rrotullimit të rrotës:", error);
     }
   };
 
@@ -228,6 +178,7 @@ export const RewardsProvider = ({
       value={{
         userPoints,
         userCoupons,
+        lastSpinDate,
         addPoints,
         generateCoupon,
         applyCoupon,
@@ -241,7 +192,6 @@ export const RewardsProvider = ({
   );
 };
 
-// 🔹 Hook i personalizuar
 export const useRewards = () => {
   const ctx = useContext(RewardsContext);
   if (!ctx)

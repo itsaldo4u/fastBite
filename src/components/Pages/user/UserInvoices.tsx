@@ -22,13 +22,15 @@ export default function UserInvoices() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Fetch orders with status "delivered"
   const fetchDeliveredOrders = async () => {
     if (!currentUser) return;
     try {
       setLoading(true);
       const res = await axios.get<Order[]>(
-        `http://localhost:3000/orders?userId=${currentUser.id}&status=delivered`
+        `http://localhost:5000/orders/user-invoices/${currentUser._id}`
       );
+
       setInvoices(res.data);
     } catch (error) {
       console.error("Gabim në marrjen e porosive të dorëzuara:", error);
@@ -37,31 +39,32 @@ export default function UserInvoices() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  // Delete invoice
+  const handleDelete = async (_id: string) => {
     if (!window.confirm("Jeni i sigurt që doni të fshini këtë faturë?")) return;
     try {
-      await axios.delete(`http://localhost:3000/orders/${id}`);
-      setInvoices((prev) => prev.filter((order) => order.id !== id));
+      await axios.delete(`http://localhost:5000/orders/${_id}`);
+      setInvoices((prev) => prev.filter((order) => order._id !== _id));
     } catch (error) {
       console.error("Gabim gjatë fshirjes:", error);
       alert("Ndodhi një gabim gjatë fshirjes së faturës.");
     }
   };
 
+  // Generate invoice HTML
   const generateInvoiceHTML = (order: Order) => `
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Fatura #${order.id}</title>
+        <title>Fatura #${order._id}</title>
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
       <body class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen p-4 text-sm">
         <div class="max-w-4xl mx-auto bg-white rounded-lg shadow overflow-hidden">
           <div class="bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 text-center">
             <h1 class="text-2xl font-bold mb-1">🧾 FATURA</h1>
-            <p>Porosia #${order.id}</p>
+            <p>Porosia #${order._id}</p>
           </div>
-          
           <div class="p-4 space-y-4">
             <div class="grid md:grid-cols-2 gap-2">
               <div class="bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
@@ -71,10 +74,9 @@ export default function UserInvoices() {
                 <p><span class="font-medium">Tel:</span> ${order.phone}</p>
                 <p><span class="font-medium">Adresa:</span> ${order.address}</p>
               </div>
-              
               <div class="bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
                 <h3 class="font-semibold mb-2">📅 Detajet e Porosisë</h3>
-                <p><span class="font-medium">ID:</span> #${order.id}</p>
+                <p><span class="font-medium">ID:</span> #${order._id}</p>
                 <p><span class="font-medium">Data:</span> ${new Date(
                   order.createdAt
                 ).toLocaleDateString("sq-AL", {
@@ -90,7 +92,6 @@ export default function UserInvoices() {
                 <p><span class="font-medium">Statusi:</span> ✅ Dorëzuar</p>
               </div>
             </div>
-
             <table class="w-full text-sm bg-white rounded shadow">
               <thead class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
                 <tr>
@@ -104,13 +105,13 @@ export default function UserInvoices() {
                 ${order.items
                   .map(
                     (item) => `<tr class="border-b hover:bg-gray-50">
-                    <td class="px-3 py-2">${item.title}</td>
-                    <td class="px-3 py-2">${item.quantity}</td>
-                    <td class="px-3 py-2">$${item.price.toFixed(2)}</td>
-                    <td class="px-3 py-2">$${(
-                      item.price * item.quantity
-                    ).toFixed(2)}</td>
-                  </tr>`
+                      <td class="px-3 py-2">${item.title}</td>
+                      <td class="px-3 py-2">${item.quantity}</td>
+                      <td class="px-3 py-2">$${item.price.toFixed(2)}</td>
+                      <td class="px-3 py-2">$${(
+                        item.price * item.quantity
+                      ).toFixed(2)}</td>
+                    </tr>`
                   )
                   .join("")}
                 <tr class="bg-blue-50 font-bold">
@@ -119,7 +120,6 @@ export default function UserInvoices() {
                 </tr>
               </tbody>
             </table>
-
             <div class="text-center bg-gray-50 p-3 rounded">
               <p class="font-semibold mb-1">🙏 Faleminderit!</p>
               <p class="text-gray-600 mb-1">Kontaktoni për pyetje.</p>
@@ -131,6 +131,7 @@ export default function UserInvoices() {
     </html>
   `;
 
+  // Show invoice in new window
   const handleShowInvoice = (order: Order) => {
     const win = window.open("", "_blank");
     if (!win) return;
@@ -138,6 +139,7 @@ export default function UserInvoices() {
     win.document.close();
   };
 
+  // Download/Print invoice
   const handleDownloadPDF = (order: Order) => {
     handleShowInvoice(order);
     setTimeout(() => {
@@ -149,14 +151,14 @@ export default function UserInvoices() {
     fetchDeliveredOrders();
   }, [currentUser]);
 
+  // Filter invoices based on search
   const filteredInvoices = invoices.filter(
     (order) =>
-      order.userId?.toString() === currentUser?.id?.toString() &&
-      (order.id.toString().includes(searchTerm) ||
-        order.items?.some((item) =>
-          item.title.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ||
-        order.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      order._id.includes(searchTerm) ||
+      order.items?.some((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      ) ||
+      order.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalAmount = filteredInvoices.reduce(
@@ -235,7 +237,7 @@ export default function UserInvoices() {
       <div className="space-y-2">
         {filteredInvoices.map((order) => (
           <div
-            key={order.id}
+            key={order._id}
             className="bg-white dark:bg-gray-800 rounded-xl shadow border overflow-hidden hover:shadow-lg transition-all"
           >
             <div className="p-3 space-y-2">
@@ -243,11 +245,11 @@ export default function UserInvoices() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between">
                 <div className="flex items-center gap-2 mb-2 sm:mb-0">
                   <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                    #{order.id}
+                    #{order._id.slice(0, 6)}
                   </div>
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                      Fatura #{order.id}
+                      Fatura #{order._id.slice(0, 6)}
                     </h3>
                     <p className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
                       <Calendar size={14} />{" "}
@@ -353,7 +355,7 @@ export default function UserInvoices() {
                       "from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700",
                   },
                   {
-                    onClick: () => handleDelete(order.id),
+                    onClick: () => handleDelete(order._id),
                     icon: Trash2,
                     label: "Fshi",
                     gradient:
@@ -365,8 +367,7 @@ export default function UserInvoices() {
                     onClick={onClick}
                     className={`flex-1 flex items-center justify-center gap-1 bg-gradient-to-r ${gradient} text-white py-2 px-2 rounded-lg font-medium text-xs transition-all duration-200 shadow`}
                   >
-                    <Icon size={16} />
-                    {label}
+                    <Icon size={16} /> {label}
                   </button>
                 ))}
               </div>

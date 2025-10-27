@@ -1,19 +1,17 @@
-// src/components/UserOrders.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import type { Order } from "../admin/Orders";
+import type { Order } from "../../context/OrdersContext";
 
 export default function UserOrders() {
   const { currentUser } = useAuth();
   const [userOrders, setUserOrders] = useState<Order[]>([]);
 
-  // Merr porositë e përdoruesit
   const fetchOrders = async () => {
     if (!currentUser) return;
     try {
       const res = await axios.get<Order[]>(
-        `http://localhost:3000/orders?userId=${currentUser.id}`
+        `http://localhost:5000/orders?userId=${currentUser._id}`
       );
       setUserOrders(res.data);
     } catch (error) {
@@ -21,9 +19,8 @@ export default function UserOrders() {
     }
   };
 
-  // Fshij një porosi vetëm nga UI (jo nga serveri)
-  const handleRemoveFromUI = (id: string) => {
-    setUserOrders((prev) => prev.filter((order) => order.id !== id));
+  const handleRemoveFromUI = (_id: string) => {
+    setUserOrders((prev) => prev.filter((order) => order._id !== _id));
   };
 
   useEffect(() => {
@@ -44,12 +41,12 @@ export default function UserOrders() {
         <ul className="space-y-4">
           {userOrders.map((order) => (
             <li
-              key={order.id}
+              key={order._id}
               className="border border-gray-200 dark:border-gray-700 rounded-md p-4 flex justify-between items-center"
             >
               <div>
                 <p className="font-semibold text-gray-800 dark:text-white">
-                  Porosi #{order.id} - {order.status.toUpperCase()}
+                  Porosi #{order._id} - {order.status.toUpperCase()}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Data:{" "}
@@ -65,7 +62,7 @@ export default function UserOrders() {
               </div>
 
               <button
-                onClick={() => handleRemoveFromUI(order.id)}
+                onClick={() => handleRemoveFromUI(order._id)}
                 className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all"
               >
                 Fshi nga UI

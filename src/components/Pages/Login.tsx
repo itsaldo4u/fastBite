@@ -2,42 +2,34 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Lock, Mail } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     try {
       const role = await login(email, password);
-      if (role === "admin") {
-        navigate("/admin");
-      } else if (role === "user") {
-        navigate("/dashboard");
-      } else {
-        setError("Email ose fjalëkalim i pasaktë!");
-      }
-    } catch (err) {
-      setError("Email ose fjalëkalim i pasaktë!");
+      if (role === "admin") navigate("/admin");
+      else if (role === "user") navigate("/dashboard");
+    } catch (err: any) {
+      toast.error(err.message); // vetëm toast
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-500 via-orange-500 to-yellow-400 bg-[length:400%_400%] animate-gradient-shift" />
-
-      {/* Background overlay with radial gradients */}
       <div className="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent" />
 
       {/* Floating decorative elements */}
@@ -52,28 +44,22 @@ export default function Login() {
       </div>
 
       {/* Login card */}
-      <div className="relative bg-white/95 backdrop-blur-lg p-10 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 hover:translate-y-[-8px] hover:shadow-3xl z-10">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 relative">
+      <div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 hover:translate-y-[-8px] hover:shadow-3xl z-10">
+        <div className="text-center mb-4">
+          <h2 className="text-xl font-bold text-gray-800 relative">
             Mirë se erdhe përsëri
-            <div className="absolute bottom-[-15px] left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-red-500 to-yellow-400 rounded-full" />
+            <div className="absolute bottom-[-10px] left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-red-500 to-yellow-400 rounded-full" />
           </h2>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm text-center mb-6 animate-shake">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4">
           <EnhancedInputField
             label="Adresa Email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@tuaj.com"
-            icon={<Mail size={20} />}
+            icon={<Mail size={18} />}
           />
 
           <EnhancedInputField
@@ -82,7 +68,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Vendosni fjalëkalimin"
-            icon={<Lock size={20} />}
+            icon={<Lock size={18} />}
           />
 
           <button
@@ -90,7 +76,7 @@ export default function Login() {
             disabled={isLoading}
             className={`
               w-full bg-gradient-to-r from-red-600 via-red-500 to-orange-500 
-              bg-[length:300%_300%] text-white font-bold py-4 px-6 rounded-lg
+              bg-[length:300%_300%] text-white font-bold py-2.5 px-6 rounded-lg
               transition-all duration-300 relative overflow-hidden
               ${
                 isLoading
@@ -107,7 +93,7 @@ export default function Login() {
           </button>
         </form>
 
-        <p className="mt-8 text-sm text-center text-gray-600">
+        <p className="mt-4 text-sm text-center text-gray-600">
           Nuk ke një llogari?{" "}
           <Link
             to="/signup"
@@ -146,7 +132,7 @@ function EnhancedInputField({
   return (
     <div className="relative">
       <label
-        className={`block text-sm font-semibold mb-2 transition-colors duration-300 ${
+        className={`block text-xs font-semibold mb-1 transition-colors duration-300 ${
           isFocused ? "text-red-500" : "text-gray-700"
         }`}
       >
@@ -154,7 +140,7 @@ function EnhancedInputField({
       </label>
       <div
         className={`
-          flex items-center border-2 rounded-lg px-4 py-3 
+          flex items-center border-2 rounded-lg px-3 py-2 
           bg-gradient-to-br from-gray-50 to-white
           transition-all duration-300 relative overflow-hidden
           ${
@@ -169,7 +155,7 @@ function EnhancedInputField({
         `}
       >
         <span
-          className={`mr-3 transition-all duration-300 ${
+          className={`mr-2 transition-all duration-300 ${
             isFocused ? "text-red-500 scale-110" : "text-gray-400"
           }`}
         >
@@ -183,9 +169,7 @@ function EnhancedInputField({
           placeholder={placeholder}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-400 
-                     relative z-10 transition-all duration-300
-                     focus:placeholder-opacity-70"
+          className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-400 text-sm relative z-10 transition-all duration-300 focus:placeholder-opacity-70"
         />
       </div>
     </div>

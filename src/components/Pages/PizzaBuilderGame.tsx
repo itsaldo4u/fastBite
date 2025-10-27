@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Heart, ShoppingCart, RotateCcw, Sparkles, X } from "lucide-react";
 import CheckoutStepper from "./CheckoutStepper";
 import ShoppingCartDropdown from "../ShoppingCartDropdown";
+import { useCart } from "../context/CartContext"; // IMPORT THIS
 
 const PizzaBuilderGame = () => {
   type Topping = {
@@ -24,16 +25,6 @@ const PizzaBuilderGame = () => {
     price: number;
   };
 
-  type CartItem = {
-    id: string;
-    title: string;
-    price: number;
-    quantity: number;
-    size?: string;
-    crust?: string;
-    toppings?: string[];
-  };
-
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
   const [selectedSize, setSelectedSize] = useState("medium");
   const [selectedCrust, setSelectedCrust] = useState("classic");
@@ -44,9 +35,11 @@ const PizzaBuilderGame = () => {
   const [pizzaAnimations, setPizzaAnimations] = useState<
     { id: number; x: number; y: number }[]
   >([]);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+
+  // USE CART CONTEXT INSTEAD OF LOCAL STATE
+  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
 
   const pizzaRef = useRef<HTMLDivElement>(null);
 
@@ -126,7 +119,7 @@ const PizzaBuilderGame = () => {
   const handleDragOver = (e: React.DragEvent) => e.preventDefault();
 
   // Add / Remove toppings
-  const addTopping = (topping: Topping) => {
+  const addToppingToPizza = (topping: Topping) => {
     if (!selectedToppings.find((t) => t.id === topping.id)) {
       const x = 30 + Math.random() * 40;
       const y = 30 + Math.random() * 40;
@@ -136,8 +129,10 @@ const PizzaBuilderGame = () => {
       setTimeout(() => setPizzaAnimations((prev) => prev.slice(1)), 1000);
     }
   };
+
   const removeTopping = (toppingId: number) =>
     setSelectedToppings((prev) => prev.filter((t) => t.id !== toppingId));
+
   const clearPizza = () => setSelectedToppings([]);
 
   // Favorites
@@ -154,38 +149,33 @@ const PizzaBuilderGame = () => {
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 1000);
   };
+
   const removeFavorite = (id: number) =>
     setSavedFavorites((prev) => prev.filter((fav) => fav.id !== id));
 
-  // Cart
-  const createCartItems = (): CartItem[] => {
+  // UPDATED: Add to cart using context
+  const handleAddToCart = () => {
     const sizeData = sizes.find((s) => s.id === selectedSize);
     const crustData = crusts.find((c) => c.id === selectedCrust);
 
-    return [
-      {
-        id: `pizza-${Date.now()}`,
-        title: `Pizza ${sizeData?.name} - ${crustData?.name}`,
-        price: totalPrice,
-        quantity: 1,
-        size: selectedSize,
-        crust: selectedCrust,
-        toppings: selectedToppings.map((t) => t.name),
-      },
-    ];
-  };
+    addToCart({
+      id: `pizza-${Date.now()}`,
+      title: `Pizza ${sizeData?.name} - ${crustData?.name}`,
+      price: totalPrice,
+      size: selectedSize,
+      crust: selectedCrust,
+      toppings: selectedToppings.map((t) => t.name),
+    });
 
-  const handleAddToCart = () => {
-    const items = createCartItems();
-    setCartItems((prev) => [...prev, ...items]);
     setCartOpen(true);
   };
 
+  // UPDATED: Clear cart using context
   const handleClearCart = () => {
     clearPizza();
     setSelectedSize("medium");
     setSelectedCrust("classic");
-    setCartItems([]);
+    clearCart();
   };
 
   return (
@@ -364,17 +354,6 @@ const PizzaBuilderGame = () => {
               >
                 <ShoppingCart className="w-4 h-4" /> Shto në Shportë
               </button>
-
-              {/* Checkout */}
-              {showCheckout && (
-                <CheckoutStepper
-                  cartItems={
-                    cartItems.length > 0 ? cartItems : createCartItems()
-                  }
-                  onClose={() => setShowCheckout(false)}
-                  clearCart={handleClearCart}
-                />
-              )}
             </div>
           </div>
 
@@ -387,7 +366,7 @@ const PizzaBuilderGame = () => {
                   key={topping.id}
                   draggable
                   onDragStart={(e) => handleDragStart(e, topping)}
-                  onClick={() => addTopping(topping)}
+                  onClick={() => addToppingToPizza(topping)}
                   className="bg-white/5 hover:bg-white/10 text-white text-base p-2 rounded-lg transition flex flex-col items-center"
                 >
                   {topping.emoji}
@@ -400,7 +379,7 @@ const PizzaBuilderGame = () => {
 
         {/* Success Toast */}
         {showSuccess && (
-          <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-fadeIn">
+          <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-fadeIn z-50">
             ✅ Veprimi u krye me sukses!
           </div>
         )}
@@ -410,28 +389,35 @@ const PizzaBuilderGame = () => {
           <ShoppingCartDropdown
             cartItems={cartItems}
             onAdd={(id) => {
-              setCartItems((prev) =>
-                prev.map((item) =>
-                  item.id === id
-                    ? { ...item, quantity: item.quantity + 1 }
-                    : item
-                )
-              );
+              // This will increment quantity in the shared cart
+              const item = cartItems.find((i) => i.id === id);
+              if (item) {
+                addToCart({
+                  id: item.id,
+                  title: item.title,
+                  price: item.price,
+                  size: item.size,
+                  crust: item.crust,
+                  toppings: item.toppings,
+                });
+              }
             }}
-            onRemove={(id) => {
-              setCartItems((prev) =>
-                prev
-                  .map((item) =>
-                    item.id === id
-                      ? { ...item, quantity: item.quantity - 1 }
-                      : item
-                  )
-                  .filter((item) => item.quantity > 0)
-              );
-            }}
+            onRemove={removeFromCart}
             onClear={handleClearCart}
             onClose={() => setCartOpen(false)}
-            onCheckout={() => setShowCheckout(true)}
+            onCheckout={() => {
+              setCartOpen(false);
+              setShowCheckout(true);
+            }}
+          />
+        )}
+
+        {/* Checkout Stepper */}
+        {showCheckout && (
+          <CheckoutStepper
+            cartItems={cartItems}
+            onClose={() => setShowCheckout(false)}
+            clearCart={handleClearCart}
           />
         )}
       </div>

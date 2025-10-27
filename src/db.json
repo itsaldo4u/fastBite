@@ -313,6 +313,33 @@
       "createdAt": "2025-10-17T09:40:26.703Z",
       "status": "pending",
       "prepTime": 30
+    },
+    {
+      "id": "c51f",
+      "userId": "964d",
+      "name": "aprov",
+      "email": "aldoprov@gmail.com",
+      "phone": "069515253",
+      "address": "rruga bardhyl , oslo bar",
+      "paymentMethod": "cash",
+      "cardNumber": null,
+      "expiryDate": null,
+      "cvv": null,
+      "items": [
+        {
+          "id": "pz02",
+          "title": "Pizza Pepperoni",
+          "price": 6.5,
+          "quantity": 4
+        }
+      ],
+      "totalPrice": 26,
+      "originalPrice": 26,
+      "couponUsed": null,
+      "discount": 0,
+      "createdAt": "2025-10-19T12:44:02.661Z",
+      "status": "pending",
+      "prepTime": 30
     }
   ],
   "ratings": [],
@@ -491,7 +518,7 @@
     {
       "id": "139c",
       "userId": "964d",
-      "points": 87,
+      "points": 13,
       "coupons": [
         {
           "id": "WHEEL-1760435198137",
@@ -520,9 +547,23 @@
           "discount": 15,
           "expiresAt": "2025-11-16T09:21:41.414Z",
           "used": false
+        },
+        {
+          "id": "WHEEL-1760877819281",
+          "code": "LUCKY25-4ZZRAF",
+          "discount": 25,
+          "expiresAt": "2025-10-26T12:43:39.281Z",
+          "used": false
+        },
+        {
+          "id": "COUPON-1760877862187",
+          "code": "SAVE10-L9I8U8",
+          "discount": 10,
+          "expiresAt": "2025-11-18T12:44:22.187Z",
+          "used": false
         }
       ],
-      "lastSpinDate": "2025-10-17T09:21:25.356Z"
+      "lastSpinDate": "2025-10-19T12:43:39.282Z"
     }
   ]
 }

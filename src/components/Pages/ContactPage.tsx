@@ -21,7 +21,7 @@ export default function ContactPage() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:3000/contact", formData);
+      await axios.post("http://localhost:5000/contact", formData);
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {

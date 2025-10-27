@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { useUsers } from "../context/UsersContext";
 import { useRewards } from "../context/RewardsContext";
+import toast from "react-hot-toast";
 
 export type CartItem = {
   id: string;
@@ -39,11 +39,10 @@ export default function CheckoutStepper({
   clearCart,
 }: CheckoutStepperProps) {
   const { currentUser } = useAuth();
-  const { fetchUsers } = useUsers();
   const { addPoints, applyCoupon, markCouponAsUsed } = useRewards();
 
   const [step, setStep] = useState(1);
-  const [orderId, setOrderId] = useState<string | null>(null);
+  const [orderTrackingId, setOrderTrackingId] = useState<string | null>(null); // për
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [receiptItems, setReceiptItems] = useState<CartItem[]>([]);
@@ -56,6 +55,8 @@ export default function CheckoutStepper({
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState("");
 
+  const [errors, setErrors] = useState<Errors>({});
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -66,8 +67,6 @@ export default function CheckoutStepper({
     expiryDate: "",
     cvv: "",
   });
-
-  const [errors, setErrors] = useState<Errors>({});
 
   useEffect(() => {
     if (currentUser) {
@@ -103,53 +102,55 @@ export default function CheckoutStepper({
 
     if (step === 1) {
       if (!formData.name.trim())
-        newErrors.name = "Ju lutem shkruani emrin dhe mbiemrin.";
+        newErrors.name = "Emri dhe mbiemri janë të detyrueshëm";
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email))
-        newErrors.email = "Email i pavlefshëm.";
+        newErrors.email = "Shkruani një email të vlefshëm";
       if (
         !formData.phone.trim() ||
         !/^\+?\d{7,15}$/.test(formData.phone.replace(/\s+/g, ""))
       )
-        newErrors.phone = "Numër telefoni i pavlefshëm.";
+        newErrors.phone = "Shkruani një numër telefoni të saktë";
       if (!formData.address.trim())
-        newErrors.address = "Ju lutem shkruani adresën.";
+        newErrors.address = "Adresa nuk mund të jetë bosh";
     }
 
     if (step === 2) {
       if (formData.paymentMethod === "card") {
         const cardNumberClean = formData.cardNumber.replace(/\s+/g, "");
         if (!/^\d{16}$/.test(cardNumberClean))
-          newErrors.cardNumber = "Numri i kartës duhet të ketë 16 shifra.";
+          newErrors.cardNumber = "Numri i kartës duhet të ketë 16 shifra";
 
-        if (!/^\d{2}\/\d{2}$/.test(formData.expiryDate)) {
-          newErrors.expiryDate =
-            "Data e skadimit duhet të jetë në formatin MM/YY.";
-        } else {
+        if (!/^\d{2}\/\d{2}$/.test(formData.expiryDate))
+          newErrors.expiryDate = "Data e skadimit e pavlefshme";
+        else {
           const [monthStr, yearStr] = formData.expiryDate.split("/");
           const month = parseInt(monthStr, 10);
           const year = parseInt(yearStr, 10);
+          const currentYear = new Date().getFullYear() % 100;
+          const currentMonth = new Date().getMonth() + 1;
           if (month < 1 || month > 12)
             newErrors.expiryDate =
-              "Muaji në datën e skadimit nuk është i saktë.";
-          else {
-            const currentYear = new Date().getFullYear() % 100;
-            const currentMonth = new Date().getMonth() + 1;
-            if (
-              year < currentYear ||
-              (year === currentYear && month < currentMonth)
-            )
-              newErrors.expiryDate =
-                "Data e skadimit nuk mund të jetë e kaluar.";
-          }
+              "Muaji në datën e skadimit nuk është i saktë";
+          else if (
+            year < currentYear ||
+            (year === currentYear && month < currentMonth)
+          )
+            newErrors.expiryDate = "Data e skadimit nuk mund të jetë e kaluar";
         }
 
         if (!/^\d{3,4}$/.test(formData.cvv))
-          newErrors.cvv = "CVV duhet të ketë 3 ose 4 shifra.";
+          newErrors.cvv = "CVV duhet të ketë 3 ose 4 shifra";
       }
     }
 
     setErrors(newErrors);
+
+    // **Shto toast për error**
+    if (Object.keys(newErrors).length > 0) {
+      const firstErrorKey = Object.keys(newErrors)[0] as keyof FormData;
+      toast.error(newErrors[firstErrorKey] || "Ka ndodhur një gabim");
+    }
 
     return Object.keys(newErrors).length === 0;
   };
@@ -191,39 +192,6 @@ export default function CheckoutStepper({
     setCouponError("");
   };
 
-  const registerNewUserIfNeeded = async (): Promise<number | null> => {
-    if (currentUser) {
-      return currentUser.id || null;
-    }
-
-    try {
-      const existingUserResponse = await axios.get(
-        `http://localhost:3000/users?email=${formData.email}`
-      );
-
-      if (existingUserResponse.data.length > 0) {
-        return existingUserResponse.data[0].id;
-      }
-
-      const newUser = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        role: "user" as const,
-        password: "temp123",
-      };
-
-      const response = await axios.post("http://localhost:3000/users", newUser);
-      await fetchUsers();
-
-      return response.data.id;
-    } catch (error) {
-      console.error("Gabim gjatë regjistrimit të përdoruesit të ri:", error);
-      return null;
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateStep()) return;
@@ -236,10 +204,12 @@ export default function CheckoutStepper({
     try {
       setIsSubmitting(true);
 
-      const userId = await registerNewUserIfNeeded();
+      // Merr ose krijo user nëse nuk ekziston
+      const userId = currentUser?._id || null;
 
+      // Krijo objektin e porosisë
       const orderData = {
-        userId: userId,
+        userId,
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -260,14 +230,18 @@ export default function CheckoutStepper({
         prepTime: 30,
       };
 
+      // POST te backend
       const response = await axios.post(
-        "http://localhost:3000/orders",
+        "http://localhost:5000/orders",
         orderData
       );
 
-      // Shto pika: 1 pikë për çdo $1 të shpenzuar
-      const pointsEarned = Math.floor(finalPrice);
+      // Ruaj ID për user dhe ID për backend veçmas
+      setOrderTrackingId(response.data.order?.trackingId || null); // ID lexueshme për user
+
+      // Shto pikët për rewards
       if (userId) {
+        const pointsEarned = Math.floor(finalPrice);
         await addPoints(pointsEarned);
       }
 
@@ -276,9 +250,8 @@ export default function CheckoutStepper({
         await markCouponAsUsed(couponCode);
       }
 
-      setOrderId(response.data.id?.toString() || null);
       clearCart();
-      setStep(3);
+      setStep(3); // Shfaq Step 3 (Përmbledhja)
     } catch (error) {
       console.error("Gabim gjatë dërgimit të porosisë:", error);
       alert("Ndodhi një gabim gjatë kryerjes së porosisë.");
@@ -638,10 +611,12 @@ export default function CheckoutStepper({
                 <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
                   Porosia u krye me sukses!
                 </h3>
-                {orderId && (
+                {orderTrackingId && (
                   <p className="text-gray-600 dark:text-gray-300">
                     ID e porosisë suaj:{" "}
-                    <span className="font-mono font-bold">{orderId}</span>
+                    <span className="font-mono font-bold">
+                      {orderTrackingId}
+                    </span>
                   </p>
                 )}
 

@@ -17,22 +17,18 @@ import WheelSpinner from "../WheelSpinner";
 import { useOffers } from "../context/OffersContext";
 import { useRewards } from "../context/RewardsContext";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext"; // ADD THIS IMPORT
 import ShoppingCartDropdown from "../ShoppingCartDropdown";
-
-type CartItem = {
-  id: string;
-  title: string;
-  price: number;
-  quantity: number;
-};
 
 export default function HomePage() {
   const [currentOfferIndex, setCurrentOfferIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showWheel, setShowWheel] = useState(false);
+
+  // REPLACE cartItems state with useCart hook
+  const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
 
   const { offers, fetchOffers } = useOffers();
   const { canSpinToday } = useRewards();
@@ -62,35 +58,18 @@ export default function HomePage() {
     },
   ];
 
-  // ===== Cart Handlers =====
+  // ===== UPDATED Cart Handlers =====
   const handleAddToCart = (id: string, title: string, price: number) => {
-    setCartItems((prev) => {
-      const exist = prev.find((item) => item.id === id);
-      if (exist) {
-        return prev.map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { id, title, price, quantity: 1 }];
-    });
+    addToCart({ id, title, price });
     setCartOpen(true);
   };
 
   const handleRemoveFromCart = (id: string) => {
-    setCartItems((prev) => {
-      const exist = prev.find((item) => item.id === id);
-      if (!exist) return prev;
-      if (exist.quantity === 1) {
-        return prev.filter((item) => item.id !== id);
-      }
-      return prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-      );
-    });
+    removeFromCart(id);
   };
 
   const handleClearCart = () => {
-    setCartItems([]);
+    clearCart();
     setCartOpen(false);
   };
 
@@ -190,18 +169,14 @@ export default function HomePage() {
               <div className="relative">
                 {currentOffer ? (
                   <div className="relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-purple-900/50 to-slate-900/90 backdrop-blur-xl rounded-3xl shadow-2xl transition-all duration-500 hover:shadow-purple-500/20 max-w-sm mx-auto border border-white/10">
-                    {/* Animated background gradient */}
                     <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-red-500/5 to-purple-500/5 animate-pulse"></div>
 
-                    {/* Content */}
                     <div className="relative p-5">
-                      {/* Discount badge */}
                       <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 font-black px-4 py-2 rounded-full text-sm transform rotate-3 shadow-lg">
                         OFERTË
                       </div>
 
                       <div className="text-center">
-                        {/* Image with modern frame */}
                         <div className="relative mb-6 group">
                           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-red-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                           <img
@@ -211,12 +186,10 @@ export default function HomePage() {
                           />
                         </div>
 
-                        {/* Title */}
                         <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-4">
                           {currentOffer.title}
                         </h3>
 
-                        {/* Price section */}
                         <div className="relative inline-block mb-6">
                           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-red-500/20 rounded-2xl blur-lg"></div>
                           <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/10">
@@ -229,11 +202,10 @@ export default function HomePage() {
                           </div>
                         </div>
 
-                        {/* CTA Button */}
                         <button
                           onClick={() =>
                             handleAddToCart(
-                              currentOffer.id.toString(),
+                              currentOffer._id.toString(),
                               currentOffer.title,
                               currentOffer.newPrice
                             )
@@ -269,7 +241,6 @@ export default function HomePage() {
                   </div>
                 )}
 
-                {/* Modern pagination dots */}
                 <div className="flex justify-center mt-8 space-x-3">
                   {offers.map((_, index) => (
                     <button
@@ -296,7 +267,7 @@ export default function HomePage() {
           </div>
         </main>
         <br />
-        {/* Join FastBite+ Section (visible only if user NOT logged in) */}
+
         {!currentUser && (
           <section className="py-20 px-6">
             <div className="max-w-5xl mx-auto text-center bg-gradient-to-r from-yellow-400/10 via-red-500/10 to-pink-600/10 backdrop-blur-lg rounded-3xl border border-white/10 p-10 shadow-2xl">
@@ -346,7 +317,6 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* WHEEL OF FORTUNE SECTION */}
         {currentUser && (
           <section className="py-16 px-6">
             <div className="max-w-2xl mx-auto">
@@ -400,7 +370,6 @@ export default function HomePage() {
                           🎲 PROVO FATIN TËND TANI!
                           <Sparkles className="w-6 h-6 group-hover:rotate-180 transition-transform duration-500" />
                         </span>
-                        {/* Glow effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
                       </>
                     ) : (
@@ -422,12 +391,10 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* Pizza Builder Section */}
         <section className="py-16 px-4">
           <PizzaBuilderGame />
         </section>
 
-        {/* Features Section */}
         <section className="py-16 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-4 gap-8">
@@ -451,7 +418,6 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* Shopping Cart */}
       {cartOpen && (
         <ShoppingCartDropdown
           cartItems={cartItems}
@@ -470,7 +436,6 @@ export default function HomePage() {
         />
       )}
 
-      {/* Checkout Stepper */}
       {showCheckout && (
         <CheckoutStepper
           cartItems={cartItems}
@@ -479,10 +444,8 @@ export default function HomePage() {
         />
       )}
 
-      {/* WHEEL SPINNER MODAL - SHTO KËTË */}
       {showWheel && <WheelSpinner onClose={() => setShowWheel(false)} />}
 
-      {/* Animations */}
       <style>{`
         @keyframes fade-in-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fade-in-left { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
