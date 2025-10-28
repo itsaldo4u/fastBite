@@ -177,20 +177,20 @@ export default function UserInvoices() {
     );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-4">
+    <div className="max-w-6xl mx-auto space-y-4 px-2 sm:px-0">
       {/* Header */}
       <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl p-4 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-24 translate-x-24"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
+        <div className="absolute top-0 right-0 w-36 h-36 sm:w-48 sm:h-48 bg-white/10 rounded-full -translate-y-20 translate-x-20"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
         <div className="relative">
-          <h1 className="text-2xl font-bold mb-1 flex items-center gap-2">
+          <h1 className="text-lg sm:text-2xl font-bold mb-1 flex items-center gap-2">
             <Receipt size={28} /> Faturat e Mia
           </h1>
-          <p className="text-white/80 text-sm">
+          <p className="text-white/80 text-xs sm:text-sm">
             Historiku i porosive të dorëzuara
           </p>
-          <div className="flex items-center space-x-2 mt-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2">
             <span className="bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-xs border border-white/30">
               📦 {filteredInvoices.length} Fatura
             </span>
@@ -240,18 +240,18 @@ export default function UserInvoices() {
             key={order._id}
             className="bg-white dark:bg-gray-800 rounded-xl shadow border overflow-hidden hover:shadow-lg transition-all"
           >
-            <div className="p-3 space-y-2">
+            <div className="p-2 sm:p-3 space-y-2">
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2 mb-2 sm:mb-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm">
                     #{order._id.slice(0, 6)}
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                       Fatura #{order._id.slice(0, 6)}
                     </h3>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
                       <Calendar size={14} />{" "}
                       {new Date(order.createdAt).toLocaleDateString("sq-AL", {
                         day: "numeric",
@@ -264,10 +264,10 @@ export default function UserInvoices() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 justify-end">
-                  <span className="px-2 py-1 rounded-full text-xs font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600">
+                  <span className="px-2 py-1 rounded-full text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600">
                     ✅ Dorëzuar
                   </span>
-                  <div className="text-right text-sm">
+                  <div className="text-right text-sm sm:text-base">
                     <div className="font-bold text-gray-900 dark:text-white">
                       ${order.totalPrice.toFixed(2)}
                     </div>
@@ -279,11 +279,11 @@ export default function UserInvoices() {
               </div>
 
               {/* Customer Info */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-2 text-xs">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-2 text-xs sm:text-sm">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-1 flex items-center gap-1">
                   <User size={16} /> Klienti:
                 </h4>
-                <div className="grid md:grid-cols-2 gap-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 sm:gap-2">
                   {[
                     { icon: User, label: "Emri", value: order.name },
                     { icon: Mail, label: "Email", value: order.email },
@@ -304,14 +304,14 @@ export default function UserInvoices() {
               </div>
 
               {/* Items */}
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-2 text-xs space-y-1">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg p-2 text-xs sm:text-sm space-y-1">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-1 flex items-center gap-1">
                   📋 Produktet:
                 </h4>
                 {order.items?.map((item, i) => (
                   <div
                     key={i}
-                    className="flex justify-between items-center py-2 px-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 text-xs"
+                    className="flex justify-between items-center py-2 px-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 text-xs sm:text-sm"
                   >
                     <div className="flex items-center gap-1">
                       <span>🍕</span>
@@ -365,7 +365,7 @@ export default function UserInvoices() {
                   <button
                     key={label}
                     onClick={onClick}
-                    className={`flex-1 flex items-center justify-center gap-1 bg-gradient-to-r ${gradient} text-white py-2 px-2 rounded-lg font-medium text-xs transition-all duration-200 shadow`}
+                    className={`flex-1 flex items-center justify-center gap-1 sm:gap-2 bg-gradient-to-r ${gradient} text-white py-2 px-2 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200 shadow`}
                   >
                     <Icon size={16} /> {label}
                   </button>

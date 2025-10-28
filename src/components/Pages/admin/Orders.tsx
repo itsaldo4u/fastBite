@@ -196,38 +196,38 @@ export default function Orders() {
       {/* Orders Table */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden border-2 border-gray-100 dark:border-gray-700">
         <div className="overflow-x-auto">
-          <table className="min-w-full">
+          <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border-b-2 border-gray-200 dark:border-gray-600">
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   ID
                 </th>
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Emri
                 </th>
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="hidden sm:table-cell p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Email
                 </th>
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Totali
                 </th>
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="hidden sm:table-cell p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Data
                 </th>
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="hidden md:table-cell p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Porosia
                 </th>
-                <th className="p-4 text-left text-sm font-bold text-gray-800 dark:text-white">
+                <th className="p-2 sm:p-4 text-left text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Statusi
                 </th>
-                <th className="p-4 text-center text-sm font-bold text-gray-800 dark:text-white">
+                <th className="p-2 sm:p-4 text-center text-sm sm:text-base font-bold text-gray-800 dark:text-white">
                   Veprime
                 </th>
               </tr>
             </thead>
             <tbody>
               {orders
-                .filter((order) => order.status !== "delivered")
+                .filter((o) => o.status !== "delivered")
                 .map((order, index) => (
                   <tr
                     key={order.id}
@@ -237,25 +237,26 @@ export default function Orders() {
                         : "bg-gray-50 dark:bg-gray-800/50"
                     }`}
                   >
-                    <td className="p-4" title={order.id}>
-                      <span className="font-mono text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                        {shortenId(order.id)}
-                      </span>
+                    <td
+                      className="p-2 sm:p-4 font-mono text-xs sm:text-sm"
+                      title={order.id}
+                    >
+                      {shortenId(order.id)}
                     </td>
-                    <td className="p-4 font-semibold">{order.name}</td>
-                    <td className="p-4 text-sm">{order.email}</td>
-                    <td className="p-4">
-                      <span className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-lg font-bold text-sm shadow-md">
+                    <td className="p-2 sm:p-4 font-semibold">{order.name}</td>
+                    <td className="hidden sm:table-cell p-2 sm:p-4 text-sm">
+                      {order.email}
+                    </td>
+                    <td className="p-2 sm:p-4">
+                      <span className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-2 sm:px-3 py-1 rounded-lg font-bold text-sm shadow-md">
                         ${order.totalPrice.toFixed(2)}
                       </span>
                     </td>
-                    <td className="p-4 text-sm">
+                    <td className="hidden sm:table-cell p-2 sm:p-4 text-sm">
                       {new Date(order.createdAt).toLocaleString()}
                     </td>
-                    <td className="p-4 max-w-xs">
-                      <div className="truncate text-sm">
-                        {getOrderSummary(order.items)}
-                      </div>
+                    <td className="hidden md:table-cell p-2 sm:p-4 max-w-[120px] md:max-w-xs truncate">
+                      {getOrderSummary(order.items)}
                       <button
                         onClick={() => handleViewDetails(order)}
                         className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-xs mt-1 underline font-medium"
@@ -263,7 +264,7 @@ export default function Orders() {
                         Shiko detajet →
                       </button>
                     </td>
-                    <td className="p-4">
+                    <td className="p-2 sm:p-4">
                       <select
                         value={order.status}
                         onChange={(e) =>
@@ -271,7 +272,7 @@ export default function Orders() {
                         }
                         className={`bg-gradient-to-r ${getStatusColor(
                           order.status
-                        )} text-white border-2 border-white/30 rounded-lg px-3 py-2 font-semibold text-sm shadow-md cursor-pointer hover:shadow-lg transition-all`}
+                        )} text-white border-2 border-white/30 rounded-lg px-2 sm:px-3 py-1 sm:py-2 font-semibold text-sm sm:text-base shadow-md cursor-pointer hover:shadow-lg transition-all`}
                       >
                         <option value="pending">Në Pritje</option>
                         <option value="preparing">Po përgatitet</option>
@@ -279,29 +280,23 @@ export default function Orders() {
                         <option value="delivered">Dërguar</option>
                       </select>
                     </td>
-                    <td className="p-4">
-                      <div className="flex items-center justify-center gap-2">
+                    <td className="p-2 sm:p-4">
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
                         <button
                           onClick={() => handleViewDetails(order)}
-                          className="p-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 active:scale-95"
-                          title="Shiko detajet"
-                          aria-label={`Shiko detajet e porosisë ${order.id}`}
+                          className="p-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleEdit(order)}
-                          className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 active:scale-95"
-                          title="Edito"
-                          aria-label={`Edito porosinë ${order.id}`}
+                          className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(order.id)}
-                          className="p-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 active:scale-95"
-                          title="Fshi"
-                          aria-label={`Fshi porosinë ${order.id}`}
+                          className="p-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 active:scale-95"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -311,31 +306,6 @@ export default function Orders() {
                 ))}
             </tbody>
           </table>
-        </div>
-
-        {/* Empty State */}
-        {orders.filter((o) => o.status !== "delivered").length === 0 && (
-          <div className="text-center py-16">
-            <div className="inline-flex flex-col items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-full flex items-center justify-center">
-                <ShoppingCart className="w-10 h-10 text-gray-400" />
-              </div>
-              <p className="text-xl font-semibold text-gray-600 dark:text-gray-400">
-                Nuk ka porosi aktive
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Footer */}
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 px-6 py-4 border-t-2 border-gray-200 dark:border-gray-600">
-          <p className="text-sm text-gray-600 dark:text-gray-400 text-center flex items-center justify-center gap-2">
-            <span className="text-lg">🛒</span>
-            Gjithsej {
-              orders.filter((o) => o.status !== "delivered").length
-            }{" "}
-            porosi aktive
-          </p>
         </div>
       </div>
 
