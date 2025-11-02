@@ -29,7 +29,7 @@ type OrderItem = {
 };
 
 type Order = {
-  id: number;
+  _id: number;
   createdAt: string;
   totalPrice: number;
   items: OrderItem[];

@@ -47,18 +47,18 @@ export default function OffersPage() {
       title: offer.title,
       description:
         offer.description || `${offer.icon} Ofertë speciale me zbritje!`,
-      price: offer.oldPrice, // Original price
+      price: offer.oldPrice, 
       image: offer.image,
-      category: "Oferta", // Default category
+      category: "Oferta", 
       discount: discountPercentage,
       isNew: false,
       isCombo: offer.title.toLowerCase().includes("combo"),
-      rating: 5, // Offers usually have high ratings
+      rating: 5, 
       onAddToCart: () => {
         addToCart({
           id: offer._id.toString(),
           title: offer.title,
-          price: offer.newPrice, // Use discounted price
+          price: offer.newPrice,
         });
         setShowCart(true);
       },

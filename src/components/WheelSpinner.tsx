@@ -60,10 +60,11 @@ export default function WheelSpinner({ onClose }: { onClose: () => void }) {
       setSelectedPrize(prize);
       setSpinning(false);
 
+      // Ruaj spin-in pavarësisht nëse fiton apo humb
+      await spinWheel(prize.discount);
+
       if (prize.discount > 0) {
         setShowConfetti(true);
-        await spinWheel(prize.discount); // ruan kuponin dhe datën
-
         setTimeout(() => setShowConfetti(false), 3000);
       }
     }, 4000);

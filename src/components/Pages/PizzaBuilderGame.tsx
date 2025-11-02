@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Heart, ShoppingCart, RotateCcw, Sparkles, X } from "lucide-react";
 import CheckoutStepper from "./CheckoutStepper";
 import ShoppingCartDropdown from "../ShoppingCartDropdown";
-import { useCart } from "../context/CartContext"; // IMPORT THIS
+import { useCart } from "../context/CartContext";
 
 const PizzaBuilderGame = () => {
   type Topping = {
@@ -213,7 +213,7 @@ const PizzaBuilderGame = () => {
                   >
                     <div className="flex justify-between items-center">
                       <span>{size.name}</span>
-                      <span>{size.basePrice}€</span>
+                      <span>{size.basePrice}$</span>
                     </div>
                   </button>
                 ))}
@@ -236,7 +236,7 @@ const PizzaBuilderGame = () => {
                   >
                     <div className="flex justify-between items-center">
                       <span>{crust.name}</span>
-                      <span>+{crust.price}€</span>
+                      <span>+{crust.price}$</span>
                     </div>
                   </button>
                 ))}
@@ -267,7 +267,7 @@ const PizzaBuilderGame = () => {
                         <div className="flex justify-between items-center">
                           <span>{favorite.name}</span>
                           <span className="text-yellow-400 font-bold">
-                            {favorite.price.toFixed(2)}€
+                            {favorite.price.toFixed(2)}$
                           </span>
                         </div>
                       </button>
@@ -342,7 +342,7 @@ const PizzaBuilderGame = () => {
             {/* Price & Add to Cart */}
             <div className="bg-gradient-to-r from-yellow-400 to-red-500 rounded-xl p-4 text-white text-center">
               <div className="text-2xl font-bold mb-1">
-                {totalPrice.toFixed(2)}€
+                {totalPrice.toFixed(2)}$
               </div>
               <div className="text-sm mb-2 opacity-90">
                 {selectedToppings.length} përbërës
@@ -389,7 +389,6 @@ const PizzaBuilderGame = () => {
           <ShoppingCartDropdown
             cartItems={cartItems}
             onAdd={(id) => {
-              // This will increment quantity in the shared cart
               const item = cartItems.find((i) => i.id === id);
               if (item) {
                 addToCart({

@@ -194,10 +194,10 @@ export default function HomePage() {
                           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-red-500/20 rounded-2xl blur-lg"></div>
                           <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl px-5 py-3 border border-white/10">
                             <div className="text-2xl sm:text-4xl font-black bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
-                              {currentOffer.newPrice}€
+                              {currentOffer.newPrice}$
                             </div>
                             <div className="text-sm sm:text-base text-white/50 line-through mt-1">
-                              {currentOffer.oldPrice}€
+                              {currentOffer.oldPrice}$
                             </div>
                           </div>
                         </div>
