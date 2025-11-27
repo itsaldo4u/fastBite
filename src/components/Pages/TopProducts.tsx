@@ -127,22 +127,22 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
   const getRankBadge = (index: number) => {
     const badges = [
       {
-        icon: "Trophy",
+        icon: "🏆",
         gradient: "from-yellow-400 to-orange-500",
         shadow: "shadow-yellow-500/50",
       },
       {
-        icon: "2nd",
+        icon: "🥈",
         gradient: "from-gray-300 to-gray-400",
         shadow: "shadow-gray-400/50",
       },
       {
-        icon: "3rd",
+        icon: "🥉",
         gradient: "from-orange-400 to-orange-600",
         shadow: "shadow-orange-500/50",
       },
       {
-        icon: "Star",
+        icon: "⭐",
         gradient: "from-purple-400 to-pink-500",
         shadow: "shadow-purple-500/50",
       },
