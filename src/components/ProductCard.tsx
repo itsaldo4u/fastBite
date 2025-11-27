@@ -72,11 +72,12 @@ export default function ProductCard({
             Combo
           </span>
         )}
-        {discount && discount > 0 && (
+        {discount !== undefined && discount > 0 && (
           <span className="px-2 py-1 bg-red-500 text-white text-xs rounded-full font-bold">
             -{discount}%
           </span>
         )}
+
         {isNew && (
           <span className="px-2 py-1 bg-pink-500 text-white text-xs rounded-full font-bold">
             I Ri
