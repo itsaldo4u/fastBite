@@ -2,28 +2,38 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { TrendingUp, ShoppingCart, Flame, Award } from "lucide-react";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/orders`;
+const API_URL = `${import.meta.env.VITE_API_URL}`;
+const ORDERS_URL = `${API_URL}/orders`;
+const PRODUCTS_URL = `${API_URL}/products`; // ky endpoint ekziston, apo jo?
+
+type Product = {
+  _id: string;
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  discount?: number;
+};
 
 type OrderItem = {
-  productId: number;
+  productId: string; // tani është string (sepse ti ke "pi03", "fe01", etj)
   title: string;
   quantity: number;
   price: number;
 };
 
 type Order = {
-  _id: number;
+  _id: string;
   createdAt: string;
-  totalPrice: number;
   items: OrderItem[];
-  status: string;
 };
 
 type TopProduct = {
+  productId: string;
   title: string;
   quantitySold: number;
   avgPrice: number;
-  productId: number;
+  image: string;
 };
 
 interface TopProductsProps {
@@ -41,59 +51,66 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
   const fetchTopProducts = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get<Order[]>(API_URL);
-      const orders = res.data;
+      // 1. Merr të gjitha porositë
+      const ordersRes = await axios.get<Order[]>(ORDERS_URL);
+      const orders = ordersRes.data;
 
-      // Filtro vetëm porosite e 7 ditëve të fundit
+      // 7 ditët e fundit
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-      const recentOrders = orders.filter((order) => {
-        const orderDate = new Date(order.createdAt);
-        return orderDate >= sevenDaysAgo;
-      });
+      const recentOrders = orders.filter(
+        (order) => new Date(order.createdAt) >= sevenDaysAgo
+      );
 
-      // Llogarit produktet më të shitura
-      const productStats: Record<
+      // 2. Llogarit shitjet për çdo productId (string!)
+      const salesMap = new Map<
         string,
-        {
-          quantity: number;
-          totalPrice: number;
-          count: number;
-          productId: number;
-        }
-      > = {};
+        { qty: number; total: number; count: number }
+      >();
 
       recentOrders.forEach((order) => {
         order.items.forEach((item) => {
-          if (!productStats[item.title]) {
-            productStats[item.title] = {
-              quantity: 0,
-              totalPrice: 0,
-              count: 0,
-              productId: item.productId,
-            };
+          const id = item.productId; // "pi03", "fe01", etj
+          if (!salesMap.has(id)) {
+            salesMap.set(id, { qty: 0, total: 0, count: 0 });
           }
-          productStats[item.title].quantity += item.quantity;
-          productStats[item.title].totalPrice += item.price * item.quantity;
-          productStats[item.title].count += item.quantity;
+          const stats = salesMap.get(id)!;
+          stats.qty += item.quantity;
+          stats.total += item.price * item.quantity;
+          stats.count += item.quantity;
         });
       });
 
-      // Konverto në array dhe merr top 4
-      const topProductsArr = Object.entries(productStats)
-        .map(([title, stats]) => ({
-          title,
-          quantitySold: stats.quantity,
-          avgPrice: stats.totalPrice / stats.count,
-          productId: stats.productId,
-        }))
-        .sort((a, b) => b.quantitySold - a.quantitySold)
-        .slice(0, 4);
+      // 3. Merr të gjithë produktet (vetëm një herë)
+      const productsRes = await axios.get<Product[]>(PRODUCTS_URL);
+      const productMap = new Map<string, Product>();
+      productsRes.data.forEach((p) => {
+        productMap.set(p.id, p); // kyç me "id" (pi03, fe01...)
+        productMap.set(p._id, p); // edhe me ObjectId, për siguri
+      });
 
-      setTopProducts(topProductsArr);
+      // 4. Krijo listën finale të top 4
+      const topList: TopProduct[] = Array.from(salesMap.entries())
+        .map(([productId, stats]) => {
+          const product = productMap.get(productId);
+          if (!product) return null;
+
+          return {
+            productId,
+            title: product.title,
+            quantitySold: stats.qty,
+            avgPrice: stats.total / stats.count,
+            image: product.image || "/placeholder.jpg",
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => b!.quantitySold - a!.quantitySold)
+        .slice(0, 4) as TopProduct[];
+
+      setTopProducts(topList);
     } catch (err) {
-      console.error("Gabim gjatë marrjes së produkteve:", err);
+      console.error("Gabim te TopProducts:", err);
     } finally {
       setIsLoading(false);
     }
@@ -111,141 +128,110 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
     );
   }
 
-  if (topProducts.length === 0) {
-    return null;
-  }
+  if (topProducts.length === 0) return null;
 
-  const getRankBadge = (index: number) => {
-    const badges = [
-      {
-        icon: "🏆",
-        gradient: "from-yellow-400 to-orange-500",
-        shadow: "shadow-yellow-500/50",
-      },
-      {
-        icon: "🥈",
-        gradient: "from-gray-300 to-gray-400",
-        shadow: "shadow-gray-400/50",
-      },
-      {
-        icon: "🥉",
-        gradient: "from-orange-400 to-orange-600",
-        shadow: "shadow-orange-500/50",
-      },
-      {
-        icon: "⭐",
-        gradient: "from-purple-400 to-pink-500",
-        shadow: "shadow-purple-500/50",
-      },
-    ];
-    return badges[index] || badges[3];
-  };
+  const badges = ["Trophy", "Second Place", "Third Place", "Star"];
+  const gradients = [
+    "from-yellow-400 to-orange-500",
+    "from-gray-300 to-gray-400",
+    "from-orange-400 to-orange-600",
+    "from-purple-400 to-pink-500",
+  ];
 
   return (
-    <section className="py-10 sm:py-16 px-4 sm:px-6">
+    <section className="py-10 sm:py-16 px-4 sm:px-6 bg-black/30">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Flame className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 animate-pulse" />
-            <h2 className="text-2xl sm:text-4xl font-black text-white">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Flame className="w-8 h-8 text-orange-500 animate-pulse" />
+            <h2 className="text-3xl sm:text-5xl font-black text-white">
               Më të{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
-                Popullarizuara
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600">
+                Shitshmet
               </span>
             </h2>
-            <Flame className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 animate-pulse" />
+            <Flame className="w-8 h-8 text-orange-500 animate-pulse" />
           </div>
-          <div className="flex items-center justify-center gap-2 text-sm sm:text-base text-gray-300">
-            <TrendingUp className="w-4 h-4 text-green-400" />
-            <p>Top 4 produktet e 7 ditëve të fundit</p>
-          </div>
+          <p className="text-gray-300 flex items-center justify-center gap-2">
+            <TrendingUp className="w-5 h-5 text-green-400" />
+            Top 4 produktet e 7 ditëve të fundit
+          </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {topProducts.map((product, index) => {
-            const badge = getRankBadge(index);
-            return (
-              <div
-                key={product.productId}
-                className="group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-lg rounded-2xl border-2 border-white/10 overflow-hidden hover:border-white/30 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                {/* Animated Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {topProducts.map((product, i) => (
+            <div
+              key={product.productId}
+              className="group relative bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden hover:border-orange-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/20"
+            >
+              {/* Foto + overlay */}
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Rank Badge */}
-                <div className="absolute top-3 left-3 z-10">
+                <div className="absolute top-4 left-4">
                   <div
-                    className={`flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br ${badge.gradient} ${badge.shadow} shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}
+                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${gradients[i]} shadow-2xl flex items-center justify-center text-2xl`}
                   >
-                    <span className="text-xl sm:text-2xl">{badge.icon}</span>
+                    {badges[i]}
                   </div>
                 </div>
 
-                {/* Trending Icon */}
-                <div className="absolute top-3 right-3 z-10">
-                  <div className="p-2 bg-green-500/20 backdrop-blur-sm rounded-full border border-green-400/30">
-                    <TrendingUp className="w-4 h-4 text-green-400" />
+                <div className="absolute top-4 right-4">
+                  <div className="p-2 bg-green-500/20 rounded-full border border-green-400/50 backdrop-blur">
+                    <TrendingUp className="w-5 h-5 text-green-400" />
                   </div>
                 </div>
-
-                <div className="relative p-6 pt-16">
-                  {/* Product Title */}
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-yellow-400 transition-colors">
-                    {product.title}
-                  </h3>
-
-                  {/* Stats */}
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Shitur:</span>
-                      <span className="font-bold text-orange-400 flex items-center gap-1">
-                        <Award className="w-4 h-4" />
-                        {product.quantitySold} copë
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Çmimi:</span>
-                      <span className="font-bold text-green-400">
-                        ${product.avgPrice.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Divider */}
-                  <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-4"></div>
-
-                  {/* Add to Cart Button */}
-                  <button
-                    onClick={() =>
-                      onAddToCart(
-                        product.productId.toString(),
-                        product.title,
-                        product.avgPrice
-                      )
-                    }
-                    className="w-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/30 flex items-center justify-center gap-2 group/btn"
-                  >
-                    <ShoppingCart className="w-4 h-4 group-hover/btn:animate-bounce" />
-                    <span className="text-sm">Shto në Shportë</span>
-                  </button>
-                </div>
-
-                {/* Glowing Effect on Hover */}
-                <div
-                  className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br ${badge.gradient} blur-2xl -z-10`}
-                ></div>
               </div>
-            );
-          })}
+
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors line-clamp-2">
+                  {product.title}
+                </h3>
+
+                <div className="space-y-3 mb-5 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Shitur:</span>
+                    <span className="text-orange-400 font-bold flex items-center gap-1">
+                      <Award className="w-4 h-4" />
+                      {product.quantitySold} copë
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Çmimi mesatar:</span>
+                    <span className="text-green-400 font-bold">
+                      ${product.avgPrice.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() =>
+                    onAddToCart(
+                      product.productId,
+                      product.title,
+                      product.avgPrice
+                    )
+                  }
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/40 flex items-center justify-center gap-2"
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  Shto në Shportë
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Footer Note */}
-        <div className="text-center mt-8">
-          <p className="text-xs sm:text-sm text-gray-400 flex items-center justify-center gap-2">
-            <Flame className="w-4 h-4 text-orange-400" />
-            Të përditësuara në kohë reale bazuar në porosinë tuaj
+        <div className="text-center mt-10">
+          <p className="text-gray-400 text-sm flex items-center justify-center gap-2">
+            <Flame className="w-4 h-4 text-orange-500" />
+            Përditësohet çdo minutë në bazë të porosive reale
           </p>
         </div>
       </div>
