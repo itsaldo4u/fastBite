@@ -17,8 +17,9 @@ import WheelSpinner from "../WheelSpinner";
 import { useOffers } from "../context/OffersContext";
 import { useRewards } from "../context/RewardsContext";
 import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext"; // ADD THIS IMPORT
+import { useCart } from "../context/CartContext";
 import ShoppingCartDropdown from "../ShoppingCartDropdown";
+import TopProducts from "./TopProducts";
 
 export default function HomePage() {
   const [currentOfferIndex, setCurrentOfferIndex] = useState(0);
@@ -396,6 +397,9 @@ export default function HomePage() {
 
         <section className="py-10 sm:py-16 px-4 sm:px-6">
           <PizzaBuilderGame />
+        </section>
+        <section className="py-10 sm:py-16 px-4 sm:px-6">
+          <TopProducts onAddToCart={handleAddToCart} />
         </section>
 
         <section className="py-10 sm:py-16 px-4 sm:px-6">

@@ -37,10 +37,8 @@ const PizzaBuilderGame = () => {
   >([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [activeMobileTab, setActiveMobileTab] = useState<
-    "size" | "crust" | "toppings" | null
-  >(null);
-  // USE CART CONTEXT INSTEAD OF LOCAL STATE
+  const [toppingsExpanded, setToppingsExpanded] = useState(false);
+
   const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
 
   const pizzaRef = useRef<HTMLDivElement>(null);
@@ -61,9 +59,9 @@ const PizzaBuilderGame = () => {
   ];
 
   const sizes = [
-    { id: "small", name: "Small (25cm)", basePrice: 8.99, multiplier: 1 },
-    { id: "medium", name: "Medium (30cm)", basePrice: 12.99, multiplier: 1.2 },
-    { id: "large", name: "Large (35cm)", basePrice: 16.99, multiplier: 1.5 },
+    { id: "small", name: "Small (25cm)", basePrice: 3.99, multiplier: 1 },
+    { id: "medium", name: "Medium (30cm)", basePrice: 6.99, multiplier: 1.2 },
+    { id: "large", name: "Large (35cm)", basePrice: 8.99, multiplier: 1.5 },
   ];
 
   const crusts = [
@@ -87,7 +85,6 @@ const PizzaBuilderGame = () => {
     }
   }, [selectedToppings, selectedSize, selectedCrust]);
 
-  // Drag & Drop
   const handleDragStart = (
     e: React.DragEvent<HTMLButtonElement>,
     topping: Topping
@@ -120,7 +117,6 @@ const PizzaBuilderGame = () => {
 
   const handleDragOver = (e: React.DragEvent) => e.preventDefault();
 
-  // Add / Remove toppings
   const addToppingToPizza = (topping: Topping) => {
     if (!selectedToppings.find((t) => t.id === topping.id)) {
       const x = 30 + Math.random() * 40;
@@ -137,7 +133,6 @@ const PizzaBuilderGame = () => {
 
   const clearPizza = () => setSelectedToppings([]);
 
-  // Favorites
   const saveAsFavorite = () => {
     const favorite: Favorite = {
       id: Date.now(),
@@ -155,7 +150,6 @@ const PizzaBuilderGame = () => {
   const removeFavorite = (id: number) =>
     setSavedFavorites((prev) => prev.filter((fav) => fav.id !== id));
 
-  // UPDATED: Add to cart using context
   const handleAddToCart = () => {
     const sizeData = sizes.find((s) => s.id === selectedSize);
     const crustData = crusts.find((c) => c.id === selectedCrust);
@@ -172,7 +166,6 @@ const PizzaBuilderGame = () => {
     setCartOpen(true);
   };
 
-  // UPDATED: Clear cart using context
   const handleClearCart = () => {
     clearPizza();
     setSelectedSize("medium");
@@ -196,45 +189,101 @@ const PizzaBuilderGame = () => {
           </p>
         </div>
 
-        {/* MOBILE BOTTOM TAB BAR – fikse poshtë */}
-        <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-slate-900/95 backdrop-blur border-t border-white/10 px-4 py-3">
-          <div className="flex gap-2">
+        {/* MOBILE COMPACT OPTIONS */}
+        <div className="lg:hidden mb-6 space-y-4">
+          {/* Size Selector */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-2 px-2">Madhësia</h3>
+            <div className="flex gap-3 overflow-x-auto pb-2 px-2 scrollbar-hide">
+              {sizes.map((size) => (
+                <button
+                  key={size.id}
+                  onClick={() => setSelectedSize(size.id)}
+                  className={`flex-shrink-0 px-4 py-3 rounded-xl border-2 transition-all ${
+                    selectedSize === size.id
+                      ? "bg-gradient-to-r from-yellow-400 to-red-500 border-yellow-400 text-white shadow-lg scale-105"
+                      : "bg-white/5 border-white/20 text-white hover:bg-white/10"
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-xs opacity-75">
+                      {size.name.split("(")[0]}
+                    </div>
+                    <div className="font-bold text-lg">{size.basePrice}$</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Crust Selector */}
+          <div>
+            <h3 className="text-white font-bold text-sm mb-2 px-2">Brumi</h3>
+            <div className="flex gap-3 overflow-x-auto pb-2 px-2 scrollbar-hide">
+              {crusts.map((crust) => (
+                <button
+                  key={crust.id}
+                  onClick={() => setSelectedCrust(crust.id)}
+                  className={`flex-shrink-0 px-4 py-3 rounded-xl border-2 transition-all ${
+                    selectedCrust === crust.id
+                      ? "bg-gradient-to-r from-yellow-400 to-red-500 border-yellow-400 text-white shadow-lg scale-105"
+                      : "bg-white/5 border-white/20 text-white hover:bg-white/10"
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-sm font-medium">{crust.name}</div>
+                    <div className="text-xs opacity-75">+{crust.price}$</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Toppings - Collapsible */}
+          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
             <button
-              onClick={() => setActiveMobileTab("size")}
-              className={`flex-1 py-3 rounded-xl font-bold text-sm transition ${
-                activeMobileTab === "size"
-                  ? "bg-yellow-500 text-black"
-                  : "bg-white/10 text-white"
-              }`}
+              onClick={() => setToppingsExpanded(!toppingsExpanded)}
+              className="w-full flex items-center justify-between text-white font-bold text-sm mb-3"
             >
-              Madhësia
+              <span>Përbërësit ({selectedToppings.length})</span>
+              <span
+                className={`transition-transform ${
+                  toppingsExpanded ? "rotate-180" : ""
+                }`}
+              >
+                ▼
+              </span>
             </button>
-            <button
-              onClick={() => setActiveMobileTab("crust")}
-              className={`flex-1 py-3 rounded-xl font-bold text-sm transition ${
-                activeMobileTab === "crust"
-                  ? "bg-yellow-500 text-black"
-                  : "bg-white/10 text-white"
-              }`}
-            >
-              Brumi
-            </button>
-            <button
-              onClick={() => setActiveMobileTab("toppings")}
-              className={`flex-1 py-3 rounded-xl font-bold text-sm transition ${
-                activeMobileTab === "toppings"
-                  ? "bg-yellow-500 text-black"
-                  : "bg-white/10 text-white"
-              }`}
-            >
-              Përbërësit
-            </button>
+
+            {toppingsExpanded && (
+              <div className="grid grid-cols-4 gap-2">
+                {toppings.map((t) => {
+                  const isAdded = selectedToppings.some((x) => x.id === t.id);
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => addToppingToPizza(t)}
+                      className={`p-3 rounded-lg transition-all flex flex-col items-center ${
+                        isAdded
+                          ? "bg-yellow-500 text-black scale-95 shadow-lg"
+                          : "bg-white/10 text-white hover:bg-white/20"
+                      }`}
+                    >
+                      <div className="text-2xl mb-1">{t.emoji}</div>
+                      <div className="text-[9px] font-medium text-center leading-tight">
+                        {t.name}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* GRID – e njëjta si ty, por me padding poshtë për mobile */}
-        <div className="grid lg:grid-cols-3 gap-4 pb-28 lg:pb-0">
-          {/* LEFT PANEL – vetëm në desktop (lg+) */}
+        {/* GRID */}
+        <div className="grid lg:grid-cols-3 gap-4">
+          {/* LEFT PANEL - Desktop Only */}
           <div className="hidden lg:block space-y-4">
             {/* Size */}
             <div className="bg-white/10 rounded-xl p-4 border border-white/20">
@@ -282,7 +331,7 @@ const PizzaBuilderGame = () => {
               </div>
             </div>
 
-            {/* Favorites – desktop */}
+            {/* Favorites - Desktop */}
             {savedFavorites.length > 0 && (
               <div className="bg-white/10 rounded-xl p-4 border border-white/20">
                 <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-1">
@@ -323,7 +372,7 @@ const PizzaBuilderGame = () => {
             )}
           </div>
 
-          {/* CENTER – Pizza (e njëjta në mobile dhe desktop) */}
+          {/* CENTER - Pizza */}
           <div className="space-y-4">
             {/* Pizza */}
             <div className="bg-white/10 rounded-xl p-4 border border-white/20 relative">
@@ -378,7 +427,7 @@ const PizzaBuilderGame = () => {
               </div>
             </div>
 
-            {/* Çmimi + Shto në shportë */}
+            {/* Price + Add to Cart */}
             <div className="bg-gradient-to-r from-yellow-400 to-red-500 rounded-xl p-4 text-white text-center">
               <div className="text-2xl font-bold mb-1">
                 {totalPrice.toFixed(2)}$
@@ -396,7 +445,7 @@ const PizzaBuilderGame = () => {
             </div>
           </div>
 
-          {/* RIGHT PANEL – vetëm në desktop */}
+          {/* RIGHT PANEL - Desktop Only */}
           <div className="hidden lg:block bg-white/10 rounded-xl p-4 border border-white/20">
             <h3 className="text-lg font-bold text-white mb-2">Përbërësit</h3>
             <div className="grid grid-cols-3 gap-2">
@@ -452,101 +501,6 @@ const PizzaBuilderGame = () => {
                   </button>
                 </div>
               ))}
-            </div>
-          </div>
-        )}
-
-        {/* MOBILE BOTTOM SHEET */}
-        {activeMobileTab && (
-          <div className="fixed inset-0 z-50 lg:hidden">
-            <div
-              className="absolute inset-0 bg-black/60"
-              onClick={() => setActiveMobileTab(null)}
-            />
-            <div
-              className="absolute bottom-0 left-0 right-0 bg-slate-900 rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="text-xl font-bold text-white">
-                  {activeMobileTab === "size" && "Zgjidh Madhësinë"}
-                  {activeMobileTab === "crust" && "Zgjidh Brumin"}
-                  {activeMobileTab === "toppings" && "Zgjidh Përbërësit"}
-                </h3>
-                <button onClick={() => setActiveMobileTab(null)}>
-                  <X className="w-8 h-8 text-gray-400" />
-                </button>
-              </div>
-
-              {/* Size */}
-              {activeMobileTab === "size" &&
-                sizes.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => {
-                      setSelectedSize(s.id);
-                      setActiveMobileTab(null);
-                    }}
-                    className={`w-full p-5 rounded-xl text-left mb-3 transition-all ${
-                      selectedSize === s.id
-                        ? "bg-yellow-500 text-black font-bold"
-                        : "bg-white/10 text-white"
-                    }`}
-                  >
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg">{s.name}</span>
-                      <span className="text-2xl font-bold">{s.basePrice}$</span>
-                    </div>
-                  </button>
-                ))}
-
-              {/* Crust */}
-              {activeMobileTab === "crust" &&
-                crusts.map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => {
-                      setSelectedCrust(c.id);
-                      setActiveMobileTab(null);
-                    }}
-                    className={`w-full p-5 rounded-xl text-left mb-3 transition-all ${
-                      selectedCrust === c.id
-                        ? "bg-yellow-500 text-black font-bold"
-                        : "bg-white/10 text-white"
-                    }`}
-                  >
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg">{c.name}</span>
-                      <span className="text-2xl font-bold">+{c.price}$</span>
-                    </div>
-                  </button>
-                ))}
-
-              {/* Toppings */}
-              {activeMobileTab === "toppings" && (
-                <div className="grid grid-cols-3 gap-4 pb-20">
-                  {toppings.map((t) => {
-                    const isAdded = selectedToppings.some((x) => x.id === t.id);
-                    return (
-                      <button
-                        key={t.id}
-                        onClick={() => addToppingToPizza(t)}
-                        className={`p-6 rounded-2xl transition-all flex flex-col items-center ${
-                          isAdded
-                            ? "bg-yellow-500 text-black scale-105 shadow-xl"
-                            : "bg-white/10 text-white hover:bg-white/20"
-                        }`}
-                      >
-                        <div className="text-5xl mb-2">{t.emoji}</div>
-                        <div className="text-sm font-medium">{t.name}</div>
-                        <div className="text-xs text-yellow-300">
-                          +{t.price}$
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
             </div>
           </div>
         )}
