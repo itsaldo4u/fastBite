@@ -6,25 +6,33 @@ const ORDERS_URL = `${import.meta.env.VITE_API_URL}/orders`;
 const PRODUCTS_URL = `${import.meta.env.VITE_API_URL}/products`;
 
 type OrderItem = {
-  productId: number;
-  title: string;
+  productId?: string; // mund të jetë undefined në porosi
+  title?: string;
   quantity: number;
   price: number;
 };
 
 type Order = {
-  _id: number;
+  _id: string;
   createdAt: string;
   totalPrice: number;
   items: OrderItem[];
   status: string;
 };
 
+type Product = {
+  _id: string;
+  id: string;
+  title: string;
+  price: number;
+  image?: string;
+};
+
 type TopProduct = {
   title: string;
   quantitySold: number;
   avgPrice: number;
-  productId: number;
+  productId: string;
   image?: string;
 };
 
@@ -43,44 +51,55 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
   const fetchTopProducts = async () => {
     setIsLoading(true);
     try {
+      // Merr porositë
       const ordersRes = await axios.get<Order[]>(ORDERS_URL);
       const orders = ordersRes.data;
 
-      const productsRes = await axios.get<any[]>(PRODUCTS_URL);
-      const titleToImage = new Map<string, string>();
-      productsRes.data.forEach((p) => {
-        if (p.title && p.image) {
-          titleToImage.set(p.title.trim(), p.image);
+      // Merr produktet
+      const productsRes = await axios.get<Product[]>(PRODUCTS_URL);
+      const products = productsRes.data;
+
+      // Map për të lidhur titullin me produktin (image, id)
+      const titleToProduct = new Map<string, Product>();
+      products.forEach((p) => {
+        if (p.title) {
+          titleToProduct.set(p.title.trim(), p);
         }
       });
 
+      // Filtron porositë e 7 ditëve të fundit
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const recentOrders = orders.filter(
+        (order) => new Date(order.createdAt) >= sevenDaysAgo
+      );
 
-      const recentOrders = orders.filter((order) => {
-        const orderDate = new Date(order.createdAt);
-        return orderDate >= sevenDaysAgo;
-      });
-
+      // Llogarit statistikat e produkteve
       const productStats: Record<
         string,
         {
           quantity: number;
           totalPrice: number;
           count: number;
-          productId: number;
+          productId: string;
         }
       > = {};
 
       recentOrders.forEach((order) => {
         order.items.forEach((item) => {
-          const key = item.title.trim();
+          const key = item.title?.trim();
+          if (!key) return;
+
+          // Merr productId nga produkti origjinal
+          const product = titleToProduct.get(key);
+          if (!product) return;
+
           if (!productStats[key]) {
             productStats[key] = {
               quantity: 0,
               totalPrice: 0,
               count: 0,
-              productId: item.productId,
+              productId: product.id || product._id,
             };
           }
           productStats[key].quantity += item.quantity;
@@ -89,13 +108,14 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
         });
       });
 
-      const topProductsArr = Object.entries(productStats)
+      // Krijon top 4 produktet
+      const topProductsArr: TopProduct[] = Object.entries(productStats)
         .map(([title, stats]) => ({
           title,
           quantitySold: stats.quantity,
-          avgPrice: stats.totalPrice / stats.count,
+          avgPrice: stats.count ? stats.totalPrice / stats.count : 0,
           productId: stats.productId,
-          image: titleToImage.get(title) || "/placeholder.jpg",
+          image: titleToProduct.get(title)?.image || "/placeholder.jpg",
         }))
         .sort((a, b) => b.quantitySold - a.quantitySold)
         .slice(0, 4);
@@ -171,7 +191,7 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
           </div>
         </div>
 
-        {/* Products Grid – 2 në mobile, 4 në desktop */}
+        {/* Products Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {topProducts.map((product, index) => {
             const badge = getRankBadge(index);
@@ -180,10 +200,9 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
                 key={product.productId}
                 className="group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-lg rounded-2xl border-2 border-white/10 overflow-hidden hover:border-white/30 transition-all duration-300 hover:scale-105 hover:shadow-2xl flex flex-col"
               >
-                {/* Animated Background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                {/* FOTOJA */}
+                {/* Image */}
                 <div className="relative h-40 sm:h-48 overflow-hidden">
                   <img
                     src={product.image}
@@ -209,7 +228,7 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
                   </div>
                 </div>
 
-                {/* Përmbajtja – mobile optimized */}
+                {/* Content */}
                 <div className="relative p-4 sm:p-6 flex-1 flex flex-col justify-end -mt-10 sm:-mt-12">
                   <h3 className="text-sm sm:text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
                     {product.title}
@@ -236,7 +255,7 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
                   <button
                     onClick={() =>
                       onAddToCart(
-                        product.productId.toString(),
+                        product.productId,
                         product.title,
                         product.avgPrice
                       )
@@ -248,7 +267,6 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
                   </button>
                 </div>
 
-                {/* Glowing Effect on Hover */}
                 <div
                   className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br ${badge.gradient} blur-2xl -z-10`}
                 ></div>
@@ -257,11 +275,10 @@ export default function TopProducts({ onAddToCart }: TopProductsProps) {
           })}
         </div>
 
-        {/* Footer Note */}
         <div className="text-center mt-8">
           <p className="text-xs sm:text-sm text-gray-400 flex items-center justify-center gap-2">
             <Flame className="w-4 h-4 text-orange-400" />
-            Të përditësuara në kohë reale bazuar në porosinë tuaj
+            Të përditësuara në kohë reale bazuar në porositë tuaja
           </p>
         </div>
       </div>
