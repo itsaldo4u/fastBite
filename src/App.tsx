@@ -19,6 +19,7 @@ import Footer from "./components/Footer";
 import ContactPage from "./components/Pages/ContactPage";
 import OrderTracking from "./components/Pages/OrderTracking";
 import Rewards from "./components/Rewards";
+import PrivacyPolicy from "./components/PrivacyPolicy";
 
 import { Toaster } from "react-hot-toast";
 
@@ -55,6 +56,8 @@ function App() {
                             path="/track-order"
                             element={<OrderTracking />}
                           />
+                          <Route path="/privacy" element={<PrivacyPolicy />} />
+
                         </Routes>
                       </main>
                       <Footer />
