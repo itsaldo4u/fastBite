@@ -9,6 +9,7 @@ import {
   Bell,
   ListOrdered,
   X,
+  Mail,
 } from "lucide-react";
 import UsersManagement from "./UsersManagement";
 import Revenue from "./Revenue";
@@ -16,6 +17,7 @@ import Reviews from "./Reviews";
 import Orders from "./Orders";
 import ProductPage from "./ProductPage";
 import OfferTable from "./OfferTable";
+import ContactMessages from "./ContactMessage";
 import { useOrders } from "../../context/OrdersContext";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -27,6 +29,7 @@ const tabs = [
   { name: "Vlerësimet", icon: Star, color: "yellow" },
   { name: "Produktet", icon: Package, color: "red" },
   { name: "Ofertat", icon: ListOrdered, color: "pink" },
+  { name: "Mesazhet", icon: Mail, color: "indigo" }, // Tab i ri
 ];
 
 export default function AdminDashboard() {
@@ -319,6 +322,7 @@ export default function AdminDashboard() {
         {selectedTab === "Të Ardhurat" && <Revenue />}
         {selectedTab === "Vlerësimet" && <Reviews />}
         {selectedTab === "Ofertat" && <OfferTable />}
+        {selectedTab === "Mesazhet" && <ContactMessages />}
       </div>
     </div>
   );
